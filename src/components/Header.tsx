@@ -1,4 +1,4 @@
-import {RiDashboardHorizontalFill} from "react-icons/ri";
+import { RiDashboardHorizontalFill } from "react-icons/ri";
 export default function Header() {
     return (
         <div className="navbar bg-base-100 shadow-sm">
@@ -15,12 +15,15 @@ export default function Header() {
                         </a>
                     </div>
                 </div>
+                <button className="btn btn-ghost btn-circle">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /> </svg>
+                </button>
                 <div className="dropdown dropdown-end">
                     <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
                         <div className="w-10 rounded-full">
                             <img
                                 alt="Profile pic"
-                                src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"/>
+                                src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
                         </div>
                     </div>
                     <ul

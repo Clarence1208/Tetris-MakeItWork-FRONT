@@ -1,34 +1,27 @@
-import { useState } from "react";
 import "./homepage.css";
+import BlockForm from "../../components/blockForm/BlockForm";
 
 function Homepage() {
-  const [selectedTab, setSelectedTab] = useState<"tasks" | "notifications">("tasks");
-
   return (
     <div className="page-container">
       <main className="main-layout">
-        {/* Colonne gauche */}
         <div className="left-col">
           <section className="board-personnel">
             <h2 className="section-title">Board personnel</h2>
 
-            {/* Row : Tetris Board (gauche) + colonne (Bouton aide + Compétences) */}
             <div className="board-row">
+              {/* Tetris à gauche */}
               <div className="tetris-board">
                 <p>Ici se trouve le board Tetris statique.</p>
               </div>
 
-              {/* Colonne verticale : bouton Demande aide en haut, Compétences en bas */}
-              <div className="vertical-col">
-                <button className="btn-demande-aide">Demande aide</button>
-                <div className="competences">
-                  <h3>Compétences</h3>
-                  <p>Informations sur les compétences...</p>
-                </div>
+              {/* Formulaire à droite */}
+              <div className="block-form-container">
+                <BlockForm />
               </div>
             </div>
 
-            {/* Boutons Clear en dessous */}
+            {/* Boutons Clear */}
             <div className="clear-actions">
               <button className="btn-clear">Clear Bas</button>
               <button className="btn-clear">Clear Milieu</button>
@@ -37,34 +30,10 @@ function Homepage() {
           </section>
         </div>
 
-        {/* Colonne droite : bande Tâches/Notifications */}
+        {/* Colonne droite Notifications */}
         <aside className="right-col sidebar">
-          <div className="tab-bar">
-            <div
-              className={`tab ${selectedTab === "tasks" ? "active" : ""}`}
-              onClick={() => setSelectedTab("tasks")}
-            >
-              Tâches
-            </div>
-            <div
-              className={`tab ${selectedTab === "notifications" ? "active" : ""}`}
-              onClick={() => setSelectedTab("notifications")}
-            >
-              Notifications
-            </div>
-          </div>
-
-          {selectedTab === "tasks" ? (
-            <div className="taches">
-              <h2>Tâches</h2>
-              <p>Liste des tâches...</p>
-            </div>
-          ) : (
-            <div className="notifications">
-              <h2>Notifications</h2>
-              <p>Liste des notifications...</p>
-            </div>
-          )}
+          <h2>Notifications</h2>
+          <p>Liste des notifs...</p>
         </aside>
       </main>
 
