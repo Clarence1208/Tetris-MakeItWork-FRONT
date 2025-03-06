@@ -1,8 +1,14 @@
 import "./homepage.css";
+import NotificationsList, {FlagNotification} from "../../components/NotificationsList.tsx";
 import ErrorBoundary from "../../components/ErrorBoundary.tsx";
 import Board from "../../components/Board.tsx";
 import BlockForm from "../../components/blockForm/BlockForm.tsx";
 
+const initFlagNotifications = {
+  id: 2,
+  title: "NestJS",
+  message: "A user asked for your HELP",
+}
 function Homepage() {
     return (
         <div className="page-container">
@@ -11,6 +17,16 @@ function Homepage() {
                 <div className="left-col">
                     <section className="board-personnel">
                         <h2 className="section-title">Board personnel</h2>
+  const [selectedTab, setSelectedTab] = useState<"tasks" | "notifications">("tasks");
+
+  const [notifications, setNotifications] = useState<FlagNotification[]>([initFlagNotifications, initFlagNotifications]);
+  return (
+    <div className="page-container">
+      <main className="main-layout">
+        {/* Colonne gauche */}
+        <div className="left-col">
+          <section className="board-personnel">
+            <h2 className="section-title">Board personnel</h2>
 
                         {/* Row : Tetris Board (gauche) + colonne (Bouton aide + Compétences) */}
                         <div className="board-row">
@@ -40,6 +56,45 @@ function Homepage() {
                     <p>Liste des notifs...</p>
                 </aside>
             </main>
+            {/* Boutons Clear en dessous */}
+            <div className="clear-actions">
+              <button className="btn-clear">Clear Bas</button>
+              <button className="btn-clear">Clear Milieu</button>
+              <button className="btn-clear">Clear Haut</button>
+            </div>
+          </section>
+        </div>
+
+        {/* Colonne droite : bande Tâches/Notifications */}
+        <aside className="right-col sidebar">
+          <div className="tab-bar">
+            <div
+              className={`tab ${selectedTab === "tasks" ? "active" : ""}`}
+              onClick={() => setSelectedTab("tasks")}
+            >
+              Tâches
+            </div>
+            <div
+              className={`tab ${selectedTab === "notifications" ? "active" : ""}`}
+              onClick={() => setSelectedTab("notifications")}
+            >
+              Notifications
+            </div>
+          </div>
+
+          {selectedTab === "tasks" ? (
+            <div className="taches">
+              <h2>Tâches</h2>
+              <p>Liste des tâches...</p>
+            </div>
+          ) : (
+            <div className="notifications">
+              <h2>Notifications</h2>
+              <NotificationsList notifications={notifications} />
+            </div>
+          )}
+        </aside>
+      </main>
 
             {/* Footer */}
             <footer className="footer">
