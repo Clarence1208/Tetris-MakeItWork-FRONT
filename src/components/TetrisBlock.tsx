@@ -1,8 +1,9 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useSortable} from '@dnd-kit/sortable';
 import {CSS} from '@dnd-kit/utilities';
 import {Task} from '../types';
 import './TetrisBlock.css';
+import {TaskModal} from "./modal/TaskModal.tsx";
 
 interface TetrisBlockProps {
     task: Task;
@@ -23,13 +24,12 @@ const TetrisBlock: React.FC<TetrisBlockProps> = ({task}) => {
             type: 'tetris-block',
         }
     });
-
     // Log when dragging state changes
     useEffect(() => {
         if (isDragging) {
-            console.log('Started dragging block:', task.id, task.title);
+            console.log('Started dragging block:', task.id, task.name);
         }
-    }, [isDragging, task.id, task.title]);
+    }, [isDragging, task.id, task.name]);
 
     const style = {
         transform: CSS.Transform.toString(transform),
@@ -52,7 +52,13 @@ const TetrisBlock: React.FC<TetrisBlockProps> = ({task}) => {
         // Convert the layout to actual blocks
         let blockCount = 0;
         return (
-            <div className={`tetris-shape ${shape}`}>
+            <div className={`tetris-shape ${shape}`} onClick={() => {
+                if (typeof document !== "undefined") {
+                    const modal =  document.getElementById('task-modal') as HTMLDialogElement
+                    modal.showModal();
+                }
+            }}>
+                <TaskModal task={task} />
                 {layout.map((row, rowIndex) => (
                     <div key={rowIndex} className="tetris-row">
                         {row.map((isVisible, colIndex) => {
@@ -63,7 +69,7 @@ const TetrisBlock: React.FC<TetrisBlockProps> = ({task}) => {
                                     <div
                                         key={colIndex}
                                         className={`skill-block ${shape}`}
-                                        title={`${task.title} - ${skillName}`}
+                                        title={`${task.name} - ${skillName}`}
                                         style={{'--index': blockCount} as React.CSSProperties}
                                         data-point={`${colIndex},${rowIndex}`}
                                     />
@@ -85,7 +91,7 @@ const TetrisBlock: React.FC<TetrisBlockProps> = ({task}) => {
             {...attributes}
             {...listeners}
             className={`tetris-block-container ${task.shape} ${isDragging ? 'is-dragging' : ''}`}
-            title={task.title}
+            title={task.name}
             data-task-id={task.id}
             data-shape={task.shape}
             data-skill-count={task.skills.length}
