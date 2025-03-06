@@ -12,7 +12,6 @@ const initFlagNotifications = {
   message: "A user asked for your HELP",
 }
 function Homepage() {
-    const [selectedTab, setSelectedTab] = useState<"tasks" | "notifications">("tasks");
     const [error, setError] = useState<string>("");
     const [notifications, setNotifications] = useState<FlagNotification[]>([initFlagNotifications, initFlagNotifications]);
     const [openError, setOpenError] = useState(false);
@@ -29,6 +28,7 @@ function Homepage() {
             if (!response.ok) {
                 setError('Failed to get notifications :' + response.statusText);
                 setOpenError(true);
+                return [];
             }
             const data: any = await response.json();
             return data;
@@ -56,21 +56,15 @@ function Homepage() {
                     <section className="board-personnel">
                         <h2 className="section-title">Board personnel</h2>
 
-                        {/* Row : Tetris Board (gauche) + colonne (Bouton aide + Compétences) */}
                         <div className="board-row">
                             <div className="tetris-board">
                                 <ErrorBoundary>
                                     <Board />
                                 </ErrorBoundary>
                             </div>
-
-                            {/* Formulaire à droite */}
-                            <div className="block-form-container">
                                 <BlockForm />
-                            </div>
                         </div>
 
-            {/* Boutons Clear en dessous */}
             <div className="clear-actions">
               <button className="btn btn-soft btn-error">Clear Bas</button>
               <button className="btn btn-soft btn-error ">Clear Milieu</button>
@@ -79,36 +73,11 @@ function Homepage() {
           </section>
         </div>
 
-                {/* Colonne droite : bande Tâches/Notifications */}
                 <aside className="right-col sidebar">
-                    <div className="tab-bar">
-                        <div
-                            className={`tab ${selectedTab === "tasks" ? "active" : ""}`}
-                            onClick={() => setSelectedTab("tasks")}
-                        >
-                            Tâches
-                        </div>
-                        <div
-                            className={`tab ${selectedTab === "notifications" ? "active" : ""}`}
-                            onClick={() => setSelectedTab("notifications")}
-                        >
-                            Notifications
-                        </div>
-                    </div>
-
-          {selectedTab === "tasks" ? (
-            <div className="taches">
-              <h2>Tâches</h2>
-              <p>Liste des tâches...</p>
-            </div>
-          ) : (
-            <div className="notifications">
-              <h2>Notifications</h2>
-              <NotificationsList notificationsSent={notifications} notificationsReceived={notifications} />
-            </div>
-          )}
-        </aside>
-      </main>
+                    <h2>Notifications</h2>
+                  <NotificationsList notifications={notifications} />
+                </aside>
+            </main>
 
             {/* Footer */}
             <footer className="footer">
