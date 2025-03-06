@@ -7,7 +7,7 @@ type TaskFormData = {
     name: string;
     description: string;
     company: string;
-    skills: String[];
+    skills: string[];
 }
 type Skill = {
     id: number;
