@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { Task } from '../types';
@@ -9,13 +9,39 @@ interface TetrisBlockProps {
 }
 
 const TetrisBlock: React.FC<TetrisBlockProps> = ({ task }) => {
-  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
+  const { 
+    attributes, 
+    listeners, 
+    setNodeRef, 
+    transform, 
+    transition,
+    isDragging 
+  } = useSortable({
     id: task.id,
+    data: {
+      task,
+      type: 'tetris-block',
+    }
   });
+
+  // Log when dragging state changes
+  useEffect(() => {
+    if (isDragging) {
+      console.log('Started dragging block:', task.id, task.title);
+    }
+  }, [isDragging, task.id, task.title]);
 
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
+    // We'll handle opacity in CSS
+  };
+
+  // Handle click on the block
+  const handleClick = (e: React.MouseEvent) => {
+    // Prevent event propagation to grid cells
+    e.stopPropagation();
+    console.log('Clicked on block:', task.id, task.title);
   };
 
   // Generate blocks based on the shape and number of skills
@@ -24,154 +50,252 @@ const TetrisBlock: React.FC<TetrisBlockProps> = ({ task }) => {
     const shape = task.shape;
     
     // Create arrays to represent the grid layout of each shape
+    // true = skill block, false = empty space
     let layout: boolean[][] = [];
     
     switch (shape) {
-      case 'I': // I shape - horizontal or vertical line
+      case 'I': // I shape - horizontal line
         if (skillCount <= 4) {
           // For 1-4 skills, create a horizontal line
           layout = [Array(skillCount).fill(true)];
         } else {
-          // For more than 4, create a vertical line and then wrap
-          const rows = Math.ceil(skillCount / 4);
-          layout = Array(rows).fill(null).map((_, rowIndex) => {
-            return Array(Math.min(4, skillCount - rowIndex * 4)).fill(true);
-          });
+          // For more than 4, stack horizontally
+          const fullRows = Math.floor(skillCount / 4);
+          const remainder = skillCount % 4;
+          
+          layout = Array(fullRows).fill(Array(4).fill(true));
+          if (remainder > 0) {
+            layout.push(Array(remainder).fill(true));
+          }
         }
         break;
         
       case 'L': // L shape
-        if (skillCount <= 3) {
-          // Simple L shape for 3 skills
-          layout = [
-            [true, false],
-            [true, false],
-            [true, true]
-          ].slice(0, skillCount);
-        } else {
-          // Extended L shape for more skills
-          layout = [
-            [true, false, false],
-            [true, false, false],
-            [true, true, true]
-          ];
-          
-          // Add more blocks if needed
-          let remaining = skillCount - 5;
-          if (remaining > 0) {
-            layout[0][2] = true; // Add one more at the top
-            remaining--;
-          }
-          if (remaining > 0) {
-            layout.push([true, true, false]); // Add another row
-          }
+        switch (skillCount) {
+          case 1:
+            layout = [[true]];
+            break;
+          case 2:
+            layout = [
+              [true],
+              [true]
+            ];
+            break;
+          case 3:
+            layout = [
+              [true],
+              [true],
+              [true]
+            ];
+            break;
+          case 4:
+            layout = [
+              [true],
+              [true],
+              [true, true]
+            ];
+            break;
+          default:
+            // For more skills, expand the L shape
+            layout = [
+              [true],
+              [true],
+              [true, true, true]
+            ];
+            
+            let remaining = skillCount - 5;
+            let currentRow = 3;
+            
+            while (remaining > 0 && currentRow < 6) {
+              layout.push([true, true, true].slice(0, Math.min(3, remaining)));
+              remaining -= 3;
+              currentRow++;
+            }
         }
         break;
         
       case 'J': // J shape - mirrored L
-        if (skillCount <= 3) {
-          // Simple J shape for 3 skills
-          layout = [
-            [false, true],
-            [false, true],
-            [true, true]
-          ].slice(0, skillCount);
-        } else {
-          // Extended J shape for more skills
-          layout = [
-            [false, false, true],
-            [false, false, true],
-            [true, true, true]
-          ];
-          
-          // Add more blocks if needed
-          let remaining = skillCount - 5;
-          if (remaining > 0) {
-            layout[0][0] = true; // Add one more at the top
-            remaining--;
-          }
-          if (remaining > 0) {
-            layout.push([false, true, true]); // Add another row
-          }
+        switch (skillCount) {
+          case 1:
+            layout = [[true]];
+            break;
+          case 2:
+            layout = [
+              [true],
+              [true]
+            ];
+            break;
+          case 3:
+            layout = [
+              [true],
+              [true],
+              [true]
+            ];
+            break;
+          case 4:
+            layout = [
+              [false, true],
+              [false, true],
+              [true, true]
+            ];
+            break;
+          default:
+            // For more skills, expand the J shape
+            layout = [
+              [false, false, true],
+              [false, false, true],
+              [true, true, true]
+            ];
+            
+            let remaining = skillCount - 5;
+            let currentRow = 3;
+            
+            while (remaining > 0 && currentRow < 6) {
+              layout.push([true, true, true].slice(0, Math.min(3, remaining)));
+              remaining -= 3;
+              currentRow++;
+            }
         }
         break;
         
       case 'O': // O shape - square
-        const sideLength = Math.ceil(Math.sqrt(skillCount));
-        layout = Array(sideLength).fill(null).map((_, rowIndex) => {
-          return Array(sideLength).fill(false).map((_, colIndex) => {
-            const index = rowIndex * sideLength + colIndex;
-            return index < skillCount; // true if we still have skills to display
-          });
-        });
+        const side = Math.ceil(Math.sqrt(skillCount));
+        layout = [];
+        
+        let remaining = skillCount;
+        for (let i = 0; i < side; i++) {
+          const row = [];
+          for (let j = 0; j < side; j++) {
+            if (remaining > 0) {
+              row.push(true);
+              remaining--;
+            } else {
+              row.push(false);
+            }
+          }
+          layout.push(row);
+        }
         break;
         
       case 'S': // S shape
-        if (skillCount <= 4) {
-          // Simple S shape
-          layout = [
-            [false, true, true],
-            [true, true, false]
-          ].slice(0, skillCount);
-        } else {
-          // Extended S shape
-          layout = [
-            [false, true, true],
-            [true, true, false],
-            [false, true, true]
-          ];
-          
-          // Add more blocks if needed
-          if (skillCount > 7) {
-            layout.push([true, true, false]);
-          }
+        switch (skillCount) {
+          case 1:
+            layout = [[true]];
+            break;
+          case 2:
+            layout = [[true, true]];
+            break;
+          case 3:
+            layout = [
+              [false, true, true],
+              [true]
+            ];
+            break;
+          case 4:
+            layout = [
+              [false, true, true],
+              [true, true]
+            ];
+            break;
+          default:
+            // For more skills
+            layout = [
+              [false, true, true],
+              [true, true, false]
+            ];
+            
+            let remaining = skillCount - 5;
+            let currentRow = 2;
+            
+            while (remaining > 0 && currentRow < 5) {
+              if (currentRow % 2 === 0) {
+                layout.push([true, true, false].slice(0, Math.min(3, remaining)));
+              } else {
+                layout.push([false, true, true].slice(0, Math.min(3, remaining)));
+              }
+              remaining -= Math.min(3, remaining);
+              currentRow++;
+            }
         }
         break;
         
       case 'T': // T shape
-        if (skillCount <= 4) {
-          // Simple T shape
-          layout = [
-            [true, true, true],
-            [false, true, false]
-          ].slice(0, skillCount);
-        } else {
-          // Extended T shape
-          layout = [
-            [true, true, true],
-            [false, true, false],
-            [false, true, false]
-          ];
-          
-          // Add more blocks if needed
-          if (skillCount > 5) {
-            layout[2][0] = true;
-            if (skillCount > 6) {
-              layout[2][2] = true;
+        switch (skillCount) {
+          case 1:
+            layout = [[true]];
+            break;
+          case 2:
+            layout = [[true, true]];
+            break;
+          case 3:
+            layout = [
+              [true, true, true]
+            ];
+            break;
+          case 4:
+            layout = [
+              [true, true, true],
+              [false, true]
+            ];
+            break;
+          default:
+            // For more skills
+            layout = [
+              [true, true, true],
+              [false, true, false],
+              [false, true, false]
+            ];
+            
+            let remaining = skillCount - 5;
+            let currentRow = 3;
+            
+            while (remaining > 0 && currentRow < 6) {
+              layout.push([false, true, false].slice(0, Math.min(3, remaining)));
+              remaining -= Math.min(3, remaining);
+              currentRow++;
             }
-          }
         }
         break;
         
       case 'Z': // Z shape
-        if (skillCount <= 4) {
-          // Simple Z shape
-          layout = [
-            [true, true, false],
-            [false, true, true]
-          ].slice(0, skillCount);
-        } else {
-          // Extended Z shape
-          layout = [
-            [true, true, false],
-            [false, true, true],
-            [true, true, false]
-          ];
-          
-          // Add more blocks if needed
-          if (skillCount > 7) {
-            layout.push([false, true, true]);
-          }
+        switch (skillCount) {
+          case 1:
+            layout = [[true]];
+            break;
+          case 2:
+            layout = [[true, true]];
+            break;
+          case 3:
+            layout = [
+              [true, true],
+              [false, true]
+            ];
+            break;
+          case 4:
+            layout = [
+              [true, true, false],
+              [false, true, true]
+            ];
+            break;
+          default:
+            // For more skills
+            layout = [
+              [true, true, false],
+              [false, true, true]
+            ];
+            
+            let remaining = skillCount - 4;
+            let currentRow = 2;
+            
+            while (remaining > 0 && currentRow < 5) {
+              if (currentRow % 2 === 0) {
+                layout.push([false, true, true].slice(0, Math.min(3, remaining)));
+              } else {
+                layout.push([true, true, false].slice(0, Math.min(3, remaining)));
+              }
+              remaining -= Math.min(3, remaining);
+              currentRow++;
+            }
         }
         break;
         
@@ -181,20 +305,21 @@ const TetrisBlock: React.FC<TetrisBlockProps> = ({ task }) => {
     }
     
     // Convert the layout to actual blocks
-    let blockIndex = 0;
+    let blockCount = 0;
     return (
       <div className={`tetris-shape ${shape}`}>
         {layout.map((row, rowIndex) => (
           <div key={rowIndex} className="tetris-row">
             {row.map((isVisible, colIndex) => {
-              if (isVisible && blockIndex < skillCount) {
-                const skillName = task.skills[blockIndex];
-                blockIndex++;
+              if (isVisible && blockCount < skillCount) {
+                const skillName = task.skills[blockCount];
+                blockCount++;
                 return (
                   <div 
                     key={colIndex}
                     className={`skill-block ${shape}`}
                     title={`${task.title} - ${skillName}`}
+                    style={{ '--index': blockCount } as React.CSSProperties}
                   />
                 );
               } else {
@@ -213,8 +338,12 @@ const TetrisBlock: React.FC<TetrisBlockProps> = ({ task }) => {
       style={style}
       {...attributes}
       {...listeners}
-      className={`tetris-block-container ${task.shape}`}
+      className={`tetris-block-container ${task.shape} ${isDragging ? 'is-dragging' : ''}`}
       title={task.title}
+      data-task-id={task.id}
+      data-shape={task.shape}
+      data-skill-count={task.skills.length}
+      onClick={handleClick}
     >
       {renderSkillBlocks()}
     </div>
