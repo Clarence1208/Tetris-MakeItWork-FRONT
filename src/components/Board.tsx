@@ -213,59 +213,73 @@ const calculateBlockPoints = (shape: TetrisShape, skillCount: number): Point[] =
 const initialTasks: Task[] = [
     {
         id: '1',
-        title: 'Create UI Components',
+        name: 'Create UI Components',
         skills: ['React', 'CSS', 'HTML'],
         shape: 'I' as TetrisShape,
         status: 'Todo' as KanbanStatus,
         blockPoints: [],
+        description: "Tests",
+        company: "Intern"
     },
     {
         id: '2',
-        title: 'Implement API',
+        name: 'Implement API',
         skills: ['Node.js', 'Express', 'MongoDB', 'REST'],
         shape: 'L' as TetrisShape,
         status: 'Todo' as KanbanStatus,
         blockPoints: [],
+        description: "Tests",
+        company: "Intern"
     },
     {
         id: '3',
-        title: 'Design Database',
+        name: 'Design Database',
         skills: ['MongoDB', 'Schema Design'],
         shape: 'T' as TetrisShape,
         status: 'InProgress' as KanbanStatus,
         blockPoints: [],
+        description: "Tests",
+        company: "Intern"
     },
     {
         id: '4',
-        title: 'Write Tests',
+        name: 'Write Tests',
         skills: ['Jest', 'Testing', 'Cypress', 'QA', 'Documentation'],
         shape: 'O' as TetrisShape,
         status: 'InProgress' as KanbanStatus,
         blockPoints: [],
+        description: "Tests",
+        company: "Intern"
     },
     {
         id: '5',
-        title: 'Deploy Application',
+        name: 'Deploy Application',
         skills: ['DevOps', 'AWS', 'CI/CD'],
         shape: 'Z' as TetrisShape,
         status: 'Done' as KanbanStatus,
         blockPoints: [],
+        description: "Tests",
+        company: "Intern"
     },
     {
         id: '6',
-        title: 'Security Review',
+        name: 'Security Review',
         skills: ['Auth', 'Encryption'],
         shape: 'J' as TetrisShape,
         status: 'Test' as KanbanStatus,
         blockPoints: [],
+        description: "Test",
+        company: "Tests"
     },
     {
         id: '7',
-        title: 'Performance Optimization',
+        name: 'Performance Optimization',
         skills: ['Webpack', 'Code Splitting', 'Lazy Loading', 'Caching'],
         shape: 'S' as TetrisShape,
         status: 'Test' as KanbanStatus,
         blockPoints: [],
+        description: "Test",
+        company: "Tests"
     },
 ].map(task => ({
     ...task,
