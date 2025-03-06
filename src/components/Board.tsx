@@ -215,9 +215,18 @@ const initialTasks: Task[] = [
         id: '1',
         title: 'Create UI Components',
         skills: [
-            { name: 'React', imageSrc: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1200px-React-icon.svg.png' },
-            { name: 'CSS', imageSrc: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/CSS3_logo_and_wordmark.svg/1200px-CSS3_logo_and_wordmark.svg.png' },
-            { name: 'HTML', imageSrc: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/HTML5_logo_and_wordmark.svg/1200px-HTML5_logo_and_wordmark.svg.png' }
+            {
+                name: 'React',
+                imageSrc: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1200px-React-icon.svg.png'
+            },
+            {
+                name: 'CSS',
+                imageSrc: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/CSS3_logo_and_wordmark.svg/1200px-CSS3_logo_and_wordmark.svg.png'
+            },
+            {
+                name: 'HTML',
+                imageSrc: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/HTML5_logo_and_wordmark.svg/1200px-HTML5_logo_and_wordmark.svg.png'
+            }
         ],
         shape: 'I' as TetrisShape,
         status: 'Todo' as KanbanStatus,
@@ -227,10 +236,19 @@ const initialTasks: Task[] = [
         id: '2',
         title: 'Implement API',
         skills: [
-            { name: 'Node.js', imageSrc: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Node.js_logo.svg/1200px-Node.js_logo.svg.png' },
-            { name: 'Express', imageSrc: 'https://upload.wikimedia.org/wikipedia/commons/6/64/Expressjs.png' },
-            { name: 'MongoDB', imageSrc: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/MongoDB_Logo.svg/1200px-MongoDB_Logo.svg.png' },
-            { name: 'REST', imageSrc: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTmJoxiAXVIxedd5WnxL3yepJpACK2lmCSl9w&s' }
+            {
+                name: 'Node.js',
+                imageSrc: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Node.js_logo.svg/1200px-Node.js_logo.svg.png'
+            },
+            {name: 'Express', imageSrc: 'https://upload.wikimedia.org/wikipedia/commons/6/64/Expressjs.png'},
+            {
+                name: 'MongoDB',
+                imageSrc: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/MongoDB_Logo.svg/1200px-MongoDB_Logo.svg.png'
+            },
+            {
+                name: 'REST',
+                imageSrc: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTmJoxiAXVIxedd5WnxL3yepJpACK2lmCSl9w&s'
+            }
         ],
         shape: 'L' as TetrisShape,
         status: 'Todo' as KanbanStatus,
@@ -240,8 +258,14 @@ const initialTasks: Task[] = [
         id: '3',
         title: 'Design Database',
         skills: [
-            { name: 'MongoDB', imageSrc: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/MongoDB_Logo.svg/1200px-MongoDB_Logo.svg.png' },
-            { name: 'Schema Design', imageSrc: 'https://www.shutterstock.com/image-vector/database-sign-icon-relational-schema-260nw-448158316.jpg' }
+            {
+                name: 'MongoDB',
+                imageSrc: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/MongoDB_Logo.svg/1200px-MongoDB_Logo.svg.png'
+            },
+            {
+                name: 'Schema Design',
+                imageSrc: 'https://www.shutterstock.com/image-vector/database-sign-icon-relational-schema-260nw-448158316.jpg'
+            }
         ],
         shape: 'T' as TetrisShape,
         status: 'InProgress' as KanbanStatus,
@@ -251,11 +275,20 @@ const initialTasks: Task[] = [
         id: '4',
         title: 'Write Tests',
         skills: [
-            { name: 'Jest', imageSrc: 'https://jestjs.io/img/jest.png' },
-            { name: 'Testing', imageSrc: 'https://d1csarkz8obe9u.cloudfront.net/posterpreviews/testing-logo-design-template-ce84480d61b3db9a8e1522a99875832f_screen.jpg?ts=1732644069' },
-            { name: 'Cypress', imageSrc: 'https://www.cypress.io/images/layouts/cypress-logo.svg' },
-            { name: 'QA', imageSrc: 'https://media.istockphoto.com/id/1073505842/fr/vectoriel/ic%C3%B4ne-de-question-r%C3%A9ponse-symbole-de-le-q-a.jpg?s=612x612&w=0&k=20&c=Dji2pjE49FRDHiQhYnOX4m9kN3IUrtfr0exXHqj0zZs=' },
-            { name: 'Documentation', imageSrc: 'https://static.vecteezy.com/system/resources/previews/006/986/082/non_2x/write-document-user-interface-outline-icon-logo-illustration-free-vector.jpg' }
+            {name: 'Jest', imageSrc: 'https://jestjs.io/img/jest.png'},
+            {
+                name: 'Testing',
+                imageSrc: 'https://d1csarkz8obe9u.cloudfront.net/posterpreviews/testing-logo-design-template-ce84480d61b3db9a8e1522a99875832f_screen.jpg?ts=1732644069'
+            },
+            {name: 'Cypress', imageSrc: 'https://www.cypress.io/images/layouts/cypress-logo.svg'},
+            {
+                name: 'QA',
+                imageSrc: 'https://media.istockphoto.com/id/1073505842/fr/vectoriel/ic%C3%B4ne-de-question-r%C3%A9ponse-symbole-de-le-q-a.jpg?s=612x612&w=0&k=20&c=Dji2pjE49FRDHiQhYnOX4m9kN3IUrtfr0exXHqj0zZs='
+            },
+            {
+                name: 'Documentation',
+                imageSrc: 'https://static.vecteezy.com/system/resources/previews/006/986/082/non_2x/write-document-user-interface-outline-icon-logo-illustration-free-vector.jpg'
+            }
         ],
         shape: 'O' as TetrisShape,
         status: 'InProgress' as KanbanStatus,
@@ -265,9 +298,18 @@ const initialTasks: Task[] = [
         id: '5',
         title: 'Deploy Application',
         skills: [
-            { name: 'DevOps', imageSrc: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Devops-toolchain.svg/1200px-Devops-toolchain.svg.png' },
-            { name: 'AWS', imageSrc: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Amazon_Web_Services_Logo.svg/1200px-Amazon_Web_Services_Logo.svg.png' },
-            { name: 'CI/CD', imageSrc: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Continuous_Integration_development_practice_diagram.svg/1200px-Continuous_Integration_development_practice_diagram.svg.png' }
+            {
+                name: 'DevOps',
+                imageSrc: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Devops-toolchain.svg/1200px-Devops-toolchain.svg.png'
+            },
+            {
+                name: 'AWS',
+                imageSrc: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Amazon_Web_Services_Logo.svg/1200px-Amazon_Web_Services_Logo.svg.png'
+            },
+            {
+                name: 'CI/CD',
+                imageSrc: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Continuous_Integration_development_practice_diagram.svg/1200px-Continuous_Integration_development_practice_diagram.svg.png'
+            }
         ],
         shape: 'Z' as TetrisShape,
         status: 'Done' as KanbanStatus,
@@ -277,8 +319,14 @@ const initialTasks: Task[] = [
         id: '6',
         title: 'Security Review',
         skills: [
-            { name: 'Auth', imageSrc: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Authentication.svg/1200px-Authentication.svg.png' },
-            { name: 'Encryption', imageSrc: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Encryption.svg/1200px-Encryption.svg.png' }
+            {
+                name: 'Auth',
+                imageSrc: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Authentication.svg/1200px-Authentication.svg.png'
+            },
+            {
+                name: 'Encryption',
+                imageSrc: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Encryption.svg/1200px-Encryption.svg.png'
+            }
         ],
         shape: 'J' as TetrisShape,
         status: 'Test' as KanbanStatus,
@@ -288,10 +336,19 @@ const initialTasks: Task[] = [
         id: '7',
         title: 'Performance Optimization',
         skills: [
-            { name: 'Webpack', imageSrc: 'https://webpack.js.org/icon-square-big.svg' },
-            { name: 'Code Splitting', imageSrc: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Code_split.svg/1200px-Code_split.svg.png' },
-            { name: 'Lazy Loading', imageSrc: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Lazy_loading_design_pattern.svg/1200px-Lazy_loading_design_pattern.svg.png' },
-            { name: 'Caching', imageSrc: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Cache_computing.svg/1200px-Cache_computing.svg.png' }
+            {name: 'Webpack', imageSrc: 'https://webpack.js.org/icon-square-big.svg'},
+            {
+                name: 'Code Splitting',
+                imageSrc: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Code_split.svg/1200px-Code_split.svg.png'
+            },
+            {
+                name: 'Lazy Loading',
+                imageSrc: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Lazy_loading_design_pattern.svg/1200px-Lazy_loading_design_pattern.svg.png'
+            },
+            {
+                name: 'Caching',
+                imageSrc: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Cache_computing.svg/1200px-Cache_computing.svg.png'
+            }
         ],
         shape: 'S' as TetrisShape,
         status: 'Test' as KanbanStatus,
@@ -592,16 +649,54 @@ const rotateBlockPoints = (points: Point[]): Point[] => {
     }));
 };
 
-const Board: React.FC = () => {
+// Function to check for completed rows in the "Done" category
+const checkCompletedRows = (grid: (string | null)[][]): number[] => {
+    const completedRows: number[] = [];
+
+    // Check each row in the Done category
+    for (let y = 11; y >= 9; y--) {
+        let isRowComplete = true;
+        // Check if all cells in this row are filled
+        for (let x = 0; x < GRID_WIDTH; x++) {
+            if (grid[y][x] === null) {
+                isRowComplete = false;
+                break;
+            }
+        }
+        if (isRowComplete) {
+            completedRows.push(y);
+        }
+    }
+
+    return completedRows;
+};
+
+const Board = (): React.ReactElement => {
     const [board, setBoard] = useState<KanbanBoard>(initialBoard);
     const [activeTask, setActiveTask] = useState<Task | null>(null);
+    const [showHiddenRows, setShowHiddenRows] = useState<boolean>(false);
+    const [completedRows, setCompletedRows] = useState<number[]>([]);
+    const [savedRowsContent, setSavedRowsContent] = useState<{
+        rowIndex: number;
+        cells: {
+            x: number;
+            taskId: string;
+            shape: TetrisShape;
+        }[];
+    }[]>([]);
+    const [removedBlocks, setRemovedBlocks] = useState<{
+        task: Task;
+        originalPosition: { x: number; y: number };
+        hiddenRowIndex: number;
+    }[]>([]);
     const gridRef = useRef<HTMLDivElement>(null);
 
-    // Configure sensors with activation constraints
+    const HIDDEN_ROWS_COUNT = 3;
+
     const sensors = useSensors(
         useSensor(PointerSensor, {
             activationConstraint: {
-                distance: 5, // 5px of movement required before drag starts
+                distance: 5,
             },
         })
     );
@@ -632,7 +727,6 @@ const Board: React.FC = () => {
     const handleDragEnd = (event: DragEndEvent) => {
         const {active, over} = event;
 
-        // Log details to help debug
         console.log('Drag End Event:', {
             activeId: active.id,
             overId: over?.id,
@@ -640,7 +734,6 @@ const Board: React.FC = () => {
         });
 
         if (over && typeof over.id === 'string' && over.id.startsWith('cell-')) {
-            // Expected id format: "cell-x-y"
             const parts = over.id.split('-');
             const x = parseInt(parts[1], 10);
             const y = parseInt(parts[2], 10);
@@ -657,7 +750,6 @@ const Board: React.FC = () => {
                     if (isPositionAvailable(board.grid, x, y, task)) {
                         moveTaskToPosition(taskId, x, y);
                     } else {
-                        // Try to find a nearby valid position
                         const emptyCell = findNearestEmptyCell(x, y, task);
                         if (emptyCell) {
                             moveTaskToPosition(taskId, emptyCell.x, emptyCell.y);
@@ -678,7 +770,638 @@ const Board: React.FC = () => {
         setActiveTask(null);
     };
 
-    // Updated moveTaskToPosition
+    // Function to toggle visibility of hidden rows
+    const toggleHiddenRows = (): void => {
+        setShowHiddenRows(prev => !prev);
+    };
+
+    const findTaskById = useCallback((taskId: string): Task | undefined => {
+        for (const column of board.columns) {
+            const task = column.tasks.find(t => t.id === taskId);
+            if (task) return {...task};
+        }
+        return undefined;
+    }, [board.columns]);
+
+    // Find the nearest empty cell to a given position
+    const findNearestEmptyCell = (startX: number, startY: number, task: Task): { x: number, y: number } | null => {
+        console.log('Finding nearest empty cell to position:', {startX, startY});
+        console.log('Task block points:', task.blockPoints);
+
+        // Create a queue for BFS
+        const queue: { x: number, y: number, distance: number }[] = [];
+        // Keep track of visited cells
+        const visited: Set<string> = new Set();
+
+        // Start with the original position
+        queue.push({x: startX, y: startY, distance: 0});
+        visited.add(`${startX},${startY}`);
+
+        // Direction vectors for nearby cells - prioritize cardinal directions first
+        const directions = [
+            {dx: 0, dy: -1},  // up
+            {dx: 1, dy: 0},   // right
+            {dx: 0, dy: 1},   // down
+            {dx: -1, dy: 0},  // left
+            {dx: 1, dy: -1},  // up-right
+            {dx: 1, dy: 1},   // down-right
+            {dx: -1, dy: 1},  // down-left
+            {dx: -1, dy: -1}, // up-left
+        ];
+
+        let rowRangeStart = 0, rowRangeEnd = GRID_HEIGHT;
+        if (startY < 3) {
+            rowRangeStart = 0;
+            rowRangeEnd = 3;
+        } else if (startY < 6) {
+            rowRangeStart = 3;
+            rowRangeEnd = 6;
+        } else if (startY < 9) {
+            rowRangeStart = 6;
+            rowRangeEnd = 9;
+        } else {
+            rowRangeStart = 9;
+            rowRangeEnd = 12;
+        }
+
+        if (
+            startX >= 0 && startX < GRID_WIDTH &&
+            startY >= rowRangeStart && startY < rowRangeEnd &&
+            isPositionAvailable(board.grid, startX, startY, task)
+        ) {
+            console.log(`Target position (${startX}, ${startY}) is valid for the entire block`);
+            return {x: startX, y: startY};
+        }
+
+        // Store candidate positions with their distances for later sorting
+        const candidates: { x: number, y: number, distance: number }[] = [];
+
+        // BFS to find the nearest valid position
+        while (queue.length > 0) {
+            const current = queue.shift();
+            if (!current) break;
+
+            const {x, y, distance} = current;
+
+            // Check if the entire block can fit at this position
+            if (
+                x >= 0 && x < GRID_WIDTH &&
+                y >= rowRangeStart && y < rowRangeEnd &&
+                isPositionAvailable(board.grid, x, y, task)
+            ) {
+                candidates.push({x, y, distance});
+
+                if (candidates.length >= 5 || distance > 2) {
+                    break;
+                }
+            }
+
+            if (distance > 5) {
+                console.warn('Search distance exceeded, using best candidate found');
+                break;
+            }
+
+            // Explore all directions
+            for (const {dx, dy} of directions) {
+                const newX = x + dx;
+                const newY = y + dy;
+                const key = `${newX},${newY}`;
+
+                // Only consider unvisited cells
+                if (!visited.has(key)) {
+                    visited.add(key);
+                    // Only explore cells that are in bounds
+                    if (
+                        newX >= 0 && newX < GRID_WIDTH &&
+                        newY >= rowRangeStart && newY < rowRangeEnd
+                    ) {
+                        queue.push({x: newX, y: newY, distance: distance + 1});
+                    }
+                }
+            }
+        }
+
+        if (candidates.length > 0) {
+            // Sort candidates by distance (closest first)
+            candidates.sort((a, b) => {
+                // First by BFS distance
+                if (a.distance !== b.distance) {
+                    return a.distance - b.distance;
+                }
+
+                // Then by Manhattan distance to the target (total blocks away)
+                const aManhattan = Math.abs(a.x - startX) + Math.abs(a.y - startY);
+                const bManhattan = Math.abs(b.x - startX) + Math.abs(b.y - startY);
+                return aManhattan - bManhattan;
+            });
+
+            const bestCandidate = candidates[0];
+            console.log(`Found best valid position at (${bestCandidate.x}, ${bestCandidate.y}) with distance ${bestCandidate.distance}`);
+            return {x: bestCandidate.x, y: bestCandidate.y};
+        }
+
+        console.error('No valid position found for the block');
+        return null;
+    };
+
+    // Modify renderTasks to show blocks correctly when hidden rows are visible
+    const renderTasks = () => {
+        const allTasks: Task[] = [];
+
+        // Collect all tasks with grid positions
+        board.columns.forEach(column => {
+            column.tasks.forEach(task => {
+                if (task.gridPosition) {
+                    allTasks.push({...task});
+                }
+            });
+        });
+
+        return (
+            <>
+                {allTasks.map(task => {
+                    if (!task.gridPosition) return null;
+
+                    const {x, y} = task.gridPosition;
+                    return (
+                        <div
+                            key={task.id}
+                            className="tetris-block-wrapper"
+                            style={{
+                                position: 'absolute',
+                                left: `${(x * CELL_SIZE) + 40}px`,
+                                top: `${y * CELL_SIZE}px`,
+                                zIndex: 10,
+                            }}
+                            data-task-id={task.id}
+                            onClick={(e) => handleClick(task.id, e)}
+                        >
+                            <TetrisBlock task={task}/>
+                        </div>
+                    );
+                })}
+            </>
+        );
+    };
+
+    // Add a component to render the hidden rows with saved blocks at the bottom of the Done category
+    const renderHiddenRows = () => {
+        if (!showHiddenRows) return null;
+
+        const hiddenRows = [];
+        // Calculate where to start hidden rows (right after the Done category)
+        const hiddenRowStartY = GRID_HEIGHT; // Regular grid height is 12
+
+        // Create hidden rows grid
+        for (let i = 0; i < HIDDEN_ROWS_COUNT; i++) {
+            const rowY = hiddenRowStartY + i;
+            const row = [];
+
+            for (let x = 0; x < GRID_WIDTH; x++) {
+                row.push(
+                    <div
+                        key={`hidden-cell-${x}-${rowY}`}
+                        className="tetris-cell hidden-row-cell"
+                        style={{
+                            width: `${CELL_SIZE}px`,
+                            height: `${CELL_SIZE}px`,
+                            border: '1px dashed rgba(255, 255, 255, 0.4)',
+                            backgroundColor: 'rgba(100, 100, 100, 0.2)'
+                        }}
+                        data-position={`${x},${rowY}`}
+                    />
+                );
+            }
+
+            hiddenRows.push(
+                <div
+                    key={`hidden-row-${rowY}`}
+                    className="tetris-grid-row hidden-row"
+                    style={{
+                        display: 'flex',
+                        position: 'absolute',
+                        left: '40px', // Account for the label width
+                        top: `${rowY * CELL_SIZE}px`,
+                        width: `${GRID_WIDTH * CELL_SIZE}px`,
+                        height: `${CELL_SIZE}px`,
+                    }}
+                >
+                    {row}
+                </div>
+            );
+        }
+
+        console.log('Saved rows content:', savedRowsContent);
+        console.log('Removed blocks:', removedBlocks);
+
+        // Create a map of tasks from all columns for quick lookup
+        const allTasks = new Map<string, Task>();
+        board.columns.forEach(column => {
+            column.tasks.forEach(task => {
+                allTasks.set(task.id, task);
+            });
+        });
+
+        // Render the saved completed rows in the hidden rows section
+        const savedRowBlocks: React.ReactNode[] = [];
+
+        // First, add cells from savedRowsContent
+        savedRowsContent.forEach((savedRow, rowIndex) => {
+            const hiddenRowY = GRID_HEIGHT + rowIndex;
+
+            // Group cells by task ID to recreate the original blocks
+            const taskGroups = new Map<string, { task: Task, cells: { x: number, shape: TetrisShape }[] }>();
+
+            // First pass - group cells by task ID
+            savedRow.cells.forEach(cell => {
+                // Get the original task if it exists, otherwise try to find it in allTasks
+                let originalTask = allTasks.get(cell.taskId);
+
+                // If the task is no longer in the board (fully removed), create a template task
+                if (!originalTask) {
+                    // Create a minimal task that matches the Task type
+                    originalTask = {
+                        id: cell.taskId,
+                        title: 'Completed Task',
+                        status: 'Done',
+                        shape: cell.shape,
+                        skills: [],
+                        blockPoints: []
+                    } as Task;
+                }
+
+                if (!taskGroups.has(cell.taskId)) {
+                    taskGroups.set(cell.taskId, {
+                        task: {...originalTask},
+                        cells: []
+                    });
+                }
+
+                taskGroups.get(cell.taskId)!.cells.push({
+                    x: cell.x,
+                    shape: cell.shape
+                });
+            });
+
+            // Find the leftmost x position for each group
+            taskGroups.forEach((taskGroup) => {
+                const sortedCellsX = [...taskGroup.cells].sort((a, b) => a.x - b.x);
+                if (sortedCellsX.length > 0) {
+                    const minX = sortedCellsX[0].x;
+                    taskGroup.cells.forEach(cell => {
+                        cell.x -= minX; // Normalize x positions
+                    });
+                }
+            });
+
+            // Second pass - create blocks for each task
+            taskGroups.forEach((taskData, taskId) => {
+                const minX = Math.min(...taskData.cells.map(c => c.x));
+                const posX = savedRow.cells.find(c => c.taskId === taskId)?.x || 0;
+                const posY = hiddenRowY;
+
+                // Create a copy of the original task with guaranteed position
+                const hiddenTask: Task = {
+                    ...taskData.task,
+                    id: `${taskId}-hidden-${savedRow.rowIndex}`,
+                    // Create block points from the cells
+                    blockPoints: taskData.cells.map(cell => ({
+                        x: cell.x,
+                        y: 0
+                    })),
+                    gridPosition: {
+                        x: posX,
+                        y: posY
+                    }
+                };
+
+                savedRowBlocks.push(
+                    <div
+                        key={hiddenTask.id}
+                        className="tetris-block-wrapper saved-row-block"
+                        style={{
+                            position: 'absolute',
+                            left: `${(posX * CELL_SIZE) + 40}px`,
+                            top: `${posY * CELL_SIZE}px`,
+                            zIndex: 10,
+                        }}
+                    >
+                        <TetrisBlock task={hiddenTask}/>
+                    </div>
+                );
+            });
+        });
+
+        // Second, add completely removed blocks directly
+        removedBlocks.forEach((removedBlock, index) => {
+            // Only display blocks that correspond to current hidden rows
+            if (removedBlock.hiddenRowIndex < HIDDEN_ROWS_COUNT) {
+                const hiddenRowY = GRID_HEIGHT + removedBlock.hiddenRowIndex;
+                const posX = removedBlock.originalPosition.x;
+                const posY = hiddenRowY;
+
+                // Create a copy of the removed task with position in hidden row
+                const hiddenTask: Task = {
+                    ...removedBlock.task,
+                    id: `removed-block-${index}`,
+                    gridPosition: {
+                        x: posX,
+                        y: posY
+                    }
+                };
+
+                savedRowBlocks.push(
+                    <div
+                        key={hiddenTask.id}
+                        className="tetris-block-wrapper removed-block"
+                        style={{
+                            position: 'absolute',
+                            left: `${(posX * CELL_SIZE) + 40}px`,
+                            top: `${posY * CELL_SIZE}px`,
+                            zIndex: 10,
+                            // Add a highlight effect to make these blocks stand out
+                            boxShadow: '0 0 10px rgba(255, 255, 0, 0.7)',
+                        }}
+                    >
+                        <TetrisBlock task={hiddenTask}/>
+                    </div>
+                );
+            }
+        });
+
+        // If we have no saved rows, add a message
+        const noSavedRowsMessage = (savedRowsContent.length === 0 && removedBlocks.length === 0) ? (
+            <div
+                style={{
+                    position: 'absolute',
+                    left: '50%',
+                    top: `${(GRID_HEIGHT + 1) * CELL_SIZE}px`,
+                    transform: 'translateX(-50%)',
+                    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                    color: 'white',
+                    padding: '10px',
+                    borderRadius: '5px',
+                    fontSize: '14px',
+                    zIndex: 15,
+                    textAlign: 'center',
+                    width: '80%',
+                }}
+            >
+                No completed rows have been cleared yet.<br/>
+                Complete a row in the Done category to see it here.
+            </div>
+        ) : null;
+
+        return (
+            <div
+                className="hidden-rows-container"
+                style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    pointerEvents: 'none' // Allow clicks to pass through
+                }}
+            >
+                <div
+                    className="hidden-rows-label"
+                    style={{
+                        position: 'absolute',
+                        left: '0',
+                        top: `${GRID_HEIGHT * CELL_SIZE}px`,
+                        height: `${HIDDEN_ROWS_COUNT * CELL_SIZE}px`,
+                        width: '40px',
+                        backgroundColor: 'rgba(100, 0, 100, 0.6)',
+                        color: 'white',
+                        writingMode: 'vertical-lr',
+                        transform: 'rotate(180deg)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontWeight: 'bold',
+                        fontSize: '0.9rem',
+                        borderRadius: '0 4px 4px 0',
+                    }}
+                >
+                    Cleared Rows
+                </div>
+                {hiddenRows}
+                {savedRowBlocks}
+                {noSavedRowsMessage}
+            </div>
+        );
+    };
+
+    // Add useEffect to check for completed rows whenever the grid changes
+    useEffect(() => {
+        const newCompletedRows = checkCompletedRows(board.grid);
+        if (newCompletedRows.length > 0) {
+            setCompletedRows(newCompletedRows);
+        }
+    }, [board.grid]);
+
+    // Update clearCompletedRows to save row data and track removed blocks
+    const clearCompletedRowsWithSave = (board: KanbanBoard, completedRows: number[]): KanbanBoard => {
+        if (completedRows.length === 0) return board;
+
+        console.log('Clearing completed rows:', completedRows);
+
+        // Create deep copies of columns and grid
+        const updatedColumns = board.columns.map(column => ({
+            ...column,
+            tasks: [...column.tasks]
+        }));
+        const updatedGrid = board.grid.map(row => [...row]);
+
+        // Get the Done column
+        const doneColumn = updatedColumns.find(col => col.id === 'Done');
+        if (!doneColumn) return board;
+
+        // Save the content of each completed row before clearing
+        const rowsToSave = completedRows.map(rowIndex => {
+            const rowContent: {
+                x: number;
+                taskId: string;
+                shape: TetrisShape;
+            }[] = [];
+
+            // For each cell in the row, record its content
+            for (let x = 0; x < GRID_WIDTH; x++) {
+                const taskId = updatedGrid[rowIndex][x];
+                if (taskId !== null) {
+                    // Find the task to get its shape
+                    const task = doneColumn.tasks.find(t => t.id === taskId);
+                    if (task) {
+                        rowContent.push({
+                            x,
+                            taskId,
+                            shape: task.shape
+                        });
+                    }
+                }
+            }
+
+            return {
+                rowIndex,
+                cells: rowContent
+            };
+        });
+
+        // Find blocks that are fully contained in the completed rows
+        const fullyRemovedBlocks: {
+            task: Task;
+            originalPosition: { x: number; y: number };
+            hiddenRowIndex: number;
+        }[] = [];
+
+        doneColumn.tasks.forEach(task => {
+            if (task.gridPosition) {
+                // Check if all of this task's points are in completed rows
+                const allPointsInCompletedRows = task.blockPoints.every(point => {
+                    const blockY = task.gridPosition!.y + point.y;
+                    return completedRows.includes(blockY);
+                });
+
+                if (allPointsInCompletedRows) {
+                    // Store info about this fully removed block
+                    const hiddenRowIndex = completedRows.indexOf(task.gridPosition.y +
+                        task.blockPoints[0].y); // Use first block point's row
+
+                    fullyRemovedBlocks.push({
+                        task: {...task},  // Clone to prevent reference issues
+                        originalPosition: {...task.gridPosition},
+                        hiddenRowIndex
+                    });
+
+                    console.log(`Task ${task.id} is fully contained in completed rows, adding to removed blocks`);
+                }
+            }
+        });
+
+        // Update removedBlocks state to include these newly removed blocks
+        setRemovedBlocks(prev => [...prev, ...fullyRemovedBlocks]);
+
+        // Store the saved rows for later display
+        setSavedRowsContent(rowsToSave);
+
+        // Process each completed row
+        for (let rowIndex of completedRows) {
+            // Find all tasks that have cells in this row
+            const tasksToModify = new Map<string, Task>();
+
+            // Collect all tasks that have cells in this row
+            for (let x = 0; x < GRID_WIDTH; x++) {
+                const taskId = updatedGrid[rowIndex][x];
+                if (taskId !== null) {
+                    // Find the task
+                    let task = doneColumn.tasks.find(t => t.id === taskId);
+                    if (task && !tasksToModify.has(taskId)) {
+                        tasksToModify.set(taskId, {...task});
+                    }
+
+                    // Clear the cell in the completed row
+                    updatedGrid[rowIndex][x] = null;
+                }
+            }
+
+            // For each affected task, remove the points that were in the completed row
+            // and update their position and shape
+            tasksToModify.forEach((task, taskId) => {
+                const originalPoints = [...task.blockPoints];
+
+                // Filter out points that were in the completed row
+                const remainingPoints = originalPoints.filter(point => {
+                    const blockY = task.gridPosition!.y + point.y;
+                    return blockY !== rowIndex;
+                });
+
+                if (remainingPoints.length === 0) {
+                    // If no points remain, remove the entire task
+                    doneColumn.tasks = doneColumn.tasks.filter(t => t.id !== taskId);
+                } else {
+                    // If points remain, update the task with the new points
+                    // Find the task in the column
+                    const taskIndex = doneColumn.tasks.findIndex(t => t.id === taskId);
+                    if (taskIndex !== -1) {
+                        // Remove the task from grid before updating
+                        originalPoints.forEach(point => {
+                            const blockX = task.gridPosition!.x + point.x;
+                            const blockY = task.gridPosition!.y + point.y;
+                            if (blockX >= 0 && blockX < GRID_WIDTH && blockY >= 0 && blockY < GRID_HEIGHT) {
+                                updatedGrid[blockY][blockX] = null;
+                            }
+                        });
+
+                        // Update the task with new points
+                        doneColumn.tasks[taskIndex] = {
+                            ...task,
+                            blockPoints: remainingPoints
+                        };
+
+                        // Place updated task back on grid
+                        remainingPoints.forEach(point => {
+                            const blockX = task.gridPosition!.x + point.x;
+                            const blockY = task.gridPosition!.y + point.y;
+                            if (blockX >= 0 && blockX < GRID_WIDTH && blockY >= 0 && blockY < GRID_HEIGHT) {
+                                updatedGrid[blockY][blockX] = taskId;
+                            }
+                        });
+                    }
+                }
+            });
+
+            // Shift all rows above the completed row down one row
+            for (let y = rowIndex; y > 9; y--) {
+                for (let x = 0; x < GRID_WIDTH; x++) {
+                    updatedGrid[y][x] = updatedGrid[y - 1][x];
+                }
+            }
+
+            // Create an empty row at the top of the Done section
+            for (let x = 0; x < GRID_WIDTH; x++) {
+                updatedGrid[9][x] = null;
+            }
+
+            // Update positions of all tasks in the Done section
+            doneColumn.tasks.forEach(task => {
+                if (task.gridPosition && task.gridPosition.y < rowIndex) {
+                    // This task is above the cleared row, so it needs to move down
+
+                    // Remove the task from its current position in the grid
+                    task.blockPoints.forEach(point => {
+                        const blockX = task.gridPosition!.x + point.x;
+                        const blockY = task.gridPosition!.y + point.y;
+                        if (blockX >= 0 && blockX < GRID_WIDTH && blockY >= 0 && blockY < GRID_HEIGHT) {
+                            updatedGrid[blockY][blockX] = null;
+                        }
+                    });
+
+                    // Move the task down
+                    task.gridPosition = {
+                        x: task.gridPosition.x,
+                        y: task.gridPosition.y + 1
+                    };
+
+                    // Place the task in its new position
+                    task.blockPoints.forEach(point => {
+                        const blockX = task.gridPosition!.x + point.x;
+                        const blockY = task.gridPosition!.y + point.y;
+                        if (blockX >= 0 && blockX < GRID_WIDTH && blockY >= 0 && blockY < GRID_HEIGHT) {
+                            updatedGrid[blockY][blockX] = task.id;
+                        }
+                    });
+                }
+            });
+        }
+
+        return {
+            columns: updatedColumns,
+            grid: updatedGrid
+        };
+    };
+
+    // Update moveTaskToPosition to use the new function
     const moveTaskToPosition = (taskId: string, x: number, y: number) => {
         console.log('===== MOVE TASK TO POSITION =====');
         console.log('Task ID:', taskId);
@@ -797,6 +1520,22 @@ const Board: React.FC = () => {
 
             printGrid(updatedGrid, 'After Moving Task');
 
+            // Check for completed rows in the Done category after a task is moved
+            const newCompletedRows = checkCompletedRows(updatedGrid);
+            if (newCompletedRows.length > 0) {
+                console.log('Found completed rows:', newCompletedRows);
+                // Track the completed rows
+                setCompletedRows(newCompletedRows);
+
+                // Clear completed rows and update board only if not showing hidden rows
+                if (!showHiddenRows) {
+                    return clearCompletedRowsWithSave({
+                        columns: updatedColumns,
+                        grid: updatedGrid
+                    }, newCompletedRows);
+                }
+            }
+
             return {
                 columns: updatedColumns,
                 grid: updatedGrid
@@ -804,7 +1543,7 @@ const Board: React.FC = () => {
         });
     };
 
-    // Add rotation handler
+    // Update handleBlockRotation to use the new function
     const handleBlockRotation = (taskId: string) => {
         console.log('=== ROTATING BLOCK ===');
         console.log('Task ID:', taskId);
@@ -895,181 +1634,25 @@ const Board: React.FC = () => {
                 });
             });
 
-            return {
+            const updatedBoard = {
                 columns: updatedColumns,
                 grid: updatedGrid
             };
+
+            const newCompletedRows = checkCompletedRows(updatedGrid);
+            if (newCompletedRows.length > 0) {
+                console.log('Found completed rows after rotation:', newCompletedRows);
+                // Track the completed rows
+                setCompletedRows(newCompletedRows);
+
+                // Clear completed rows and update board only if not showing hidden rows
+                if (!showHiddenRows) {
+                    return clearCompletedRowsWithSave(updatedBoard, newCompletedRows);
+                }
+            }
+
+            return updatedBoard;
         });
-    };
-
-    // Helper: find a task in board by id
-    const findTaskById = useCallback((taskId: string): Task | undefined => {
-        for (const column of board.columns) {
-            const task = column.tasks.find(t => t.id === taskId);
-            if (task) return {...task};
-        }
-        return undefined;
-    }, [board.columns]);
-
-    // Find the nearest empty cell to a given position
-    const findNearestEmptyCell = (startX: number, startY: number, task: Task): { x: number, y: number } | null => {
-        console.log('Finding nearest empty cell to position:', {startX, startY});
-        console.log('Task block points:', task.blockPoints);
-
-        // Create a queue for BFS
-        const queue: { x: number, y: number, distance: number }[] = [];
-        // Keep track of visited cells
-        const visited: Set<string> = new Set();
-
-        // Start with the original position
-        queue.push({x: startX, y: startY, distance: 0});
-        visited.add(`${startX},${startY}`);
-
-        // Direction vectors for nearby cells - prioritize cardinal directions first
-        const directions = [
-            {dx: 0, dy: -1},  // up
-            {dx: 1, dy: 0},   // right
-            {dx: 0, dy: 1},   // down
-            {dx: -1, dy: 0},  // left
-            {dx: 1, dy: -1},  // up-right
-            {dx: 1, dy: 1},   // down-right
-            {dx: -1, dy: 1},  // down-left
-            {dx: -1, dy: -1}, // up-left
-        ];
-
-        // Determine the valid row range based on the starting y position
-        let rowRangeStart = 0, rowRangeEnd = GRID_HEIGHT;
-        if (startY < 3) {
-            rowRangeStart = 0;
-            rowRangeEnd = 3;
-        } else if (startY < 6) {
-            rowRangeStart = 3;
-            rowRangeEnd = 6;
-        } else if (startY < 9) {
-            rowRangeStart = 6;
-            rowRangeEnd = 9;
-        } else {
-            rowRangeStart = 9;
-            rowRangeEnd = 12;
-        }
-
-        // First check if the target position itself is valid for the entire block
-        if (
-            startX >= 0 && startX < GRID_WIDTH &&
-            startY >= rowRangeStart && startY < rowRangeEnd &&
-            isPositionAvailable(board.grid, startX, startY, task)
-        ) {
-            console.log(`Target position (${startX}, ${startY}) is valid for the entire block`);
-            return {x: startX, y: startY};
-        }
-
-        // Store candidate positions with their distances for later sorting
-        const candidates: { x: number, y: number, distance: number }[] = [];
-
-        // BFS to find the nearest valid position
-        while (queue.length > 0) {
-            const current = queue.shift();
-            if (!current) break;
-
-            const {x, y, distance} = current;
-
-            // Check if the entire block can fit at this position
-            if (
-                x >= 0 && x < GRID_WIDTH &&
-                y >= rowRangeStart && y < rowRangeEnd &&
-                isPositionAvailable(board.grid, x, y, task)
-            ) {
-                // Add to candidates instead of returning immediately
-                candidates.push({x, y, distance});
-
-                // If we've found enough candidates or have checked enough cells, stop searching
-                if (candidates.length >= 5 || distance > 2) {
-                    break;
-                }
-            }
-
-            if (distance > 5) {
-                console.warn('Search distance exceeded, using best candidate found');
-                break;
-            }
-
-            // Explore all directions
-            for (const {dx, dy} of directions) {
-                const newX = x + dx;
-                const newY = y + dy;
-                const key = `${newX},${newY}`;
-
-                // Only consider unvisited cells
-                if (!visited.has(key)) {
-                    visited.add(key);
-                    // Only explore cells that are in bounds
-                    if (
-                        newX >= 0 && newX < GRID_WIDTH &&
-                        newY >= rowRangeStart && newY < rowRangeEnd
-                    ) {
-                        queue.push({x: newX, y: newY, distance: distance + 1});
-                    }
-                }
-            }
-        }
-
-        if (candidates.length > 0) {
-            // Sort candidates by distance (closest first) and Manhattan distance to target
-            candidates.sort((a, b) => {
-                // First by BFS distance
-                if (a.distance !== b.distance) {
-                    return a.distance - b.distance;
-                }
-
-                // Then by Manhattan distance to the target (total blocks away)
-                const aManhattan = Math.abs(a.x - startX) + Math.abs(a.y - startY);
-                const bManhattan = Math.abs(b.x - startX) + Math.abs(b.y - startY);
-                return aManhattan - bManhattan;
-            });
-
-            const bestCandidate = candidates[0];
-            console.log(`Found best valid position at (${bestCandidate.x}, ${bestCandidate.y}) with distance ${bestCandidate.distance}`);
-            return {x: bestCandidate.x, y: bestCandidate.y};
-        }
-
-        console.error('No valid position found for the block');
-        return null;
-    };
-
-    // Update renderTasks to use onClick instead of onDoubleClick
-    const renderTasks = () => {
-        const allTasks: Task[] = [];
-        board.columns.forEach(column => {
-            column.tasks.forEach(task => {
-                if (task.gridPosition) {
-                    allTasks.push({...task});
-                }
-            });
-        });
-        return (
-            <>
-                {allTasks.map(task => {
-                    if (!task.gridPosition) return null;
-                    const {x, y} = task.gridPosition;
-                    return (
-                        <div
-                            key={task.id}
-                            className="tetris-block-wrapper"
-                            style={{
-                                position: 'absolute',
-                                left: `${(x * CELL_SIZE) + 40}px`,
-                                top: `${y * CELL_SIZE}px`,
-                                zIndex: 10,
-                            }}
-                            data-task-id={task.id}
-                            onClick={(e) => handleClick(task.id, e)}
-                        >
-                            <TetrisBlock task={task}/>
-                        </div>
-                    );
-                })}
-            </>
-        );
     };
 
     return (
@@ -1080,23 +1663,51 @@ const Board: React.FC = () => {
         >
             <div className="container mx-auto p-4">
                 <h2 className="text-3xl font-bold mb-8 text-center">Tetris Kanban Board</h2>
-                <div className="tetris-board-container" ref={gridRef}>
+                <div
+                    className="tetris-board-container"
+                    ref={gridRef}
+                    style={{
+                        position: 'relative',
+                        height: showHiddenRows
+                            ? `${(GRID_HEIGHT + HIDDEN_ROWS_COUNT) * CELL_SIZE}px`
+                            : `${GRID_HEIGHT * CELL_SIZE}px`,
+                        transition: 'height 0.3s ease-in-out',
+                        marginBottom: '60px' // Add space for the button below
+                    }}
+                >
                     <TetrisGrid
                         width={GRID_WIDTH}
                         height={GRID_HEIGHT}
                         activeStatus={null}
                     />
+                    {renderHiddenRows()}
                     <div className="tetris-blocks-layer">
                         {renderTasks()}
                     </div>
-                    <div className="grid-debug-info">
-                        <button
-                            className="btn btn-sm btn-primary mt-4"
-                            onClick={() => setBoard(prev => synchronizeGridWithTasks(prev))}
-                        >
-                            Re-sync Grid and Tasks
-                        </button>
-                    </div>
+
+                    <button
+                        className="toggle-hidden-rows-button"
+                        onClick={toggleHiddenRows}
+                        style={{
+                            position: 'absolute',
+                            bottom: showHiddenRows ?
+                                `-50px` :
+                                `-50px`,
+                            left: '150px',
+                            padding: '8px 16px',
+                            backgroundColor: showHiddenRows ? 'rgba(100, 0, 100, 0.8)' : 'rgba(70, 0, 70, 0.8)',
+                            color: 'white',
+                            border: 'none',
+                            borderRadius: '4px',
+                            fontWeight: 'bold',
+                            cursor: 'pointer',
+                            transition: 'all 0.3s ease',
+                            boxShadow: '0 2px 5px rgba(0, 0, 0, 0.2)',
+                            zIndex: 20,
+                        }}
+                    >
+                        {showHiddenRows ? '▲ Hide Completed Rows' : '▼ Show Completed Rows'}
+                    </button>
                 </div>
                 <DragOverlay>
                     {activeTask ? (
