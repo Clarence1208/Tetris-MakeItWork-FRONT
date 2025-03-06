@@ -73,7 +73,6 @@ html, body {
   
   /* Bouton Demande aide */
   .btn-demande-aide {
-    background-color: #3498db;
     color: #fff;
     border: none;
     padding: 12px;
@@ -81,9 +80,6 @@ html, body {
     cursor: pointer;
     align-self: flex-start; /* Reste en haut */
     width: 150px; /* Largeur fixe (optionnel) */
-  }
-  .btn-demande-aide:hover {
-    background-color: #2980b9;
   }
   
   /* Compétences (bloc vertical) */
@@ -102,7 +98,6 @@ html, body {
     margin: 20px 0;
   }
   .btn-clear {
-    background-color: #e74c3c;
     color: #fff;
     border: none;
     padding: 10px 15px;
