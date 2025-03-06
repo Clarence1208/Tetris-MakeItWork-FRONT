@@ -35,4 +35,9 @@ export interface KanbanColumn {
 export interface KanbanBoard {
   columns: KanbanColumn[];
   grid: (string | null)[][];
-} 
+}
+
+export type User = {
+  id: string;
+  name: string;
+}

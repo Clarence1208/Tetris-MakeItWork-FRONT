@@ -1,12 +1,7 @@
-import {Task} from "../../types.ts";
+import {Task, User} from "../../types.ts";
 import {useEffect, useState} from "react";
 import CustomError from "../CustomError.tsx";
 import Cookies from "js-cookie";
-
-type User = {
-    id: string;
-    name: string;
-}
 
 type NotificationResponse = {
     "id": string,
