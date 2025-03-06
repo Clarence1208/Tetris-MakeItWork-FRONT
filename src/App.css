@@ -3,10 +3,18 @@
 
 #root {
   margin: 0 auto;
+    padding: 0;
   height: 100vh;
   width: 100vw;
+  color: black;
+}
+body {
+  color: black;
 }
 
+a {
+  color: inherit;
+}
 .logo {
   height: 6em;
   padding: 1.5em;
@@ -39,6 +47,3 @@
   padding: 2em;
 }
 
-.read-the-docs {
-  color: #888;
-}
