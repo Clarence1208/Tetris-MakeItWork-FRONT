@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {useSortable} from '@dnd-kit/sortable';
 import {CSS} from '@dnd-kit/utilities';
-import {Task} from '../types';
+import {Task, Point} from '../types';
 import './TetrisBlock.css';
 
 interface TetrisBlockProps {
@@ -34,6 +34,19 @@ const TetrisBlock: React.FC<TetrisBlockProps> = ({task}) => {
     const style = {
         transform: CSS.Transform.toString(transform),
         transition,
+    };
+
+    // Calculate block points based on the layout
+    const calculateBlockPoints = (layout: boolean[][]): Point[] => {
+        const points: Point[] = [];
+        layout.forEach((row, rowIndex) => {
+            row.forEach((isVisible, colIndex) => {
+                if (isVisible) {
+                    points.push({ x: colIndex, y: rowIndex });
+                }
+            });
+        });
+        return points;
     };
 
     // Generate blocks based on the shape and number of skills
@@ -296,6 +309,9 @@ const TetrisBlock: React.FC<TetrisBlockProps> = ({task}) => {
                 layout = [Array(skillCount).fill(true)];
         }
 
+        // Calculate and update block points
+        task.blockPoints = calculateBlockPoints(layout);
+
         // Convert the layout to actual blocks
         let blockCount = 0;
         return (
@@ -312,6 +328,7 @@ const TetrisBlock: React.FC<TetrisBlockProps> = ({task}) => {
                                         className={`skill-block ${shape}`}
                                         title={`${task.title} - ${skillName}`}
                                         style={{'--index': blockCount} as React.CSSProperties}
+                                        data-point={`${colIndex},${rowIndex}`}
                                     />
                                 );
                             } else {

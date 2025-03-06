@@ -19,6 +19,7 @@ const initialTasks: Task[] = [
         skills: ['React', 'CSS', 'HTML'],
         shape: 'I',
         status: 'Todo',
+        blockPoints: [],
     },
     {
         id: '2',
@@ -26,6 +27,7 @@ const initialTasks: Task[] = [
         skills: ['Node.js', 'Express', 'MongoDB', 'REST'],
         shape: 'L',
         status: 'Todo',
+        blockPoints: [],
     },
     {
         id: '3',
@@ -33,6 +35,7 @@ const initialTasks: Task[] = [
         skills: ['MongoDB', 'Schema Design'],
         shape: 'T',
         status: 'InProgress',
+        blockPoints: [],
     },
     {
         id: '4',
@@ -40,6 +43,7 @@ const initialTasks: Task[] = [
         skills: ['Jest', 'Testing', 'Cypress', 'QA', 'Documentation'],
         shape: 'O',
         status: 'InProgress',
+        blockPoints: [],
     },
     {
         id: '5',
@@ -47,6 +51,7 @@ const initialTasks: Task[] = [
         skills: ['DevOps', 'AWS', 'CI/CD'],
         shape: 'Z',
         status: 'Done',
+        blockPoints: [],
     },
     {
         id: '6',
@@ -54,6 +59,7 @@ const initialTasks: Task[] = [
         skills: ['Auth', 'Encryption'],
         shape: 'J',
         status: 'Test',
+        blockPoints: [],
     },
     {
         id: '7',
@@ -61,6 +67,7 @@ const initialTasks: Task[] = [
         skills: ['Webpack', 'Code Splitting', 'Lazy Loading', 'Caching'],
         shape: 'S',
         status: 'Test',
+        blockPoints: [],
     },
 ];
 
@@ -112,6 +119,57 @@ const initialBoard: KanbanBoard = {
     grid: createEmptyGrid(),
 };
 
+// Helper function to check if a position and its surrounding area is available
+const isPositionAvailable = (grid: (string | null)[][], x: number, y: number, task?: Task): boolean => {
+    if (!task) {
+        // Check single position (used for finding available spaces)
+        if (grid[y][x] !== null) return false;
+
+        // For better spacing, check adjacent cells to avoid blocks being too close
+        const directions = [
+            {dx: -1, dy: 0}, // left
+            {dx: 1, dy: 0},  // right
+            {dx: 0, dy: -1}, // up
+            {dx: 0, dy: 1},  // down
+        ];
+
+        let adjacentOccupied = 0;
+
+        for (const {dx, dy} of directions) {
+            const newX = x + dx;
+            const newY = y + dy;
+
+            if (
+                newX >= 0 && newX < GRID_WIDTH &&
+                newY >= 0 && newY < GRID_HEIGHT &&
+                grid[newY][newX] !== null
+            ) {
+                adjacentOccupied++;
+            }
+        }
+
+        return adjacentOccupied <= 1;
+    }
+
+    // Check all points of the Tetris block
+    for (const point of task.blockPoints) {
+        const blockX = x + point.x;
+        const blockY = y + point.y;
+
+        // Check if any point is out of bounds
+        if (blockX < 0 || blockX >= GRID_WIDTH || blockY < 0 || blockY >= GRID_HEIGHT) {
+            return false;
+        }
+
+        // Check if any point is occupied
+        if (grid[blockY][blockX] !== null) {
+            return false;
+        }
+    }
+
+    return true;
+};
+
 // Improved synchronizeGridWithTasks function with better spacing
 const synchronizeGridWithTasks = (currentBoard: KanbanBoard): KanbanBoard => {
     console.log('===== SYNCHRONIZING GRID WITH TASKS =====');
@@ -128,17 +186,17 @@ const synchronizeGridWithTasks = (currentBoard: KanbanBoard): KanbanBoard => {
             if (task.gridPosition) {
                 const {x, y} = task.gridPosition;
 
-                // Verify position is within bounds
-                if (x >= 0 && x < GRID_WIDTH && y >= 0 && y < GRID_HEIGHT && !isNaN(x) && !isNaN(y) && isPositionAvailable(newGrid, x, y)) {
-                    // Check if position is already occupied
-                    if (newGrid[y][x] === null) {
-                        newGrid[y][x] = task.id;
-                        placedTasks.add(task.id);
-                    } else {
-                        console.warn(`Position (${x}, ${y}) already occupied by ${newGrid[y][x]}, task ${task.id} needs relocation`);
-                    }
+                // Verify position is within bounds and all block points are available
+                if (isPositionAvailable(newGrid, x, y, task)) {
+                    // Place all blocks of the task
+                    task.blockPoints.forEach(point => {
+                        const blockX = x + point.x;
+                        const blockY = y + point.y;
+                        newGrid[blockY][blockX] = task.id;
+                    });
+                    placedTasks.add(task.id);
                 } else {
-                    console.warn(`Task ${task.id} has out-of-bounds position: (${x}, ${y})`);
+                    console.warn(`Task ${task.id} has invalid position or overlaps with other blocks`);
                 }
             }
         });
@@ -172,9 +230,14 @@ const synchronizeGridWithTasks = (currentBoard: KanbanBoard): KanbanBoard => {
                     if (x === 1) {
                         x = 3;
                     }
-                    // Check if current position and surrounding positions are available
-                    if (isPositionAvailable(newGrid, x, y)) {
-                        newGrid[y][x] = task.id;
+                    // Check if current position and all block points are available
+                    if (isPositionAvailable(newGrid, x, y, task)) {
+                        // Place all blocks of the task
+                        task.blockPoints.forEach(point => {
+                            const blockX = x + point.x;
+                            const blockY = y + point.y;
+                            newGrid[blockY][blockX] = task.id;
+                        });
                         task.gridPosition = {x, y};
                         placedTasks.add(task.id);
                         placed = true;
@@ -187,8 +250,13 @@ const synchronizeGridWithTasks = (currentBoard: KanbanBoard): KanbanBoard => {
             if (!placed) {
                 for (let y = rowRange.start; y < rowRange.end && !placed; y++) {
                     for (let x = 0; x < GRID_WIDTH && !placed; x++) {
-                        if (newGrid[y][x] === null) {
-                            newGrid[y][x] = task.id;
+                        if (isPositionAvailable(newGrid, x, y, task)) {
+                            // Place all blocks of the task
+                            task.blockPoints.forEach(point => {
+                                const blockX = x + point.x;
+                                const blockY = y + point.y;
+                                newGrid[blockY][blockX] = task.id;
+                            });
                             task.gridPosition = {x, y};
                             placedTasks.add(task.id);
                             placed = true;
@@ -222,42 +290,6 @@ const synchronizeGridWithTasks = (currentBoard: KanbanBoard): KanbanBoard => {
         columns: currentBoard.columns,
         grid: newGrid
     };
-};
-
-// Helper function to check if a position and its surrounding area is available
-const isPositionAvailable = (grid: (string | null)[][], x: number, y: number): boolean => {
-    // Check if the current position is occupied
-    if (grid[y][x] !== null) return false;
-
-    // For better spacing, check adjacent cells to avoid blocks being too close
-    // This creates visual separation between blocks
-    const directions = [
-        {dx: -1, dy: 0}, // left
-        {dx: 1, dy: 0},  // right
-        {dx: 0, dy: -1}, // up
-        {dx: 0, dy: 1},  // down
-    ];
-
-    // Only check immediately adjacent cells, don't be too strict with spacing
-    // This is to ensure we can still fit all blocks on the grid
-    let adjacentOccupied = 0;
-
-    for (const {dx, dy} of directions) {
-        const newX = x + dx;
-        const newY = y + dy;
-
-        if (
-            newX >= 0 && newX < GRID_WIDTH &&
-            newY >= 0 && newY < GRID_HEIGHT &&
-            grid[newY][newX] !== null
-        ) {
-            adjacentOccupied++;
-        }
-    }
-
-    // Allow the position if it has at most one adjacent neighbor
-    // This creates some separation while still allowing for compact layouts
-    return adjacentOccupied <= 1;
 };
 
 const Board: React.FC = () => {
@@ -434,31 +466,26 @@ const Board: React.FC = () => {
             console.log('Dropping on cell:', {x, y});
 
             // Check if this is a valid cell position
-            if (
-                !isNaN(x) && !isNaN(y) &&
-                x >= 0 && x < GRID_WIDTH &&
-                y >= 0 && y < GRID_HEIGHT
-            ) {
-                // get the block with the active id
-                const id = active.id as string;
-                const type = id.split('-')[0];
-                console.log('Active ID:', type);
+            if (x >= 0 && x < GRID_WIDTH && y >= 0 && y < GRID_HEIGHT) {
+                const taskId = active.id as string;
+                const task = findTaskById(taskId);
 
-                const task = initialTasks.find(
-                    (task) => task.id === type
-                );
-
-                console.log('Task shape:', task?.shape);
-
-
-                // get the type of block
-
-
-                // if (isPositionAvailable(board.grid, x, y)) {
-                //
-                // }
-
-                moveTaskToPosition(active.id as string, x, y);
+                if (task) {
+                    // Check if all block points would be within bounds and not overlapping
+                    if (isPositionAvailable(board.grid, x, y, task)) {
+                        moveTaskToPosition(taskId, x, y);
+                    } else {
+                        // Try to find a nearby valid position
+                        const emptyCell = findNearestEmptyCell(x, y);
+                        if (emptyCell) {
+                            moveTaskToPosition(taskId, emptyCell.x, emptyCell.y);
+                        } else {
+                            console.error('No valid position found for task:', taskId);
+                        }
+                    }
+                } else {
+                    console.error('Task not found:', taskId);
+                }
             } else {
                 console.error('Invalid cell position:', {x, y});
             }
@@ -493,7 +520,6 @@ const Board: React.FC = () => {
 
         if (!taskToMove) {
             console.error('🔴 Task not found for moving:', taskId);
-
             // Attempt grid recovery if task is missing
             setBoard(prev => synchronizeGridWithTasks(prev));
             return;
@@ -504,10 +530,7 @@ const Board: React.FC = () => {
         console.log('Original position in column:', taskIndex);
 
         // Store original position for logging
-        const originalPosition: {
-            x: number;
-            y: number
-        } | null = taskToMove.gridPosition ? {...taskToMove.gridPosition} : null;
+        const originalPosition = taskToMove.gridPosition ? {...taskToMove.gridPosition} : null;
         console.log('Original grid position:', originalPosition);
 
         // Determine which status this cell belongs to
@@ -524,87 +547,6 @@ const Board: React.FC = () => {
 
         console.log('New status:', newStatus);
 
-        // Check if the cell is already occupied by a different task
-        const occupyingTaskId = board.grid[y]?.[x];
-        console.log('Cell currently occupied by:', occupyingTaskId);
-
-        // Special case: If the task is already at this position, just update its status if needed
-        if (occupyingTaskId === taskId) {
-            console.log('Task is already at this position, just updating status if needed');
-
-            // Only update if the status is different
-            if (taskToMove.status !== newStatus) {
-                setBoard(prevBoard => {
-                    // Create deep copies of columns
-                    const updatedColumns = prevBoard.columns.map(column => ({
-                        ...column,
-                        tasks: [...column.tasks]
-                    }));
-
-                    // Find and remove the task from its current column
-                    let taskToUpdate: Task | undefined;
-                    updatedColumns.forEach(column => {
-                        const idx = column.tasks.findIndex(t => t.id === taskId);
-                        if (idx !== -1) {
-                            taskToUpdate = {...column.tasks[idx]};
-                            column.tasks.splice(idx, 1);
-                        }
-                    });
-
-                    if (!taskToUpdate) return prevBoard;
-
-                    // Update task status
-                    const updatedTask: Task = {
-                        ...taskToUpdate,
-                        status: newStatus
-                    };
-
-                    // Add to new column
-                    const newColumnIndex = updatedColumns.findIndex(col => col.id === newStatus);
-                    if (newColumnIndex >= 0) {
-                        updatedColumns[newColumnIndex].tasks.push(updatedTask);
-                    }
-
-                    return {
-                        columns: updatedColumns,
-                        grid: prevBoard.grid // Grid remains unchanged
-                    };
-                });
-
-                return; // Exit early
-            }
-
-            return; // No changes needed
-        }
-
-        // Only find a new position if the cell is occupied by a different task
-        if (occupyingTaskId !== null) {
-            console.log('Cell is occupied by different task, looking for nearby empty cell');
-
-            // Find a nearby empty cell
-            const emptyCell = findNearestEmptyCell(x, y);
-            if (emptyCell) {
-                console.log('Found empty cell at:', emptyCell);
-                x = emptyCell.x;
-                y = emptyCell.y;
-
-                // Re-determine the status based on the new y position
-                if (y < 3) {
-                    newStatus = 'Todo';
-                } else if (y < 6) {
-                    newStatus = 'InProgress';
-                } else if (y < 9) {
-                    newStatus = 'Test';
-                } else {
-                    newStatus = 'Done';
-                }
-                console.log('Updated status based on new position:', newStatus);
-            } else {
-                console.error('🔴 No empty cell found nearby, cannot move task');
-                return;
-            }
-        }
-
         // Important: Use functional update to prevent stale state and double updates
         setBoard(prevBoard => {
             console.log('Updating board state with single functional update');
@@ -615,68 +557,47 @@ const Board: React.FC = () => {
             }));
             const updatedGrid = prevBoard.grid.map(row => [...row]);
 
-            // 1. Remove the task from its old grid cell (if exists)
-            let localOriginalPosition: { x: number; y: number } | null = null;
-            updatedColumns.forEach(column => {
-                column.tasks.forEach(task => {
-                    if (task.id === taskId && task.gridPosition) {
-                        localOriginalPosition = {...task.gridPosition};
+            // 1. Remove the task from its old grid cells (if exists)
+            if (originalPosition) {
+                taskToMove.blockPoints.forEach(point => {
+                    const oldX = originalPosition.x + point.x;
+                    const oldY = originalPosition.y + point.y;
+                    if (oldX >= 0 && oldX < GRID_WIDTH && oldY >= 0 && oldY < GRID_HEIGHT) {
+                        updatedGrid[oldY][oldX] = null;
                     }
                 });
-            });
-            if (localOriginalPosition) {
-                const pos = localOriginalPosition as { x: number; y: number };
-                updatedGrid[pos.y][pos.x] = null;
-            } else {
-                console.warn(`⚠️ Task was not found at expected position`);
-                console.log('Task may have been moved from its original position');
             }
 
             // 2. Remove task from its original column
-            let taskToMove: Task | undefined;
-            let originalColumnId: KanbanStatus | undefined;
-            updatedColumns.forEach(column => {
-                const idx = column.tasks.findIndex(t => t.id === taskId);
-                if (idx !== -1) {
-                    taskToMove = {...column.tasks[idx]};
-                    originalColumnId = column.id;
-                    column.tasks.splice(idx, 1);
+            if (taskColumnId) {
+                const originalColumn = updatedColumns.find(col => col.id === taskColumnId);
+                if (originalColumn) {
+                    originalColumn.tasks = originalColumn.tasks.filter(t => t.id !== taskId);
+                }
+            }
+
+            // 3. Update task's position and status
+            taskToMove.gridPosition = {x, y};
+            taskToMove.status = newStatus;
+
+            // 4. Add task to new column
+            const newColumn = updatedColumns.find(col => col.id === newStatus);
+            if (newColumn) {
+                newColumn.tasks.push(taskToMove);
+            }
+
+            // 5. Place task in new grid cells
+            taskToMove.blockPoints.forEach(point => {
+                const newX = x + point.x;
+                const newY = y + point.y;
+                if (newX >= 0 && newX < GRID_WIDTH && newY >= 0 && newY < GRID_HEIGHT) {
+                    updatedGrid[newY][newX] = taskId;
                 }
             });
-            if (!taskToMove) return prevBoard;
-
-            // 3. Determine new status from the y coordinate
-            let newStatus: KanbanStatus = 'Todo';
-            if (y < 3) newStatus = 'Todo';
-            else if (y < 6) newStatus = 'InProgress';
-            else if (y < 9) newStatus = 'Test';
-            else newStatus = 'Done';
-
-            // 4. Update task with new grid position and status
-            const updatedTask: Task = {
-                ...taskToMove,
-                gridPosition: {x, y},
-                status: newStatus,
-            };
-
-            // 5. Add the updated task to its new column
-            const newColumnIndex = updatedColumns.findIndex(col => col.id === newStatus);
-            if (newColumnIndex >= 0) {
-                updatedColumns[newColumnIndex].tasks.push(updatedTask);
-            } else {
-                return prevBoard;
-            }
-
-            // 6. Place the task on the grid
-            if (y >= 0 && y < updatedGrid.length && x >= 0 && x < updatedGrid[y].length) {
-                updatedGrid[y][x] = taskId;
-            } else {
-                return prevBoard;
-            }
 
             return {
                 columns: updatedColumns,
-                grid: updatedGrid,
+                grid: updatedGrid
             };
         });
     };
