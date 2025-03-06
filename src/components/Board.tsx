@@ -1,6 +1,14 @@
 // Board.tsx
 import React, {useCallback, useEffect, useRef, useState} from 'react';
-import {DndContext, DragEndEvent, DragOverlay, DragStartEvent} from '@dnd-kit/core';
+import {
+    DndContext,
+    DragEndEvent,
+    DragOverlay,
+    DragStartEvent,
+    PointerSensor,
+    useSensor,
+    useSensors
+} from '@dnd-kit/core';
 import {KanbanBoard, KanbanColumn, KanbanStatus, Point, Task, TetrisShape} from '../types';
 import TetrisBlock from './TetrisBlock';
 import TetrisGrid from './TetrisGrid';
@@ -344,24 +352,32 @@ const isPositionAvailable = (grid: (string | null)[][], x: number, y: number, ta
         return adjacentOccupied <= 1;
     }
 
-    console.log('CHECKING position for task:', task.id);
+    console.log('=== CHECKING POSITION AVAILABILITY ===');
+    console.log('Task:', task.id);
+    console.log('Base position:', {x, y});
+    console.log('Block points:', task.blockPoints);
 
     // Check all points of the Tetris block
     for (const point of task.blockPoints) {
         const blockX = x + point.x;
         const blockY = y + point.y;
 
+        console.log('Checking block point:', {blockX, blockY});
+
         // Check if any point is out of bounds
         if (blockX < 0 || blockX >= GRID_WIDTH || blockY < 0 || blockY >= GRID_HEIGHT) {
+            console.log(`❌ Block point (${blockX}, ${blockY}) is out of bounds`);
             return false;
         }
 
-        // Check if any point is occupied
-        if (grid[blockY][blockX] !== null) {
+        // Check if any point is occupied by another task
+        if (grid[blockY][blockX] !== null && grid[blockY][blockX] !== task.id) {
+            console.log(`❌ Position (${blockX}, ${blockY}) is occupied by:`, grid[blockY][blockX]);
             return false;
         }
     }
 
+    console.log('✅ All positions are available');
     return true;
 };
 
@@ -504,151 +520,76 @@ const synchronizeGridWithTasks = (currentBoard: KanbanBoard): KanbanBoard => {
     };
 };
 
+// Helper function to rotate block points 90 degrees clockwise around center
+const rotateBlockPoints = (points: Point[]): Point[] => {
+    if (points.length === 0) return points;
+
+    // Find the bounding box
+    const minX = Math.min(...points.map(p => p.x));
+    const maxX = Math.max(...points.map(p => p.x));
+    const minY = Math.min(...points.map(p => p.y));
+    const maxY = Math.max(...points.map(p => p.y));
+
+    // Calculate center point (using floor to keep points on grid)
+    const centerX = Math.floor(minX + (maxX - minX) / 2);
+    const centerY = Math.floor(minY + (maxY - minY) / 2);
+
+    // Rotate each point 90 degrees clockwise around the center
+    const rotatedPoints = points.map(point => {
+        // Translate point to origin (relative to center)
+        const relX = point.x - centerX;
+        const relY = point.y - centerY;
+
+        // Rotate 90 degrees clockwise: (x,y) -> (y,-x)
+        const rotX = relY;
+        const rotY = -relX;
+
+        // Translate back
+        return {
+            x: rotX + centerX,
+            y: rotY + centerY
+        };
+    });
+
+    // Find the minimum coordinates after rotation to normalize position
+    const newMinX = Math.min(...rotatedPoints.map(p => p.x));
+    const newMinY = Math.min(...rotatedPoints.map(p => p.y));
+
+    // Normalize positions to ensure they start from a valid grid position
+    return rotatedPoints.map(point => ({
+        x: point.x - newMinX,
+        y: point.y - newMinY
+    }));
+};
+
 const Board: React.FC = () => {
     const [board, setBoard] = useState<KanbanBoard>(initialBoard);
     const [activeTask, setActiveTask] = useState<Task | null>(null);
     const gridRef = useRef<HTMLDivElement>(null);
+
+    // Configure sensors with activation constraints
+    const sensors = useSensors(
+        useSensor(PointerSensor, {
+            activationConstraint: {
+                distance: 5, // 5px of movement required before drag starts
+            },
+        })
+    );
 
     // Initialize task positions on first render
     useEffect(() => {
         setBoard(prev => synchronizeGridWithTasks(prev));
     }, []);
 
-    // Find the nearest empty cell to a given position
-    const findNearestEmptyCell = (startX: number, startY: number, task: Task): { x: number, y: number } | null => {
-        console.log('Finding nearest empty cell to position:', {startX, startY});
-        console.log('Task block points:', task.blockPoints);
-
-        // Create a queue for BFS
-        const queue: { x: number, y: number, distance: number }[] = [];
-        // Keep track of visited cells
-        const visited: Set<string> = new Set();
-
-        // Start with the original position
-        queue.push({x: startX, y: startY, distance: 0});
-        visited.add(`${startX},${startY}`);
-
-        // Direction vectors for nearby cells - prioritize cardinal directions first
-        const directions = [
-            {dx: 0, dy: -1},  // up
-            {dx: 1, dy: 0},   // right
-            {dx: 0, dy: 1},   // down
-            {dx: -1, dy: 0},  // left
-            {dx: 1, dy: -1},  // up-right
-            {dx: 1, dy: 1},   // down-right
-            {dx: -1, dy: 1},  // down-left
-            {dx: -1, dy: -1}, // up-left
-        ];
-
-        // Determine the valid row range based on the starting y position
-        let rowRangeStart = 0, rowRangeEnd = GRID_HEIGHT;
-        if (startY < 3) {
-            rowRangeStart = 0;
-            rowRangeEnd = 3;
-        } else if (startY < 6) {
-            rowRangeStart = 3;
-            rowRangeEnd = 6;
-        } else if (startY < 9) {
-            rowRangeStart = 6;
-            rowRangeEnd = 9;
-        } else {
-            rowRangeStart = 9;
-            rowRangeEnd = 12;
+    // Handle click for rotation
+    const handleClick = (taskId: string, event: React.MouseEvent) => {
+        if (event.shiftKey) {
+            event.preventDefault();
+            handleBlockRotation(taskId);
         }
-
-        // First check if the target position itself is valid for the entire block
-        if (
-            startX >= 0 && startX < GRID_WIDTH &&
-            startY >= rowRangeStart && startY < rowRangeEnd &&
-            isPositionAvailable(board.grid, startX, startY, task)
-        ) {
-            console.log(`Target position (${startX}, ${startY}) is valid for the entire block`);
-            return {x: startX, y: startY};
-        }
-
-        // Store candidate positions with their distances for later sorting
-        const candidates: { x: number, y: number, distance: number }[] = [];
-
-        // BFS to find the nearest valid position
-        while (queue.length > 0) {
-            const current = queue.shift();
-            if (!current) break;
-
-            const {x, y, distance} = current;
-
-            // Check if the entire block can fit at this position
-            if (
-                x >= 0 && x < GRID_WIDTH &&
-                y >= rowRangeStart && y < rowRangeEnd &&
-                isPositionAvailable(board.grid, x, y, task)
-            ) {
-                // Add to candidates instead of returning immediately
-                candidates.push({x, y, distance});
-
-                // If we've found enough candidates or have checked enough cells, stop searching
-                if (candidates.length >= 5 || distance > 2) {
-                    break;
-                }
-            }
-
-            if (distance > 5) {
-                console.warn('Search distance exceeded, using best candidate found');
-                break;
-            }
-
-            // Explore all directions
-            for (const {dx, dy} of directions) {
-                const newX = x + dx;
-                const newY = y + dy;
-                const key = `${newX},${newY}`;
-
-                // Only consider unvisited cells
-                if (!visited.has(key)) {
-                    visited.add(key);
-                    // Only explore cells that are in bounds
-                    if (
-                        newX >= 0 && newX < GRID_WIDTH &&
-                        newY >= rowRangeStart && newY < rowRangeEnd
-                    ) {
-                        queue.push({x: newX, y: newY, distance: distance + 1});
-                    }
-                }
-            }
-        }
-
-        if (candidates.length > 0) {
-            // Sort candidates by distance (closest first) and Manhattan distance to target
-            candidates.sort((a, b) => {
-                // First by BFS distance
-                if (a.distance !== b.distance) {
-                    return a.distance - b.distance;
-                }
-
-                // Then by Manhattan distance to the target (total blocks away)
-                const aManhattan = Math.abs(a.x - startX) + Math.abs(a.y - startY);
-                const bManhattan = Math.abs(b.x - startX) + Math.abs(b.y - startY);
-                return aManhattan - bManhattan;
-            });
-
-            const bestCandidate = candidates[0];
-            console.log(`Found best valid position at (${bestCandidate.x}, ${bestCandidate.y}) with distance ${bestCandidate.distance}`);
-            return {x: bestCandidate.x, y: bestCandidate.y};
-        }
-
-        console.error('No valid position found for the block');
-        return null;
     };
 
-    // Helper: find a task in board by id
-    const findTaskById = useCallback((taskId: string): Task | undefined => {
-        for (const column of board.columns) {
-            const task = column.tasks.find(t => t.id === taskId);
-            if (task) return {...task};
-        }
-        return undefined;
-    }, [board.columns]);
-
-    // DndContext callback: on drag start, set active task.
+    // Update DndContext callback to check for prevented drag
     const handleDragStart = (event: DragStartEvent) => {
         const {active} = event;
         const task = findTaskById(active.id as string);
@@ -833,7 +774,239 @@ const Board: React.FC = () => {
         });
     };
 
-    // Render all tasks by their grid positions
+    // Add rotation handler
+    const handleBlockRotation = (taskId: string) => {
+        console.log('=== ROTATING BLOCK ===');
+        console.log('Task ID:', taskId);
+
+        setBoard(prevBoard => {
+            // Find the task
+            let taskToRotate: Task | undefined;
+            let taskColumn: KanbanColumn | undefined;
+
+            for (const column of prevBoard.columns) {
+                const task = column.tasks.find(t => t.id === taskId);
+                if (task) {
+                    taskToRotate = task;
+                    taskColumn = column;
+                    break;
+                }
+            }
+
+            if (!taskToRotate || !taskToRotate.gridPosition) {
+                console.error('Task not found or has no position:', taskId);
+                return prevBoard;
+            }
+
+            console.log('Current position:', taskToRotate.gridPosition);
+            console.log('Current block points:', taskToRotate.blockPoints);
+
+            // Calculate new rotated points
+            const rotatedPoints = rotateBlockPoints(taskToRotate.blockPoints);
+            console.log('Rotated block points:', rotatedPoints);
+
+            // Print current grid state around the task
+            const {x, y} = taskToRotate.gridPosition;
+            console.log('Current grid state around rotation point:');
+            for (let dy = -2; dy <= 2; dy++) {
+                let row = '';
+                for (let dx = -2; dx <= 2; dx++) {
+                    const checkX = x + dx;
+                    const checkY = y + dy;
+                    if (checkX >= 0 && checkX < GRID_WIDTH && checkY >= 0 && checkY < GRID_HEIGHT) {
+                        row += (prevBoard.grid[checkY][checkX] || '---') + ' ';
+                    } else {
+                        row += 'OOB ';
+                    }
+                }
+                console.log(row);
+            }
+
+            // Check if the rotated position would be valid
+            if (!isPositionAvailable(prevBoard.grid, taskToRotate.gridPosition.x, taskToRotate.gridPosition.y, {
+                ...taskToRotate,
+                blockPoints: rotatedPoints
+            })) {
+                console.log('❌ Cannot rotate - position would be invalid');
+                return prevBoard;
+            }
+
+            console.log('✅ Rotation is valid, applying changes');
+
+            // Create new board state
+            const updatedColumns = prevBoard.columns.map(column => ({
+                ...column,
+                tasks: column.tasks.map(task => {
+                    if (task.id === taskId) {
+                        return {
+                            ...task,
+                            blockPoints: rotatedPoints
+                        };
+                    }
+                    return task;
+                })
+            }));
+
+            // Update grid
+            const updatedGrid = createEmptyGrid();
+
+            // Reapply all tasks to the grid
+            updatedColumns.forEach(column => {
+                column.tasks.forEach(task => {
+                    if (task.gridPosition) {
+                        task.blockPoints.forEach(point => {
+                            const x = task.gridPosition!.x + point.x;
+                            const y = task.gridPosition!.y + point.y;
+                            if (x >= 0 && x < GRID_WIDTH && y >= 0 && y < GRID_HEIGHT) {
+                                updatedGrid[y][x] = task.id;
+                            }
+                        });
+                    }
+                });
+            });
+
+            return {
+                columns: updatedColumns,
+                grid: updatedGrid
+            };
+        });
+    };
+
+    // Helper: find a task in board by id
+    const findTaskById = useCallback((taskId: string): Task | undefined => {
+        for (const column of board.columns) {
+            const task = column.tasks.find(t => t.id === taskId);
+            if (task) return {...task};
+        }
+        return undefined;
+    }, [board.columns]);
+
+    // Find the nearest empty cell to a given position
+    const findNearestEmptyCell = (startX: number, startY: number, task: Task): { x: number, y: number } | null => {
+        console.log('Finding nearest empty cell to position:', {startX, startY});
+        console.log('Task block points:', task.blockPoints);
+
+        // Create a queue for BFS
+        const queue: { x: number, y: number, distance: number }[] = [];
+        // Keep track of visited cells
+        const visited: Set<string> = new Set();
+
+        // Start with the original position
+        queue.push({x: startX, y: startY, distance: 0});
+        visited.add(`${startX},${startY}`);
+
+        // Direction vectors for nearby cells - prioritize cardinal directions first
+        const directions = [
+            {dx: 0, dy: -1},  // up
+            {dx: 1, dy: 0},   // right
+            {dx: 0, dy: 1},   // down
+            {dx: -1, dy: 0},  // left
+            {dx: 1, dy: -1},  // up-right
+            {dx: 1, dy: 1},   // down-right
+            {dx: -1, dy: 1},  // down-left
+            {dx: -1, dy: -1}, // up-left
+        ];
+
+        // Determine the valid row range based on the starting y position
+        let rowRangeStart = 0, rowRangeEnd = GRID_HEIGHT;
+        if (startY < 3) {
+            rowRangeStart = 0;
+            rowRangeEnd = 3;
+        } else if (startY < 6) {
+            rowRangeStart = 3;
+            rowRangeEnd = 6;
+        } else if (startY < 9) {
+            rowRangeStart = 6;
+            rowRangeEnd = 9;
+        } else {
+            rowRangeStart = 9;
+            rowRangeEnd = 12;
+        }
+
+        // First check if the target position itself is valid for the entire block
+        if (
+            startX >= 0 && startX < GRID_WIDTH &&
+            startY >= rowRangeStart && startY < rowRangeEnd &&
+            isPositionAvailable(board.grid, startX, startY, task)
+        ) {
+            console.log(`Target position (${startX}, ${startY}) is valid for the entire block`);
+            return {x: startX, y: startY};
+        }
+
+        // Store candidate positions with their distances for later sorting
+        const candidates: { x: number, y: number, distance: number }[] = [];
+
+        // BFS to find the nearest valid position
+        while (queue.length > 0) {
+            const current = queue.shift();
+            if (!current) break;
+
+            const {x, y, distance} = current;
+
+            // Check if the entire block can fit at this position
+            if (
+                x >= 0 && x < GRID_WIDTH &&
+                y >= rowRangeStart && y < rowRangeEnd &&
+                isPositionAvailable(board.grid, x, y, task)
+            ) {
+                // Add to candidates instead of returning immediately
+                candidates.push({x, y, distance});
+
+                // If we've found enough candidates or have checked enough cells, stop searching
+                if (candidates.length >= 5 || distance > 2) {
+                    break;
+                }
+            }
+
+            if (distance > 5) {
+                console.warn('Search distance exceeded, using best candidate found');
+                break;
+            }
+
+            // Explore all directions
+            for (const {dx, dy} of directions) {
+                const newX = x + dx;
+                const newY = y + dy;
+                const key = `${newX},${newY}`;
+
+                // Only consider unvisited cells
+                if (!visited.has(key)) {
+                    visited.add(key);
+                    // Only explore cells that are in bounds
+                    if (
+                        newX >= 0 && newX < GRID_WIDTH &&
+                        newY >= rowRangeStart && newY < rowRangeEnd
+                    ) {
+                        queue.push({x: newX, y: newY, distance: distance + 1});
+                    }
+                }
+            }
+        }
+
+        if (candidates.length > 0) {
+            // Sort candidates by distance (closest first) and Manhattan distance to target
+            candidates.sort((a, b) => {
+                // First by BFS distance
+                if (a.distance !== b.distance) {
+                    return a.distance - b.distance;
+                }
+
+                // Then by Manhattan distance to the target (total blocks away)
+                const aManhattan = Math.abs(a.x - startX) + Math.abs(a.y - startY);
+                const bManhattan = Math.abs(b.x - startX) + Math.abs(b.y - startY);
+                return aManhattan - bManhattan;
+            });
+
+            const bestCandidate = candidates[0];
+            console.log(`Found best valid position at (${bestCandidate.x}, ${bestCandidate.y}) with distance ${bestCandidate.distance}`);
+            return {x: bestCandidate.x, y: bestCandidate.y};
+        }
+
+        console.error('No valid position found for the block');
+        return null;
+    };
+
+    // Update renderTasks to use onClick instead of onDoubleClick
     const renderTasks = () => {
         const allTasks: Task[] = [];
         board.columns.forEach(column => {
@@ -854,11 +1027,12 @@ const Board: React.FC = () => {
                             className="tetris-block-wrapper"
                             style={{
                                 position: 'absolute',
-                                left: `${(x * CELL_SIZE) + 40}px`, // Add 40px offset for the labels
+                                left: `${(x * CELL_SIZE) + 40}px`,
                                 top: `${y * CELL_SIZE}px`,
                                 zIndex: 10,
                             }}
                             data-task-id={task.id}
+                            onClick={(e) => handleClick(task.id, e)}
                         >
                             <TetrisBlock task={task}/>
                         </div>
@@ -869,14 +1043,18 @@ const Board: React.FC = () => {
     };
 
     return (
-        <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
+        <DndContext
+            sensors={sensors}
+            onDragStart={handleDragStart}
+            onDragEnd={handleDragEnd}
+        >
             <div className="container mx-auto p-4">
                 <h2 className="text-3xl font-bold mb-8 text-center">Tetris Kanban Board</h2>
                 <div className="tetris-board-container" ref={gridRef}>
                     <TetrisGrid
                         width={GRID_WIDTH}
                         height={GRID_HEIGHT}
-                        activeStatus={null} // (optional – you may update this as needed)
+                        activeStatus={null}
                     />
                     <div className="tetris-blocks-layer">
                         {renderTasks()}
