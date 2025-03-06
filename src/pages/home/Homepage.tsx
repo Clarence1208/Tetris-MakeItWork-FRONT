@@ -4,6 +4,7 @@ import NotificationsList, {FlagNotification} from "../../components/Notification
 import CustomError from "../../components/CustomError.tsx";
 import ErrorBoundary from "../../components/ErrorBoundary.tsx";
 import Board from "../../components/Board.tsx";
+import BlockForm from "../../components/blockForm/BlockForm.tsx";
 
 const initFlagNotifications = {
   id: 2,
@@ -59,17 +60,13 @@ function Homepage() {
                         <div className="board-row">
                             <div className="tetris-board">
                                 <ErrorBoundary>
-                                    <Board/>
+                                    <Board />
                                 </ErrorBoundary>
                             </div>
 
-                            {/* Colonne verticale : bouton Demande aide en haut, Compétences en bas */}
-                            <div className="vertical-col">
-                                <button className="btn-demande-aide">Demande aide</button>
-                                <div className="competences">
-                                    <h3>Compétences</h3>
-                                    <p>Informations sur les compétences...</p>
-                                </div>
+                            {/* Formulaire à droite */}
+                            <div className="block-form-container">
+                                <BlockForm />
                             </div>
                         </div>
 

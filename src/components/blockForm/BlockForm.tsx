@@ -1,5 +1,5 @@
 import './BlockForm.css'
-import {ChangeEvent, useState} from "react";
+import {ChangeEvent, FormEvent, useState} from "react";
 import CustomError from "../CustomError.tsx";
 
 
@@ -7,7 +7,7 @@ type TaskFormData = {
     name: string;
     description: string;
     company: string;
-    skills: String[];
+    skills: string[];
 }
 type Skill = {
     id: number;
@@ -69,7 +69,7 @@ export default function  BlockForm() {
         console.log(taskFormData);
     }
 
-    async function handleSubmitTaskForm(event){
+    async function handleSubmitTaskForm(event: FormEvent){
         event.preventDefault();
             try {
                 // Call the API to create the card

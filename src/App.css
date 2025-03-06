@@ -6,6 +6,10 @@
   padding: 0;
   height: 100vh;
   width: 100vw;
+  color: black;
+}
+body {
+  color: black;
 }
 
 a {
@@ -44,6 +48,3 @@ a {
   padding: 2em;
 }
 
-.read-the-docs {
-  color: #888;
-}
