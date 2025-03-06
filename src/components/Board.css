@@ -1,0 +1,83 @@
+.tetris-board-container {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.tetris-blocks-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.tetris-block-wrapper {
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  pointer-events: auto;
+  transform-origin: top left;
+  user-select: none;
+}
+
+/* Ghost effect for original position */
+.tetris-block-wrapper.original {
+  opacity: 0.4;
+  filter: saturate(0.5);
+}
+
+/* Add visual feedback for dragging */
+.tetris-block-wrapper.dragging {
+  filter: drop-shadow(0 0 8px rgba(0, 0, 0, 0.3));
+  cursor: grabbing !important;
+  z-index: 100 !important;
+  /* Remove transition for smoother dragging */
+  transition: none;
+  will-change: transform;
+}
+
+/* Apply a small scale to make it fit better in the grid cells */
+.tetris-block-wrapper .tetris-block-container {
+  transform: scale(0.9);
+  cursor: grab;
+}
+
+.tetris-block-wrapper.dragging .tetris-block-container {
+  transform: scale(1);
+  transition: none;
+}
+
+/* Styles for the re-sync button */
+.grid-debug-info {
+  margin-top: 16px;
+  text-align: center;
+}
+
+/* Status section colors */
+.status-section {
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.status-section.Todo {
+  background-color: rgba(59, 130, 246, 0.1);
+  border-left: 4px solid rgb(59, 130, 246);
+}
+
+.status-section.InProgress {
+  background-color: rgba(245, 158, 11, 0.1);
+  border-left: 4px solid rgb(245, 158, 11);
+}
+
+.status-section.Test {
+  background-color: rgba(139, 92, 246, 0.1);
+  border-left: 4px solid rgb(139, 92, 246);
+}
+
+.status-section.Done {
+  background-color: rgba(16, 185, 129, 0.1);
+  border-left: 4px solid rgb(16, 185, 129);
+} 

@@ -1,0 +1,116 @@
+.tetris-grid-container {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  border: 2px solid #333;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.tetris-grid {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.tetris-grid-row {
+  display: flex;
+  width: 100%;
+}
+
+.tetris-cell {
+  width: 30px;
+  height: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+}
+
+.tetris-cell:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+}
+
+.tetris-cell.active {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.tetris-cell.highlight-even {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.tetris-cell.highlight-odd {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+/* Status section styles */
+.tetris-cell[data-status="Todo"] {
+  background-color: rgba(59, 130, 246, 0.1);
+}
+
+.tetris-cell[data-status="InProgress"] {
+  background-color: rgba(245, 158, 11, 0.1);
+}
+
+.tetris-cell[data-status="Test"] {
+  background-color: rgba(139, 92, 246, 0.1);
+}
+
+.tetris-cell[data-status="Done"] {
+  background-color: rgba(16, 185, 129, 0.1);
+}
+
+/* Active section styles */
+.tetris-cell[data-status="Todo"].active {
+  background-color: rgba(59, 130, 246, 0.2);
+}
+
+.tetris-cell[data-status="InProgress"].active {
+  background-color: rgba(245, 158, 11, 0.2);
+}
+
+.tetris-cell[data-status="Test"].active {
+  background-color: rgba(139, 92, 246, 0.2);
+}
+
+.tetris-cell[data-status="Done"].active {
+  background-color: rgba(16, 185, 129, 0.2);
+}
+
+/* Section labels */
+.tetris-grid-sections {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  pointer-events: none;
+}
+
+.tetris-grid-section-label {
+  position: absolute;
+  left: 0;
+  padding: 5px 10px;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  font-weight: bold;
+  border-radius: 0 4px 4px 0;
+  font-size: 0.8rem;
+  transform: translateY(-50%);
+  transition: all 0.2s ease;
+}
+
+.tetris-grid-section-label.active {
+  background-color: rgba(0, 0, 0, 0.9);
+  left: 5px;
+  padding: 8px 12px;
+  font-size: 0.9rem;
+}
+
+/* Occupied cell */
+.tetris-cell.occupied {
+  background-color: rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+} 
