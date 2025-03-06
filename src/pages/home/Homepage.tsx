@@ -1,5 +1,7 @@
+import {useEffect, useState} from "react";
 import "./homepage.css";
 import NotificationsList, {FlagNotification} from "../../components/NotificationsList.tsx";
+import CustomError from "../../components/CustomError.tsx";
 import ErrorBoundary from "../../components/ErrorBoundary.tsx";
 import Board from "../../components/Board.tsx";
 import BlockForm from "../../components/blockForm/BlockForm.tsx";
@@ -18,10 +20,38 @@ function Homepage() {
                     <section className="board-personnel">
                         <h2 className="section-title">Board personnel</h2>
   const [selectedTab, setSelectedTab] = useState<"tasks" | "notifications">("tasks");
-
+  const [error, setError] = useState<string>("");
   const [notifications, setNotifications] = useState<FlagNotification[]>([initFlagNotifications, initFlagNotifications]);
+
+  async function getNotifications() {
+      try {
+        const API_URL = import.meta.env.VITE_API_URL;
+        const response = await fetch(`${API_URL}/notifications`, {
+          method: 'GET',
+        });
+
+        if (!response.ok) {
+          setError('Failed to get notifications :' + response.statusText);
+        }
+        const data: any = await response.json();
+        return data;
+      }catch (error) {
+        setError('Failed to get notifications' + error);
+        return {};
+      }
+  }
+
+  useEffect(() => {
+    getNotifications().then(response => {
+      setNotifications(response.data);
+    }).catch(
+        error => console.log(error)
+    );
+  })
+
   return (
     <div className="page-container">
+      <CustomError message={error} />
       <main className="main-layout">
         {/* Colonne gauche */}
         <div className="left-col">
@@ -58,9 +88,9 @@ function Homepage() {
             </main>
             {/* Boutons Clear en dessous */}
             <div className="clear-actions">
-              <button className="btn-clear">Clear Bas</button>
-              <button className="btn-clear">Clear Milieu</button>
-              <button className="btn-clear">Clear Haut</button>
+              <button className="btn btn-soft btn-error">Clear Bas</button>
+              <button className="btn btn-soft btn-error ">Clear Milieu</button>
+              <button className="btn btn-soft btn-error">Clear Haut</button>
             </div>
           </section>
         </div>

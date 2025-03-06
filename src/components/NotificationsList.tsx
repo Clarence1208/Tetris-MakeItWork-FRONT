@@ -25,7 +25,6 @@ type NotificationProps = {
 }
 
 export function Notification({notification}: NotificationProps) {
-
     return (
         <div className="list-row">
             <div>{notification.title}</div>
