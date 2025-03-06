@@ -1,14 +1,8 @@
 import './App.css'
+import AppRouter from './routes/PrivateRoute'
 
 function App() {
-
-  return (
-    <>
-      <div>
-          <h1>TEST</h1>
-      </div>
-    </>
-  )
+  return <AppRouter></AppRouter>
 }
 
 export default App
