@@ -1,0 +1,192 @@
+/* Tetris Block Styles */
+.tetris-block {
+    position: relative;
+    transition: all 0.3s ease;
+    margin-bottom: 1rem;
+}
+
+/* I Block - Long horizontal/vertical block */
+.tetris-block.I {
+    background: linear-gradient(135deg, #00c6fb 0%, #005bea 100%);
+    height: 80px;
+}
+
+/* L Block */
+.tetris-block.L {
+    background: linear-gradient(135deg, #f2994a 0%, #f2c94c 100%);
+    height: 100px;
+    position: relative;
+}
+
+.tetris-block.L::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 30%;
+    height: 30%;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 0 0 0.5rem 0;
+}
+
+/* J Block */
+.tetris-block.J {
+    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+    height: 100px;
+    position: relative;
+}
+
+.tetris-block.J::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 30%;
+    height: 30%;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 0 0 0 0.5rem;
+}
+
+/* O Block - Square */
+.tetris-block.O {
+    background: linear-gradient(135deg, #f9d423 0%, #ff4e50 100%);
+    height: 90px;
+    border-radius: 0.5rem;
+}
+
+/* S Block */
+.tetris-block.S {
+    background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+    height: 90px;
+    clip-path: polygon(0% 30%, 70% 30%, 70% 0%, 100% 0%, 100% 70%, 30% 70%, 30% 100%, 0% 100%);
+}
+
+/* T Block */
+.tetris-block.T {
+    background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+    height: 90px;
+    clip-path: polygon(30% 0%, 70% 0%, 70% 30%, 100% 30%, 100% 70%, 70% 70%, 70% 100%, 30% 100%, 30% 70%, 0% 70%, 0% 30%, 30% 30%);
+}
+
+/* Z Block */
+.tetris-block.Z {
+    background: linear-gradient(135deg, #ff0844 0%, #ffb199 100%);
+    height: 90px;
+    clip-path: polygon(0% 0%, 70% 0%, 70% 30%, 100% 30%, 100% 100%, 30% 100%, 30% 70%, 0% 70%);
+}
+
+/* Add a subtle shadow effect when dragging */
+.tetris-block:active {
+    transform: scale(1.02);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+}
+
+/* Tetris Block Container */
+.tetris-block-container {
+    position: relative;
+    transition: all 0.15s ease;
+    margin-bottom: 0;
+    cursor: grab;
+    padding: 0;
+    background: none !important;
+    border-radius: 0;
+    box-shadow: none;
+    max-width: 250px;
+    user-select: none;
+}
+
+/* When block is being dragged */
+.tetris-block-container.is-dragging {
+    cursor: grabbing;
+    z-index: 100;
+}
+
+/* Tetris shape container */
+.tetris-shape {
+    display: grid;
+    grid-gap: 0;
+}
+
+.is-dragging .tetris-shape {
+    transform: scale(1.05);
+}
+
+/* Tetris row - for arranging blocks in a grid */
+.tetris-row {
+    display: flex;
+    flex-direction: row;
+}
+
+/* Individual skill block */
+.skill-block {
+    width: 48px;
+    height: 48px;
+    margin: 1px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: all 0.15s ease;
+    animation: blockAppear 0.3s ease forwards;
+    animation-delay: calc(var(--index, 0) * 0.05s);
+}
+
+/* Empty placeholder for shape completion */
+.empty-block {
+    width: 48px;
+    height: 48px;
+    margin: 1px;
+    opacity: 0;
+}
+
+/* Color schemes for different shapes */
+.skill-block.I {
+    background: linear-gradient(135deg, #00c6fb 0%, #005bea 100%);
+}
+
+.skill-block.L {
+    background: linear-gradient(135deg, #f2994a 0%, #f2c94c 100%);
+}
+
+.skill-block.J {
+    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+}
+
+.skill-block.O {
+    background: linear-gradient(135deg, #f9d423 0%, #ff4e50 100%);
+}
+
+.skill-block.S {
+    background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+}
+
+.skill-block.T {
+    background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+}
+
+.skill-block.Z {
+    background: linear-gradient(135deg, #ff0844 0%, #ffb199 100%);
+}
+
+/* Hover effect for individual blocks */
+.tetris-block-container:hover .skill-block {
+    filter: brightness(1.1);
+}
+
+/* Add a subtle shadow effect when dragging */
+.tetris-block-container:active .skill-block {
+    transform: scale(1.05);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+    z-index: 10;
+}
+
+/* Animation for blocks on load */
+@keyframes blockAppear {
+    0% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+} 
