@@ -55,36 +55,3 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
-
-/* Custom Tetris Block Styles */
-.tetris-block {
-  @apply p-4 rounded-lg shadow-md transition-all duration-300 cursor-move;
-}
-
-.tetris-block.I {
-  @apply bg-blue-500 w-full h-16;
-}
-
-.tetris-block.L {
-  @apply bg-orange-500;
-}
-
-.tetris-block.J {
-  @apply bg-indigo-500;
-}
-
-.tetris-block.O {
-  @apply bg-yellow-500;
-}
-
-.tetris-block.S {
-  @apply bg-green-500;
-}
-
-.tetris-block.T {
-  @apply bg-purple-500;
-}
-
-.tetris-block.Z {
-  @apply bg-red-500;
-}
