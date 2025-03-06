@@ -1,0 +1,181 @@
+/* Tetris Block Styles */
+.tetris-block {
+  position: relative;
+  transition: all 0.3s ease;
+  margin-bottom: 1rem;
+}
+
+/* I Block - Long horizontal/vertical block */
+.tetris-block.I {
+  background: linear-gradient(135deg, #00c6fb 0%, #005bea 100%);
+  height: 80px;
+}
+
+/* L Block */
+.tetris-block.L {
+  background: linear-gradient(135deg, #f2994a 0%, #f2c94c 100%);
+  height: 100px;
+  position: relative;
+}
+
+.tetris-block.L::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 30%;
+  height: 30%;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 0 0 0.5rem 0;
+}
+
+/* J Block */
+.tetris-block.J {
+  background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+  height: 100px;
+  position: relative;
+}
+
+.tetris-block.J::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 30%;
+  height: 30%;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 0 0 0 0.5rem;
+}
+
+/* O Block - Square */
+.tetris-block.O {
+  background: linear-gradient(135deg, #f9d423 0%, #ff4e50 100%);
+  height: 90px;
+  border-radius: 0.5rem;
+}
+
+/* S Block */
+.tetris-block.S {
+  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+  height: 90px;
+  clip-path: polygon(0% 30%, 70% 30%, 70% 0%, 100% 0%, 100% 70%, 30% 70%, 30% 100%, 0% 100%);
+}
+
+/* T Block */
+.tetris-block.T {
+  background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+  height: 90px;
+  clip-path: polygon(30% 0%, 70% 0%, 70% 30%, 100% 30%, 100% 70%, 70% 70%, 70% 100%, 30% 100%, 30% 70%, 0% 70%, 0% 30%, 30% 30%);
+}
+
+/* Z Block */
+.tetris-block.Z {
+  background: linear-gradient(135deg, #ff0844 0%, #ffb199 100%);
+  height: 90px;
+  clip-path: polygon(0% 0%, 70% 0%, 70% 30%, 100% 30%, 100% 100%, 30% 100%, 30% 70%, 0% 70%);
+}
+
+/* Add a subtle shadow effect when dragging */
+.tetris-block:active {
+  transform: scale(1.02);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+}
+
+/* Tetris Block Container */
+.tetris-block-container {
+  position: relative;
+  transition: all 0.3s ease;
+  margin-bottom: 1rem;
+  cursor: move;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Tetris shape container */
+.tetris-shape {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Tetris row - for arranging blocks in a grid */
+.tetris-row {
+  display: flex;
+  flex-direction: row;
+}
+
+/* Individual skill block */
+.skill-block {
+  width: 30px;
+  height: 30px;
+  border-radius: 4px;
+  margin: 2px;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.3);
+  background-color: rgba(255, 255, 255, 0.3);
+  transition: all 0.2s ease;
+  animation: blockAppear 0.3s ease forwards;
+  animation-delay: calc(var(--index, 0) * 0.05s);
+}
+
+/* Empty placeholder for shape completion */
+.empty-block {
+  width: 30px;
+  height: 30px;
+  margin: 2px;
+  opacity: 0;
+}
+
+/* Color schemes for different shapes */
+.tetris-block-container.I {
+  background: linear-gradient(135deg, #00c6fb 0%, #005bea 100%);
+}
+
+.tetris-block-container.L {
+  background: linear-gradient(135deg, #f2994a 0%, #f2c94c 100%);
+}
+
+.tetris-block-container.J {
+  background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+}
+
+.tetris-block-container.O {
+  background: linear-gradient(135deg, #f9d423 0%, #ff4e50 100%);
+}
+
+.tetris-block-container.S {
+  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+}
+
+.tetris-block-container.T {
+  background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+}
+
+.tetris-block-container.Z {
+  background: linear-gradient(135deg, #ff0844 0%, #ffb199 100%);
+}
+
+/* Hover effect for individual blocks */
+.tetris-block-container:hover .skill-block {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Add a subtle shadow effect when dragging */
+.tetris-block-container:active {
+  transform: scale(1.02);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+}
+
+/* Animation for blocks on load */
+@keyframes blockAppear {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+} 
