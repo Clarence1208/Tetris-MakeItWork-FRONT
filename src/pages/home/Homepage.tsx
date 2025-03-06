@@ -1,9 +1,16 @@
 import { useState } from "react";
 import "./homepage.css";
+import NotificationsList, {FlagNotification} from "../../components/NotificationsList.tsx";
 
+const initFlagNotifications = {
+  id: 2,
+  title: "NestJS",
+  message: "A user asked for your HELP",
+}
 function Homepage() {
   const [selectedTab, setSelectedTab] = useState<"tasks" | "notifications">("tasks");
 
+  const [notifications, setNotifications] = useState<FlagNotification[]>([initFlagNotifications, initFlagNotifications]);
   return (
     <div className="page-container">
       <main className="main-layout">
@@ -62,7 +69,7 @@ function Homepage() {
           ) : (
             <div className="notifications">
               <h2>Notifications</h2>
-              <p>Liste des notifications...</p>
+              <NotificationsList notifications={notifications} />
             </div>
           )}
         </aside>
