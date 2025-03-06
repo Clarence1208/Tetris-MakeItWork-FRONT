@@ -11,7 +11,6 @@ const initFlagNotifications = {
   message: "A user asked for your HELP",
 }
 function Homepage() {
-    const [selectedTab, setSelectedTab] = useState<"tasks" | "notifications">("tasks");
     const [error, setError] = useState<string>("");
     const [notifications, setNotifications] = useState<FlagNotification[]>([initFlagNotifications, initFlagNotifications]);
     const [openError, setOpenError] = useState(false);
@@ -28,6 +27,7 @@ function Homepage() {
             if (!response.ok) {
                 setError('Failed to get notifications :' + response.statusText);
                 setOpenError(true);
+                return [];
             }
             const data: any = await response.json();
             return data;
@@ -62,56 +62,22 @@ function Homepage() {
                                   <Board/>
                               </ErrorBoundary>
                           </div>
-
-                          {/* Colonne verticale : bouton Demande aide en haut, Compétences en bas */}
-                          <div className="vertical-col">
-                              <button className="btn-demande-aide">Demande aide</button>
-                              <div className="competences">
-                                  <h3>Compétences</h3>
-                                  <p>Informations sur les compétences...</p>
-                              </div>
-                          </div>
+                          <BlockForm />
                       </div>
 
-                      {/* Boutons Clear en dessous */}
-                      <div className="clear-actions">
-                          <button className="btn btn-soft btn-error">Clear Bas</button>
-                          <button className="btn btn-soft btn-error ">Clear Milieu</button>
-                          <button className="btn btn-soft btn-error">Clear Haut</button>
-                      </div>
-                  </section>
-              </div>
+            <div className="clear-actions">
+              <button className="btn btn-soft btn-error">Clear Bas</button>
+              <button className="btn btn-soft btn-error ">Clear Milieu</button>
+              <button className="btn btn-soft btn-error">Clear Haut</button>
+            </div>
+          </section>
+        </div>
 
-              {/* Colonne droite : bande Tâches/Notifications */}
-              <aside className="right-col sidebar">
-                  <div className="tab-bar">
-                      <div
-                          className={`tab ${selectedTab === "tasks" ? "active" : ""}`}
-                          onClick={() => setSelectedTab("tasks")}
-                      >
-                          Tâches
-                      </div>
-                      <div
-                          className={`tab ${selectedTab === "notifications" ? "active" : ""}`}
-                          onClick={() => setSelectedTab("notifications")}
-                      >
-                          Notifications
-                      </div>
-                  </div>
-
-                  {selectedTab === "tasks" ? (
-                      <div className="taches">
-                          <h2>Tâches</h2>
-                          <p>Liste des tâches...</p>
-                      </div>
-                  ) : (
-                      <div className="notifications">
-                          <h2>Notifications</h2>
-                          <NotificationsList notifications={notifications} />
-                      </div>
-                  )}
-              </aside>
-          </main>
+                <aside className="right-col sidebar">
+                    <h2>Notifications</h2>
+                  <NotificationsList notifications={notifications} />
+                </aside>
+            </main>
 
           {/* Footer */}
           <footer className="footer">

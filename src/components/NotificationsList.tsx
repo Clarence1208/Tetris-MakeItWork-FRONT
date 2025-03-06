@@ -1,8 +1,7 @@
 import {RiFlag2Line} from "react-icons/ri";
 
 type NotificationListProps = {
-    notificationsReceived: FlagNotification[];
-    notificationsSent: FlagNotification[];
+    notifications: FlagNotification[];
 }
 
 export type FlagNotification = {
@@ -11,18 +10,12 @@ export type FlagNotification = {
     message: string;
 }
 
-export default function NotificationsList({notificationsReceived, notificationsSent}: NotificationListProps) {
+export default function NotificationsList({notifications}: NotificationListProps) {
 
     return (
         <div className={"list bg-base-100 rounded-box shadow-md"}>
             <div id="notifications-list" className="list bg-base-100 rounded-box shadow-md">
-                {notificationsReceived.map((notification) => (
-                   <Notification key={notification.id} notification={notification} />
-                ))}
-            </div>
-
-            <div id="notifications-sent-list" className="list bg-base-100 rounded-box shadow-md">
-                {notificationsReceived.map((notification) => (
+                {notifications.map((notification) => (
                    <Notification key={notification.id} notification={notification} />
                 ))}
             </div>
