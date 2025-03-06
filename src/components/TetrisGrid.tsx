@@ -71,9 +71,6 @@ const TetrisGrid: React.FC<TetrisGridProps> = ({ width, height, activeStatus }) 
 
   return (
       <div className="tetris-grid-container">
-        <div className="tetris-grid">
-          {renderGrid()}
-        </div>
         <div className="tetris-grid-sections">
           {Object.entries(statusSections).map(([status, { start }]) => (
               <div
@@ -81,9 +78,12 @@ const TetrisGrid: React.FC<TetrisGridProps> = ({ width, height, activeStatus }) 
                   className={`tetris-grid-section-label ${activeStatus === status ? 'active' : ''}`}
                   style={{ top: `${(start / height) * 100}%` }}
               >
-                {status}
+                {status === 'InProgress' ? 'In Progress' : status}
               </div>
           ))}
+        </div>
+        <div className="tetris-grid">
+          {renderGrid()}
         </div>
       </div>
   );

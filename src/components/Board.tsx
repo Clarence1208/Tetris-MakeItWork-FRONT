@@ -1,7 +1,7 @@
 // Board.tsx
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {DndContext, DragEndEvent, DragOverlay, DragStartEvent} from '@dnd-kit/core';
-import {KanbanBoard, KanbanColumn, KanbanStatus, Task, TetrisShape, Point} from '../types';
+import {KanbanBoard, KanbanColumn, KanbanStatus, Point, Task, TetrisShape} from '../types';
 import TetrisBlock from './TetrisBlock';
 import TetrisGrid from './TetrisGrid';
 import './Board.css';
@@ -854,7 +854,7 @@ const Board: React.FC = () => {
                             className="tetris-block-wrapper"
                             style={{
                                 position: 'absolute',
-                                left: `${x * CELL_SIZE}px`,
+                                left: `${(x * CELL_SIZE) + 40}px`, // Add 40px offset for the labels
                                 top: `${y * CELL_SIZE}px`,
                                 zIndex: 10,
                             }}
