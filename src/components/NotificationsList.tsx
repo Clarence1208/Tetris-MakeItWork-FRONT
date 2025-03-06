@@ -1,19 +1,22 @@
 import {RiFlag2Line} from "react-icons/ri";
+import {User, Task} from "../types.ts"
 
 type NotificationListProps = {
     notifications: FlagNotification[];
 }
 
 export type FlagNotification = {
-    id: number;
-    title: string;
-    message: string;
+    "id": string,
+    "isActive": boolean,
+    "senderId": User,
+    "recipientId": User,
+    "taskId": Task
 }
 
 export default function NotificationsList({notifications}: NotificationListProps) {
 
     return (
-        <div className={"list bg-base-100 rounded-box shadow-md"}>
+        <div className={"list bg-base-100 rounded-box shadow-md mt-4"}>
             <div id="notifications-list" className="list bg-base-100 rounded-box shadow-md">
                 {notifications.map((notification) => (
                    <Notification key={notification.id} notification={notification} />
@@ -30,8 +33,8 @@ type NotificationProps = {
 export function Notification({notification}: NotificationProps) {
     return (
         <div className="list-row">
-            <div>{notification.title}</div>
-            <div>{notification.message}</div>
+            <div>{notification.taskId.skills[0]}</div>
+            <div>{notification.senderId.name} asked for your help</div>
             <RiFlag2Line />
         </div>
     )

@@ -5,11 +5,30 @@ import CustomError from "../../components/CustomError.tsx";
 import ErrorBoundary from "../../components/ErrorBoundary.tsx";
 import Board from "../../components/Board.tsx";
 import BlockForm from "../../components/blockForm/BlockForm.tsx";
+import {TetrisShape, KanbanStatus} from "../../types.ts";
 
-const initFlagNotifications = {
-  id: 2,
-  title: "NestJS",
-  message: "A user asked for your HELP",
+const initFlagNotifications: FlagNotification = {
+  id: "ifr",
+  senderId : {
+      id: "ek",
+      name: "Loriane"
+  },
+  recipientId : {
+      id: "ek",
+      name: "Aurélien"
+  },
+    isActive: true,
+    taskId: {
+        id: '1',
+        name: 'Create UI Components',
+        skills: ['React', 'CSS', 'HTML'],
+        shape: 'I' as TetrisShape,
+        status: 'Todo' as KanbanStatus,
+        blockPoints: [],
+        description: "Tests",
+        company: "Intern"
+    },
+
 }
 function Homepage() {
     const [error, setError] = useState<string>("");
@@ -40,11 +59,11 @@ function Homepage() {
     }
 
     useEffect(() => {
-        getNotifications().then(response => {
+        /*getNotifications().then(response => {
             setNotifications(response);
         }).catch(
             error => console.log(error)
-        );
+        );*/
     }, [])
 
     return (
