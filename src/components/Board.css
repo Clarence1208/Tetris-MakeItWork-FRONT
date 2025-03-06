@@ -20,33 +20,37 @@
   pointer-events: auto;
   transform-origin: top left;
   user-select: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* No need to scale down the blocks anymore since they're sized properly */
+.tetris-block-wrapper .tetris-block-container {
+  transform: scale(1);
+  cursor: grab;
 }
 
 /* Ghost effect for original position */
 .tetris-block-wrapper.original {
-  opacity: 0.4;
+  opacity: 0.3;
   filter: saturate(0.5);
 }
 
 /* Add visual feedback for dragging */
 .tetris-block-wrapper.dragging {
-  filter: drop-shadow(0 0 8px rgba(0, 0, 0, 0.3));
+  filter: drop-shadow(0 0 15px rgba(0, 0, 0, 0.5));
   cursor: grabbing !important;
-  z-index: 100 !important;
+  z-index: 1000 !important;
+  transform: scale(1.05);
   /* Remove transition for smoother dragging */
   transition: none;
-  will-change: transform;
-}
-
-/* Apply a small scale to make it fit better in the grid cells */
-.tetris-block-wrapper .tetris-block-container {
-  transform: scale(0.9);
-  cursor: grab;
+  will-change: transform, left, top;
+  pointer-events: none;
 }
 
 .tetris-block-wrapper.dragging .tetris-block-container {
-  transform: scale(1);
-  transition: none;
+  opacity: 0.85;
+  filter: brightness(1.15);
 }
 
 /* Styles for the re-sync button */
