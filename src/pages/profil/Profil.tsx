@@ -1,54 +1,82 @@
-import { useState } from 'react';
 import './Profil.css';
+import { useEffect, useMemo, useState } from "react";
+import { SkillService } from "../../services/skillService/SkillService";
+import { BoardsService } from "../../services/boardService/BoardsService";
 
-type Competence = {
-    name: string;
-    level: number;
-    image?: string;
-};
 
-type Boards = {
-    name: string;
-    nbTaches: number;
-};
+// type Competence = {
+//     name: string;
+//     level: number;
+//     image?: string;
+// };
+
+// type Boards = {
+//     name: string;
+//     nbTaches: number;
+// };
 
 export default function Profil() {
-    const competences: Competence[] = [
-        { name: "React", level: 3 },
-        { name: "TypeScript", level: 2 },
-        { name: "Node.js", level: 3 },
-        { name: "MongoDB", level: 2 },
-        { name: "GraphQL", level: 1 },
-        { name: "Docker", level: 2 },
-        { name: "Angular", level: 3 },
-        { name: "Vue.js", level: 2 },
-        { name: "Java", level: 3 },
-        { name: "Python", level: 2 },
-        { name: "C#", level: 1 },
-        { name: "Kotlin", level: 2 },
-        { name: "Swift", level: 2 },
-        { name: "PHP", level: 2 },
-        { name: "Ruby", level: 1 },
-    ];    
+    const [competences, setSkills] = useState<{ name: string; imageSrc: string }[]>(
+        []
+    );
+    const [boards, setBoards] = useState<{ name: string }[]>(
+        []
+    );
+    
+    const skillService = useMemo(() => new SkillService(), []);
+    const boardsService = useMemo(() => new BoardsService(), [])
 
-    const blocs: Boards[] = [
-        { name: "Projet A", nbTaches: 4 },
-        { name: "Projet B", nbTaches: 7 },
-        { name: "Projet C", nbTaches: 5 },
-        { name: "Projet D", nbTaches: 6 },
-        { name: "Projet E", nbTaches: 4 },
-        { name: "Projet F", nbTaches: 3 },
-        { name: "Projet G", nbTaches: 8 },
-        { name: "Projet H", nbTaches: 2 },
-        { name: "Projet I", nbTaches: 6 },
-        { name: "Projet J", nbTaches: 4 },
-        { name: "Projet K", nbTaches: 7 },
-        { name: "Projet L", nbTaches: 5 },
-        { name: "Projet M", nbTaches: 6 },
-        { name: "Projet N", nbTaches: 4 },
-        { name: "Projet O", nbTaches: 3 },
-        { name: "Projet P", nbTaches: 8 },
-    ];   
+    useEffect(() => {
+    const getSkills = async () => {
+        const skills = await skillService.getSkills();
+        setSkills(skills);
+    };
+    getSkills();
+    }, [skillService]);
+
+    useEffect(() => {
+    const getBoards = async () => {
+        const boards = await boardsService.getBoards();
+        setBoards(boards);
+    };
+    getBoards();
+    }, [boardsService]);
+    // const competences: Competence[] = [
+    //     { name: "React", level: 3 },
+    //     { name: "TypeScript", level: 2 },
+    //     { name: "Node.js", level: 3 },
+    //     { name: "MongoDB", level: 2 },
+    //     { name: "GraphQL", level: 1 },
+    //     { name: "Docker", level: 2 },
+    //     { name: "Angular", level: 3 },
+    //     { name: "Vue.js", level: 2 },
+    //     { name: "Java", level: 3 },
+    //     { name: "Python", level: 2 },
+    //     { name: "C#", level: 1 },
+    //     { name: "Kotlin", level: 2 },
+    //     { name: "Swift", level: 2 },
+    //     { name: "PHP", level: 2 },
+    //     { name: "Ruby", level: 1 },
+    // ];    
+
+    // const blocs: Boards[] = [
+    //     { name: "Projet A", nbTaches: 4 },
+    //     { name: "Projet B", nbTaches: 7 },
+    //     { name: "Projet C", nbTaches: 5 },
+    //     { name: "Projet D", nbTaches: 6 },
+    //     { name: "Projet E", nbTaches: 4 },
+    //     { name: "Projet F", nbTaches: 3 },
+    //     { name: "Projet G", nbTaches: 8 },
+    //     { name: "Projet H", nbTaches: 2 },
+    //     { name: "Projet I", nbTaches: 6 },
+    //     { name: "Projet J", nbTaches: 4 },
+    //     { name: "Projet K", nbTaches: 7 },
+    //     { name: "Projet L", nbTaches: 5 },
+    //     { name: "Projet M", nbTaches: 6 },
+    //     { name: "Projet N", nbTaches: 4 },
+    //     { name: "Projet O", nbTaches: 3 },
+    //     { name: "Projet P", nbTaches: 8 },
+    // ];   
 
     const [competencePage, setCompetencePage] = useState(0);
     const [boardPage, setBoardPage] = useState(0);
@@ -61,11 +89,11 @@ export default function Profil() {
         ? competences.slice(competencePage * competencesPerPage, (competencePage + 1) * competencesPerPage)
         : competences;
 
-    const isBoardPaginated = blocs.length > boardsPerPage;
-    const totalBoardPages = isBoardPaginated ? Math.ceil(blocs.length / boardsPerPage) : 1;
+    const isBoardPaginated = boards.length > boardsPerPage;
+    const totalBoardPages = isBoardPaginated ? Math.ceil(boards.length / boardsPerPage) : 1;
     const displayedBoards = isBoardPaginated
-        ? blocs.slice(boardPage * boardsPerPage, (boardPage + 1) * boardsPerPage)
-        : blocs;
+        ? boards.slice(boardPage * boardsPerPage, (boardPage + 1) * boardsPerPage)
+        : boards;
 
     return (
         <div className="container">
@@ -121,7 +149,7 @@ export default function Profil() {
                     {displayedBoards.map((bloc, index) => (
                         <div key={index}>
                             <p>{bloc.name}</p>
-                            <p>Nombre de tâches : {bloc.nbTaches.toString()}</p>
+                            {/* <p>Nombre de tâches : {bloc..toString()}</p> */}
                         </div>
                     ))}
 
