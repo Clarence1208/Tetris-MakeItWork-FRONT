@@ -25,7 +25,7 @@ const initialSkills : Skill[] = [
     {id: 1, name: "Nest"},
     {id: 2, name: "PHP"},
 ]
-export default function BlockForm() {
+export default function  BlockForm() {
 
     const [taskFormData, setTaskFormData] = useState<TaskFormData>(initialTaskFormData);
     const [skills, setSkills] = useState<Skill[]>(initialSkills);
@@ -33,7 +33,7 @@ export default function BlockForm() {
     async function postTask(formData: TaskFormData) {
         try {
             const API_URL = import.meta.env.VITE_API_URL;
-            const response = await fetch(`${API_URL}/cards`, {
+            const response = await fetch(`${API_URL}/tasks`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -153,19 +153,8 @@ export default function BlockForm() {
                             ))}
                         </select>
                     </fieldset>
-                    <fieldset className="fieldset my-1">
-                        <legend className="fieldset-legend">Skill 4</legend>
-                        <select defaultValue="None" className="select select-secondary" onChange={handleSelectSkills}>
-                            <option disabled={true}>Choose a skill linked</option>
-                            {skills.map(skill => (
-                                <option key={skill.id} value={skill.name}>
-                                    {skill.name}
-                                </option>
-                            ))}
-                        </select>
-                    </fieldset>
 
-                    <button type="submit" className="btn btn-default" onClick={handleSubmitTaskForm}>Create task</button>
+                    <button type="submit" className="btn btn-default my-4" onClick={handleSubmitTaskForm}>Create task</button>
                 </div>
 
             </form>
