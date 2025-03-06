@@ -14,7 +14,9 @@ export interface Point {
 
 export interface Task {
   id: string;
-  title: string;
+  name: string;
+  description: string;
+  company: string;
   skills: Skill[];
   shape: TetrisShape;
   status: KanbanStatus;
