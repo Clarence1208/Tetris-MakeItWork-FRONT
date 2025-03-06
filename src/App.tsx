@@ -1,13 +1,12 @@
 import './App.css'
+import AppRouter from './routes/PrivateRoute'
+import Header from "./Header.tsx";
 
 function App() {
-
-  return (
-    <>
-      <div>
-          <h1>TEST</h1>
-      </div>
-    </>
+  return (<>
+    <Header />
+    <AppRouter></AppRouter>
+  </>
   )
 }
 
