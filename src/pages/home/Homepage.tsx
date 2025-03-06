@@ -13,7 +13,7 @@ function Homepage() {
   const [error, setError] = useState<string>("");
   const [notifications, setNotifications] = useState<FlagNotification[]>([initFlagNotifications, initFlagNotifications]);
 
-  async function getNotifications() {
+  async function getNotifications():Promise<FlagNotification[]> {
       try {
         const API_URL = import.meta.env.VITE_API_URL;
         const response = await fetch(`${API_URL}/notifications`, {
@@ -27,13 +27,13 @@ function Homepage() {
         return data;
       }catch (error) {
         setError('Failed to get notifications' + error);
-        return {};
+        return [];
       }
   }
 
   useEffect(() => {
     getNotifications().then(response => {
-      setNotifications(response.data);
+      setNotifications(response);
     }).catch(
         error => console.log(error)
     );
