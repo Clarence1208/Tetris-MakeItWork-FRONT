@@ -14,7 +14,10 @@ function Homepage() {
     const [selectedTab, setSelectedTab] = useState<"tasks" | "notifications">("tasks");
     const [error, setError] = useState<string>("");
     const [notifications, setNotifications] = useState<FlagNotification[]>([initFlagNotifications, initFlagNotifications]);
-
+    const [openError, setOpenError] = useState(false);
+    function handleClose() {
+        setOpenError(false);
+    }
     async function getNotifications():Promise<FlagNotification[]> {
         try {
             const API_URL = import.meta.env.VITE_API_URL;
@@ -24,11 +27,13 @@ function Homepage() {
 
             if (!response.ok) {
                 setError('Failed to get notifications :' + response.statusText);
+                setOpenError(true);
             }
             const data: any = await response.json();
             return data;
         }catch (error) {
             setError('Failed to get notifications' + error);
+           setOpenError(true);
             return [];
         }
     }
@@ -39,11 +44,11 @@ function Homepage() {
         }).catch(
             error => console.log(error)
         );
-    })
+    }, [])
 
     return (
         <div className="page-container">
-            <CustomError message={error} />
+            {openError && <CustomError message={error} handleClose={handleClose} /> }
             <main className="main-layout">
                 {/* Colonne gauche */}
                 <div className="left-col">

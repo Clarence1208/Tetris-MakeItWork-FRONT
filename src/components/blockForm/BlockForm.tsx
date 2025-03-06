@@ -30,6 +30,10 @@ export default function  BlockForm() {
     const [taskFormData, setTaskFormData] = useState<TaskFormData>(initialTaskFormData);
     const [skills, setSkills] = useState<Skill[]>(initialSkills);
     const [error, setError] = useState("");
+    const [openError, setOpenError] = useState<boolean>(false);
+    function handleClose() {
+        setOpenError(false);
+    }
     async function postTask(formData: TaskFormData) {
         try {
             const API_URL = import.meta.env.VITE_API_URL;
@@ -43,11 +47,13 @@ export default function  BlockForm() {
 
             if (!response.ok) {
                 setError('Failed to create the task :' + response.statusText);
+                setOpenError(true);
             }
             const data: any = await response.json();
             return data;
         }catch (error) {
             setError('Failed to create the task' + error);
+            setOpenError(true);
             return {};
         }
     }
@@ -73,6 +79,7 @@ export default function  BlockForm() {
                 }
             } catch (error) {
                 setError('Failed to create the task' + error);
+                setOpenError(true);
             } finally {
                 // Reset form fields
                 setTaskFormData(initialTaskFormData);
@@ -97,7 +104,7 @@ export default function  BlockForm() {
 
     return (
         <div className="blockForm">
-            {error && <CustomError message={error} />}
+            {openError && <CustomError message={error} handleClose={handleClose} />}
             <h2>Create a task</h2>
             <form>
                 <div className="join join-vertical">
