@@ -107,7 +107,7 @@ function Homepage() {
           ) : (
             <div className="notifications">
               <h2>Notifications</h2>
-              <NotificationsList notifications={notifications} />
+              <NotificationsList notificationsSent={notifications} notificationsReceived={notifications} />
             </div>
           )}
         </aside>

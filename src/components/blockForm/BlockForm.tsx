@@ -101,7 +101,6 @@ export default function  BlockForm() {
         console.log(taskFormData);
     }
 
-
     return (
         <div className="blockForm">
             {openError && <CustomError message={error} handleClose={handleClose} />}
