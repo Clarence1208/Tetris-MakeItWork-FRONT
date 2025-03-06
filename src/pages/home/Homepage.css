@@ -50,8 +50,13 @@ html, body {
   .tetris-board {
     background-color: #222;
     color: #fff;
+<<<<<<< HEAD
     min-height: 400px;
     flex: 2;
+=======
+    min-height: 400px;  /* Ajuste la hauteur si besoin */
+    width: 60%;         /* Réduit la largeur */
+>>>>>>> main
     border-radius: 8px;
     padding: 20px;
     display: flex;
