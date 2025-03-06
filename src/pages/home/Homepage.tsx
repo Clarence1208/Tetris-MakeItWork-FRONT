@@ -4,7 +4,6 @@ import NotificationsList, {FlagNotification} from "../../components/Notification
 import CustomError from "../../components/CustomError.tsx";
 import ErrorBoundary from "../../components/ErrorBoundary.tsx";
 import Board from "../../components/Board.tsx";
-import BlockForm from "../../components/blockForm/BlockForm.tsx";
 
 const initFlagNotifications = {
   id: 2,
