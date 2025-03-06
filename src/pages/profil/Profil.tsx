@@ -95,7 +95,7 @@ export default function Profil() {
                     <div className="list">
                         {displayedCompetences.map((item, index) => (
                             <div key={index} className="list-item">
-                                <img className="size-10 rounded-box" />
+                                <img className="size-10 rounded-box" src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"/>
                                 <div>{item.name}</div>
                             </div>
                         ))}
@@ -103,11 +103,11 @@ export default function Profil() {
 
                     {isCompetencePaginated && (
                         <div className="pagination">
-                            <button onClick={() => setCompetencePage(competencePage - 1)} disabled={competencePage === 0}>
+                            <button className="btn btn-outline" onClick={() => setCompetencePage(competencePage - 1)} disabled={competencePage === 0}>
                                 Précédent
                             </button>
                             <span>Page {competencePage + 1} / {totalCompetencePages}</span>
-                            <button onClick={() => setCompetencePage(competencePage + 1)} disabled={competencePage === totalCompetencePages - 1}>
+                            <button className="btn btn-outline btn-info" onClick={() => setCompetencePage(competencePage + 1)} disabled={competencePage === totalCompetencePages - 1}>
                                 Suivant
                             </button>
                         </div>
@@ -127,11 +127,11 @@ export default function Profil() {
 
                     {isBoardPaginated && (
                         <div className="pagination">
-                            <button onClick={() => setBoardPage(boardPage - 1)} disabled={boardPage === 0}>
+                            <button className="btn btn-outline" onClick={() => setBoardPage(boardPage - 1)} disabled={boardPage === 0}>
                                 Précédent
                             </button>
                             <span>Page {boardPage + 1} / {totalBoardPages}</span>
-                            <button onClick={() => setBoardPage(boardPage + 1)} disabled={boardPage === totalBoardPages - 1}>
+                            <button className="btn btn-outline btn-info" onClick={() => setBoardPage(boardPage + 1)} disabled={boardPage === totalBoardPages - 1}>
                                 Suivant
                             </button>
                         </div>
