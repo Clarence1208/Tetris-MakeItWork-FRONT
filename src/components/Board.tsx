@@ -214,7 +214,11 @@ const initialTasks: Task[] = [
     {
         id: '1',
         title: 'Create UI Components',
-        skills: ['React', 'CSS', 'HTML'],
+        skills: [
+            { name: 'React', imageSrc: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1200px-React-icon.svg.png' },
+            { name: 'CSS', imageSrc: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/CSS3_logo_and_wordmark.svg/1200px-CSS3_logo_and_wordmark.svg.png' },
+            { name: 'HTML', imageSrc: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/HTML5_logo_and_wordmark.svg/1200px-HTML5_logo_and_wordmark.svg.png' }
+        ],
         shape: 'I' as TetrisShape,
         status: 'Todo' as KanbanStatus,
         blockPoints: [],
@@ -222,7 +226,12 @@ const initialTasks: Task[] = [
     {
         id: '2',
         title: 'Implement API',
-        skills: ['Node.js', 'Express', 'MongoDB', 'REST'],
+        skills: [
+            { name: 'Node.js', imageSrc: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Node.js_logo.svg/1200px-Node.js_logo.svg.png' },
+            { name: 'Express', imageSrc: 'https://upload.wikimedia.org/wikipedia/commons/6/64/Expressjs.png' },
+            { name: 'MongoDB', imageSrc: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/MongoDB_Logo.svg/1200px-MongoDB_Logo.svg.png' },
+            { name: 'REST', imageSrc: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTmJoxiAXVIxedd5WnxL3yepJpACK2lmCSl9w&s' }
+        ],
         shape: 'L' as TetrisShape,
         status: 'Todo' as KanbanStatus,
         blockPoints: [],
@@ -230,7 +239,10 @@ const initialTasks: Task[] = [
     {
         id: '3',
         title: 'Design Database',
-        skills: ['MongoDB', 'Schema Design'],
+        skills: [
+            { name: 'MongoDB', imageSrc: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/MongoDB_Logo.svg/1200px-MongoDB_Logo.svg.png' },
+            { name: 'Schema Design', imageSrc: 'https://www.shutterstock.com/image-vector/database-sign-icon-relational-schema-260nw-448158316.jpg' }
+        ],
         shape: 'T' as TetrisShape,
         status: 'InProgress' as KanbanStatus,
         blockPoints: [],
@@ -238,7 +250,13 @@ const initialTasks: Task[] = [
     {
         id: '4',
         title: 'Write Tests',
-        skills: ['Jest', 'Testing', 'Cypress', 'QA', 'Documentation'],
+        skills: [
+            { name: 'Jest', imageSrc: 'https://jestjs.io/img/jest.png' },
+            { name: 'Testing', imageSrc: 'https://d1csarkz8obe9u.cloudfront.net/posterpreviews/testing-logo-design-template-ce84480d61b3db9a8e1522a99875832f_screen.jpg?ts=1732644069' },
+            { name: 'Cypress', imageSrc: 'https://www.cypress.io/images/layouts/cypress-logo.svg' },
+            { name: 'QA', imageSrc: 'https://media.istockphoto.com/id/1073505842/fr/vectoriel/ic%C3%B4ne-de-question-r%C3%A9ponse-symbole-de-le-q-a.jpg?s=612x612&w=0&k=20&c=Dji2pjE49FRDHiQhYnOX4m9kN3IUrtfr0exXHqj0zZs=' },
+            { name: 'Documentation', imageSrc: 'https://static.vecteezy.com/system/resources/previews/006/986/082/non_2x/write-document-user-interface-outline-icon-logo-illustration-free-vector.jpg' }
+        ],
         shape: 'O' as TetrisShape,
         status: 'InProgress' as KanbanStatus,
         blockPoints: [],
@@ -246,7 +264,11 @@ const initialTasks: Task[] = [
     {
         id: '5',
         title: 'Deploy Application',
-        skills: ['DevOps', 'AWS', 'CI/CD'],
+        skills: [
+            { name: 'DevOps', imageSrc: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Devops-toolchain.svg/1200px-Devops-toolchain.svg.png' },
+            { name: 'AWS', imageSrc: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Amazon_Web_Services_Logo.svg/1200px-Amazon_Web_Services_Logo.svg.png' },
+            { name: 'CI/CD', imageSrc: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Continuous_Integration_development_practice_diagram.svg/1200px-Continuous_Integration_development_practice_diagram.svg.png' }
+        ],
         shape: 'Z' as TetrisShape,
         status: 'Done' as KanbanStatus,
         blockPoints: [],
@@ -254,7 +276,10 @@ const initialTasks: Task[] = [
     {
         id: '6',
         title: 'Security Review',
-        skills: ['Auth', 'Encryption'],
+        skills: [
+            { name: 'Auth', imageSrc: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Authentication.svg/1200px-Authentication.svg.png' },
+            { name: 'Encryption', imageSrc: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Encryption.svg/1200px-Encryption.svg.png' }
+        ],
         shape: 'J' as TetrisShape,
         status: 'Test' as KanbanStatus,
         blockPoints: [],
@@ -262,11 +287,16 @@ const initialTasks: Task[] = [
     {
         id: '7',
         title: 'Performance Optimization',
-        skills: ['Webpack', 'Code Splitting', 'Lazy Loading', 'Caching'],
+        skills: [
+            { name: 'Webpack', imageSrc: 'https://webpack.js.org/icon-square-big.svg' },
+            { name: 'Code Splitting', imageSrc: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Code_split.svg/1200px-Code_split.svg.png' },
+            { name: 'Lazy Loading', imageSrc: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Lazy_loading_design_pattern.svg/1200px-Lazy_loading_design_pattern.svg.png' },
+            { name: 'Caching', imageSrc: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Cache_computing.svg/1200px-Cache_computing.svg.png' }
+        ],
         shape: 'S' as TetrisShape,
         status: 'Test' as KanbanStatus,
         blockPoints: [],
-    },
+    }
 ].map(task => ({
     ...task,
     blockPoints: calculateBlockPoints(task.shape, task.skills.length)

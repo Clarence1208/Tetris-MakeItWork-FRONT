@@ -130,6 +130,18 @@
     transition: all 0.3s ease;
     animation: blockAppear 0.3s ease forwards;
     animation-delay: calc(var(--index, 0) * 0.05s);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.skill-block img {
+    background-color: rgba(243, 240, 240, 1);
+    border-radius: 4px;
+    width: 70%;
+    height: 70%;
+    object-fit: contain;
+    opacity: 0.7;
 }
 
 /* Empty placeholder for shape completion */
