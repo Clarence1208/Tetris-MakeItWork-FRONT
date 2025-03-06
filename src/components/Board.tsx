@@ -1,7 +1,7 @@
 // Board.tsx
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {DndContext, DragEndEvent, DragOverlay, DragStartEvent} from '@dnd-kit/core';
-import {KanbanBoard, KanbanColumn, KanbanStatus, Task} from '../types';
+import {KanbanBoard, KanbanColumn, KanbanStatus, Task, TetrisShape, Point} from '../types';
 import TetrisBlock from './TetrisBlock';
 import TetrisGrid from './TetrisGrid';
 import './Board.css';
@@ -11,65 +11,258 @@ export const GRID_WIDTH = 10;
 export const GRID_HEIGHT = 12;
 export const CELL_SIZE = 50;
 
+// Helper function to calculate block points for a task
+const calculateBlockPoints = (shape: TetrisShape, skillCount: number): Point[] => {
+    let layout: boolean[][] = [];
+
+    switch (shape) {
+        case 'I': // I shape - horizontal line
+            if (skillCount <= 4) {
+                layout = [Array(skillCount).fill(true)];
+            } else {
+                const fullRows = Math.floor(skillCount / 4);
+                const remainder = skillCount % 4;
+                layout = Array(fullRows).fill(Array(4).fill(true));
+                if (remainder > 0) {
+                    layout.push(Array(remainder).fill(true));
+                }
+            }
+            break;
+
+        case 'L': // L shape
+            switch (skillCount) {
+                case 1:
+                    layout = [[true]];
+                    break;
+                case 2:
+                    layout = [[true], [true]];
+                    break;
+                case 3:
+                    layout = [[true], [true], [true]];
+                    break;
+                case 4:
+                    layout = [[true], [true], [true, true]];
+                    break;
+                default:
+                    layout = [[true], [true], [true, true, true]];
+                    let remaining = skillCount - 5;
+                    let currentRow = 3;
+                    while (remaining > 0 && currentRow < 6) {
+                        layout.push([true, true, true].slice(0, Math.min(3, remaining)));
+                        remaining -= 3;
+                        currentRow++;
+                    }
+            }
+            break;
+
+        case 'J': // J shape - mirrored L
+            switch (skillCount) {
+                case 1:
+                    layout = [[true]];
+                    break;
+                case 2:
+                    layout = [[true], [true]];
+                    break;
+                case 3:
+                    layout = [[true], [true], [true]];
+                    break;
+                case 4:
+                    layout = [[false, true], [false, true], [true, true]];
+                    break;
+                default:
+                    layout = [[false, false, true], [false, false, true], [true, true, true]];
+                    let remaining = skillCount - 5;
+                    let currentRow = 3;
+                    while (remaining > 0 && currentRow < 6) {
+                        layout.push([true, true, true].slice(0, Math.min(3, remaining)));
+                        remaining -= 3;
+                        currentRow++;
+                    }
+            }
+            break;
+
+        case 'O': // O shape
+            const side = Math.ceil(Math.sqrt(skillCount));
+            layout = [];
+            let remaining = skillCount;
+            for (let i = 0; i < side; i++) {
+                const row = [];
+                for (let j = 0; j < side; j++) {
+                    if (remaining > 0) {
+                        row.push(true);
+                        remaining--;
+                    } else {
+                        row.push(false);
+                    }
+                }
+                layout.push(row);
+            }
+            break;
+
+        case 'S': // S shape
+            switch (skillCount) {
+                case 1:
+                    layout = [[true]];
+                    break;
+                case 2:
+                    layout = [[true, true]];
+                    break;
+                case 3:
+                    layout = [[false, true, true], [true]];
+                    break;
+                case 4:
+                    layout = [[false, true, true], [true, true]];
+                    break;
+                default:
+                    layout = [[false, true, true], [true, true, false]];
+                    remaining = skillCount - 5;
+                    let currentRow = 2;
+                    while (remaining > 0 && currentRow < 5) {
+                        if (currentRow % 2 === 0) {
+                            layout.push([true, true, false].slice(0, Math.min(3, remaining)));
+                        } else {
+                            layout.push([false, true, true].slice(0, Math.min(3, remaining)));
+                        }
+                        remaining -= Math.min(3, remaining);
+                        currentRow++;
+                    }
+            }
+            break;
+
+        case 'T': // T shape
+            switch (skillCount) {
+                case 1:
+                    layout = [[true]];
+                    break;
+                case 2:
+                    layout = [[true, true]];
+                    break;
+                case 3:
+                    layout = [[true, true, true]];
+                    break;
+                case 4:
+                    layout = [[true, true, true], [false, true]];
+                    break;
+                default:
+                    layout = [[true, true, true], [false, true, false], [false, true, false]];
+                    remaining = skillCount - 5;
+                    let currentRow = 3;
+                    while (remaining > 0 && currentRow < 6) {
+                        layout.push([false, true, false].slice(0, Math.min(3, remaining)));
+                        remaining -= Math.min(3, remaining);
+                        currentRow++;
+                    }
+            }
+            break;
+
+        case 'Z': // Z shape
+            switch (skillCount) {
+                case 1:
+                    layout = [[true]];
+                    break;
+                case 2:
+                    layout = [[true, true]];
+                    break;
+                case 3:
+                    layout = [[true, true], [false, true]];
+                    break;
+                case 4:
+                    layout = [[true, true, false], [false, true, true]];
+                    break;
+                default:
+                    layout = [[true, true, false], [false, true, true]];
+                    remaining = skillCount - 4;
+                    let currentRow = 2;
+                    while (remaining > 0 && currentRow < 5) {
+                        if (currentRow % 2 === 0) {
+                            layout.push([false, true, true].slice(0, Math.min(3, remaining)));
+                        } else {
+                            layout.push([true, true, false].slice(0, Math.min(3, remaining)));
+                        }
+                        remaining -= Math.min(3, remaining);
+                        currentRow++;
+                    }
+            }
+            break;
+
+        default:
+            layout = [Array(skillCount).fill(true)];
+    }
+
+    // Convert layout to points
+    const points: Point[] = [];
+    layout.forEach((row, rowIndex) => {
+        row.forEach((isVisible, colIndex) => {
+            if (isVisible) {
+                points.push({x: colIndex, y: rowIndex});
+            }
+        });
+    });
+    return points;
+};
+
 // Sample data for initial state
 const initialTasks: Task[] = [
     {
         id: '1',
         title: 'Create UI Components',
         skills: ['React', 'CSS', 'HTML'],
-        shape: 'I',
-        status: 'Todo',
+        shape: 'I' as TetrisShape,
+        status: 'Todo' as KanbanStatus,
         blockPoints: [],
     },
     {
         id: '2',
         title: 'Implement API',
         skills: ['Node.js', 'Express', 'MongoDB', 'REST'],
-        shape: 'L',
-        status: 'Todo',
+        shape: 'L' as TetrisShape,
+        status: 'Todo' as KanbanStatus,
         blockPoints: [],
     },
     {
         id: '3',
         title: 'Design Database',
         skills: ['MongoDB', 'Schema Design'],
-        shape: 'T',
-        status: 'InProgress',
+        shape: 'T' as TetrisShape,
+        status: 'InProgress' as KanbanStatus,
         blockPoints: [],
     },
     {
         id: '4',
         title: 'Write Tests',
         skills: ['Jest', 'Testing', 'Cypress', 'QA', 'Documentation'],
-        shape: 'O',
-        status: 'InProgress',
+        shape: 'O' as TetrisShape,
+        status: 'InProgress' as KanbanStatus,
         blockPoints: [],
     },
     {
         id: '5',
         title: 'Deploy Application',
         skills: ['DevOps', 'AWS', 'CI/CD'],
-        shape: 'Z',
-        status: 'Done',
+        shape: 'Z' as TetrisShape,
+        status: 'Done' as KanbanStatus,
         blockPoints: [],
     },
     {
         id: '6',
         title: 'Security Review',
         skills: ['Auth', 'Encryption'],
-        shape: 'J',
-        status: 'Test',
+        shape: 'J' as TetrisShape,
+        status: 'Test' as KanbanStatus,
         blockPoints: [],
     },
     {
         id: '7',
         title: 'Performance Optimization',
         skills: ['Webpack', 'Code Splitting', 'Lazy Loading', 'Caching'],
-        shape: 'S',
-        status: 'Test',
+        shape: 'S' as TetrisShape,
+        status: 'Test' as KanbanStatus,
         blockPoints: [],
     },
-];
+].map(task => ({
+    ...task,
+    blockPoints: calculateBlockPoints(task.shape, task.skills.length)
+}));
 
 const initialColumns: KanbanColumn[] = [
     {
@@ -151,6 +344,8 @@ const isPositionAvailable = (grid: (string | null)[][], x: number, y: number, ta
         return adjacentOccupied <= 1;
     }
 
+    console.log('CHECKING position for task:', task.id);
+
     // Check all points of the Tetris block
     for (const point of task.blockPoints) {
         const blockX = x + point.x;
@@ -168,6 +363,22 @@ const isPositionAvailable = (grid: (string | null)[][], x: number, y: number, ta
     }
 
     return true;
+};
+
+// Helper function to print the grid state
+const printGrid = (grid: (string | null)[][], message: string = '') => {
+    console.log(`===== GRID STATE ${message ? '- ' + message : ''} =====`);
+    let output = '';
+    for (let y = 0; y < grid.length; y++) {
+        let row = '';
+        for (let x = 0; x < grid[y].length; x++) {
+            const cell = grid[y][x];
+            row += cell ? ` ${cell.padEnd(3)} ` : ' --- ';
+        }
+        output += row + '\n';
+    }
+    console.log(output);
+    console.log('='.repeat(50));
 };
 
 // Improved synchronizeGridWithTasks function with better spacing
@@ -284,6 +495,7 @@ const synchronizeGridWithTasks = (currentBoard: KanbanBoard): KanbanBoard => {
     });
 
     console.log(`Grid synchronization ${allTasksHavePositions ? 'successful' : 'failed'}`);
+    printGrid(newGrid, 'After Synchronization');
     console.log('===== SYNCHRONIZATION COMPLETE =====');
 
     return {
@@ -303,8 +515,9 @@ const Board: React.FC = () => {
     }, []);
 
     // Find the nearest empty cell to a given position
-    const findNearestEmptyCell = (startX: number, startY: number): { x: number, y: number } | null => {
+    const findNearestEmptyCell = (startX: number, startY: number, task: Task): { x: number, y: number } | null => {
         console.log('Finding nearest empty cell to position:', {startX, startY});
+        console.log('Task block points:', task.blockPoints);
 
         // Create a queue for BFS
         const queue: { x: number, y: number, distance: number }[] = [];
@@ -316,13 +529,11 @@ const Board: React.FC = () => {
         visited.add(`${startX},${startY}`);
 
         // Direction vectors for nearby cells - prioritize cardinal directions first
-        // This will improve precision by favoring direct neighbors before diagonals
         const directions = [
             {dx: 0, dy: -1},  // up
             {dx: 1, dy: 0},   // right
             {dx: 0, dy: 1},   // down
             {dx: -1, dy: 0},  // left
-            // Add diagonals last (they'll be explored after cardinal directions at the same distance)
             {dx: 1, dy: -1},  // up-right
             {dx: 1, dy: 1},   // down-right
             {dx: -1, dy: 1},  // down-left
@@ -345,31 +556,31 @@ const Board: React.FC = () => {
             rowRangeEnd = 12;
         }
 
-        // First check if the target cell itself is empty
+        // First check if the target position itself is valid for the entire block
         if (
             startX >= 0 && startX < GRID_WIDTH &&
             startY >= rowRangeStart && startY < rowRangeEnd &&
-            board.grid[startY][startX] === null
+            isPositionAvailable(board.grid, startX, startY, task)
         ) {
-            console.log(`Target cell (${startX}, ${startY}) is already empty, using it directly`);
+            console.log(`Target position (${startX}, ${startY}) is valid for the entire block`);
             return {x: startX, y: startY};
         }
 
         // Store candidate positions with their distances for later sorting
         const candidates: { x: number, y: number, distance: number }[] = [];
 
-        // BFS to find the nearest empty cell
+        // BFS to find the nearest valid position
         while (queue.length > 0) {
             const current = queue.shift();
             if (!current) break;
 
             const {x, y, distance} = current;
 
-            // Check if cell is within bounds and empty
+            // Check if the entire block can fit at this position
             if (
                 x >= 0 && x < GRID_WIDTH &&
                 y >= rowRangeStart && y < rowRangeEnd &&
-                board.grid[y][x] === null
+                isPositionAvailable(board.grid, x, y, task)
             ) {
                 // Add to candidates instead of returning immediately
                 candidates.push({x, y, distance});
@@ -420,11 +631,11 @@ const Board: React.FC = () => {
             });
 
             const bestCandidate = candidates[0];
-            console.log(`Found best empty cell at (${bestCandidate.x}, ${bestCandidate.y}) with distance ${bestCandidate.distance}`);
+            console.log(`Found best valid position at (${bestCandidate.x}, ${bestCandidate.y}) with distance ${bestCandidate.distance}`);
             return {x: bestCandidate.x, y: bestCandidate.y};
         }
 
-        console.error('No empty cell found');
+        console.error('No valid position found for the block');
         return null;
     };
 
@@ -476,7 +687,7 @@ const Board: React.FC = () => {
                         moveTaskToPosition(taskId, x, y);
                     } else {
                         // Try to find a nearby valid position
-                        const emptyCell = findNearestEmptyCell(x, y);
+                        const emptyCell = findNearestEmptyCell(x, y, task);
                         if (emptyCell) {
                             moveTaskToPosition(taskId, emptyCell.x, emptyCell.y);
                         } else {
@@ -496,11 +707,13 @@ const Board: React.FC = () => {
         setActiveTask(null);
     };
 
-    // Updated moveTaskToPosition remains essentially the same as before
+    // Updated moveTaskToPosition
     const moveTaskToPosition = (taskId: string, x: number, y: number) => {
         console.log('===== MOVE TASK TO POSITION =====');
         console.log('Task ID:', taskId);
         console.log('Target position:', {x, y});
+        console.log('Current board state:');
+        printGrid(board.grid, 'Current Board');
 
         // First, find the task by ID
         let taskToMove: Task | undefined;
@@ -520,12 +733,17 @@ const Board: React.FC = () => {
 
         if (!taskToMove) {
             console.error('🔴 Task not found for moving:', taskId);
-            // Attempt grid recovery if task is missing
             setBoard(prev => synchronizeGridWithTasks(prev));
             return;
         }
 
+        // Ensure block points are calculated
+        if (taskToMove.blockPoints.length === 0) {
+            taskToMove.blockPoints = calculateBlockPoints(taskToMove.shape, taskToMove.skills.length);
+        }
+
         console.log('✅ Found task to move:', taskToMove);
+        console.log('Task block points:', taskToMove.blockPoints);
         console.log('Original column:', taskColumnId);
         console.log('Original position in column:', taskIndex);
 
@@ -550,6 +768,9 @@ const Board: React.FC = () => {
         // Important: Use functional update to prevent stale state and double updates
         setBoard(prevBoard => {
             console.log('Updating board state with single functional update');
+            console.log('Previous board grid state:');
+            printGrid(prevBoard.grid, 'Previous Board');
+
             // Create deep copies of columns and grid
             const updatedColumns = prevBoard.columns.map(column => ({
                 ...column,
@@ -559,14 +780,19 @@ const Board: React.FC = () => {
 
             // 1. Remove the task from its old grid cells (if exists)
             if (originalPosition) {
+                console.log('Removing task from old position:', originalPosition);
+                console.log('Task block points:', taskToMove.blockPoints);
                 taskToMove.blockPoints.forEach(point => {
                     const oldX = originalPosition.x + point.x;
                     const oldY = originalPosition.y + point.y;
                     if (oldX >= 0 && oldX < GRID_WIDTH && oldY >= 0 && oldY < GRID_HEIGHT) {
+                        console.log(`Clearing cell at (${oldX}, ${oldY})`);
                         updatedGrid[oldY][oldX] = null;
                     }
                 });
             }
+
+            printGrid(updatedGrid, 'After Removing Old Position');
 
             // 2. Remove task from its original column
             if (taskColumnId) {
@@ -587,13 +813,18 @@ const Board: React.FC = () => {
             }
 
             // 5. Place task in new grid cells
+            console.log('Placing task at new position:', {x, y});
+            console.log('Task block points:', taskToMove.blockPoints);
             taskToMove.blockPoints.forEach(point => {
                 const newX = x + point.x;
                 const newY = y + point.y;
                 if (newX >= 0 && newX < GRID_WIDTH && newY >= 0 && newY < GRID_HEIGHT) {
+                    console.log(`Setting cell at (${newX}, ${newY}) to ${taskId}`);
                     updatedGrid[newY][newX] = taskId;
                 }
             });
+
+            printGrid(updatedGrid, 'After Moving Task');
 
             return {
                 columns: updatedColumns,
