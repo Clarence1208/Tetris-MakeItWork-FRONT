@@ -106,6 +106,7 @@
 .tetris-shape {
     display: grid;
     grid-gap: 0;
+    transition: transform 0.3s ease;
 }
 
 .is-dragging .tetris-shape {
@@ -116,6 +117,7 @@
 .tetris-row {
     display: flex;
     flex-direction: row;
+    transition: transform 0.3s ease;
 }
 
 /* Individual skill block */
@@ -125,7 +127,7 @@
     margin: 1px;
     border-radius: 4px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    transition: all 0.15s ease;
+    transition: all 0.3s ease;
     animation: blockAppear 0.3s ease forwards;
     animation-delay: calc(var(--index, 0) * 0.05s);
 }
