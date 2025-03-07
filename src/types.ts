@@ -1,5 +1,10 @@
 export type TetrisShape = 'I' | 'L' | 'J' | 'O' | 'S' | 'T' | 'Z';
 
+export interface Skill {
+  name: string;
+  imageSrc: string;
+}
+
 export type KanbanStatus = 'Todo' | 'InProgress' | 'Test' | 'Done';
 
 export interface Point {
@@ -9,10 +14,10 @@ export interface Point {
 
 export interface Task {
   id: string;
-  name: string;
+  title: string;
   description: string;
   company: string;
-  skills: string[];
+  skills: Skill[];
   shape: TetrisShape;
   status: KanbanStatus;
   gridPosition?: Point;

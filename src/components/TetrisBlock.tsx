@@ -69,10 +69,14 @@ const TetrisBlock: React.FC<TetrisBlockProps> = ({task}) => {
                                     <div
                                         key={colIndex}
                                         className={`skill-block ${shape}`}
-                                        title={`${task.name} - ${skillName}`}
+                                        title={`${task.title} - ${skillName.name}`}
                                         style={{'--index': blockCount} as React.CSSProperties}
                                         data-point={`${colIndex},${rowIndex}`}
-                                    />
+                                    >
+                                        <img
+                                            src={skillName.imageSrc}
+                                            alt={`${skillName.name} logo`}/>
+                                    </div>
                                 );
                             } else {
                                 return <div key={colIndex} className="empty-block"/>;
@@ -91,7 +95,7 @@ const TetrisBlock: React.FC<TetrisBlockProps> = ({task}) => {
             {...attributes}
             {...listeners}
             className={`tetris-block-container ${task.shape} ${isDragging ? 'is-dragging' : ''}`}
-            title={task.name}
+            title={task.title}
             data-task-id={task.id}
             data-shape={task.shape}
             data-skill-count={task.skills.length}
