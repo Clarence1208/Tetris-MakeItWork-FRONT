@@ -16,7 +16,7 @@ export const LoginForm = () => {
   const onLoginClick = async () => {
     const data = await authService.login(loginData);
     Cookies.set("token", data?.access_token);
-    navigate("/");
+    navigate("/home");
   };
 
   const onInputChange = (key: string, value: string) => {
