@@ -156,7 +156,7 @@ export const TaskModal = ({task}: ModalProps) => {
                     {task.skills?.map((skill) => (
                         <div key={skill.name} className="mt-3">
                             <img className="size-10 rounded-box"
-                                 src={skill.imageSrc}/>
+                                 src={skill.image}/>
                             <div>skill</div>
                         </div>
                     ))}

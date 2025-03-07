@@ -1,11 +1,11 @@
-export type TetrisShape = 'I' | 'L' | 'J' | 'O' | 'S' | 'T' | 'Z';
+export type TetrisShape = "I" | "L" | "J" | "O" | "S" | "T" | "Z";
 
 export interface Skill {
   name: string;
-  imageSrc: string;
+  image: string;
 }
 
-export type KanbanStatus = 'Todo' | 'InProgress' | 'Test' | 'Done';
+export type KanbanStatus = "Todo" | "InProgress" | "Test" | "Done";
 
 export interface Point {
   x: number;
@@ -40,4 +40,4 @@ export interface KanbanBoard {
 export type User = {
   id: string;
   name: string;
-}
+};
