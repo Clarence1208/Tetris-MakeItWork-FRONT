@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Modal } from "../../components/modal/Modal";
 import { SkillService } from "../../services/skillService/SkillService";
 import { SkillCard } from "../../components/skillCard/SkillCard";
@@ -10,31 +10,31 @@ const formFields = [
     placeholder: "Ex: React",
   },
   {
-    key: "imageSrc",
+    key: "image",
     legend: "Skill image",
     placeholder: "Ex: http://image-url...",
   },
 ];
 
 export const Skills = () => {
-  const [skills, setSkills] = useState<{ name: string; imageSrc: string }[]>(
-    []
-  );
+  const [open, setOpen] = useState(false);
+  const [skills, setSkills] = useState<{ name: string; image: string }[]>([]);
 
   const [skillFormData, setSkillFormData] = useState({
     name: "",
-    imageSrc: "",
+    image: "",
   });
 
   const skillService = useMemo(() => new SkillService(), []);
 
-  useEffect(() => {
-    const getSkills = async () => {
-      const skills = await skillService.getSkills();
-      setSkills(skills);
-    };
-    getSkills();
+  const getSkills = useCallback(async () => {
+    const skills = await skillService.getSkills();
+    setSkills(skills);
   }, [skillService]);
+
+  useEffect(() => {
+    getSkills();
+  }, [getSkills]);
 
   const handleChange = (key: string, value: string) => {
     setSkillFormData((prev) => ({
@@ -43,18 +43,28 @@ export const Skills = () => {
     }));
   };
 
-  const handleSubmitSkillForm = async () => {
+  const handleSubmitSkillForm = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
     await skillService.createSkill(skillFormData);
+    setOpen(false);
+    await getSkills();
   };
 
   return (
     <div className="flex">
       <div>
-        {skills.map(({ name, imageSrc }) => (
-          <SkillCard title={name} imageSrc={imageSrc} />
+        {skills.map(({ name, image }) => (
+          <SkillCard title={name} image={image} />
         ))}
       </div>
-      <Modal buttonText="Create skill" dialogTitle="Create skill">
+      <Modal
+        buttonText="Create skill"
+        dialogTitle="Create skill"
+        open={open}
+        setOpen={setOpen}
+      >
         <form>
           <div className="join join-vertical">
             {formFields.map(({ key, legend, placeholder }) => (
@@ -71,6 +81,9 @@ export const Skills = () => {
             ))}
             <button
               type="submit"
+              style={{
+                color: "white",
+              }}
               className="btn btn-default my-4"
               onClick={handleSubmitSkillForm}
             >

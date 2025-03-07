@@ -1,7 +1,7 @@
 import './BlockForm.css'
-import { ChangeEvent, FormEvent, useState, useRef, useEffect } from "react";
+import {ChangeEvent, FormEvent, useEffect, useRef, useState} from "react";
 import CustomError from "../CustomError.tsx";
-import { addTaskToBoard } from "../../components/Board.tsx";
+import {addTaskToBoard} from "../../components/Board.tsx";
 
 // Mapping of skill names to their logo URLs for preview
 const skillLogos: Record<string, string> = {
@@ -40,7 +40,7 @@ const initialTaskFormData: TaskFormData = {
 }
 
 //fixme
-const skillsAvailables : Skill[] = [
+const skillsAvailables: Skill[] = [
     {id: 0, name: "None"},
     {id: 1, name: "Nest"},
     {id: 2, name: "PHP"},
@@ -60,9 +60,15 @@ export default function BlockForm() {
     const [taskFormData, setTaskFormData] = useState<TaskFormData>(initialTaskFormData);
     const [skills] = useState<Skill[]>(skillsAvailables);
     const [error, setError] = useState("");
+    const [openError, setOpenError] = useState<boolean>(false);
+
+    function handleClose() {
+        setOpenError(false);
+    }
+
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
-    
+
     // Handle clicking outside the dropdown to close it
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
@@ -70,13 +76,13 @@ export default function BlockForm() {
                 setDropdownOpen(false);
             }
         }
-        
+
         document.addEventListener("mousedown", handleClickOutside);
         return () => {
             document.removeEventListener("mousedown", handleClickOutside);
         };
     }, []);
-    
+
     // Keep the API call function but don't use it (as per requirements)
     async function postTask(formData: TaskFormData) {
         try {
@@ -91,11 +97,13 @@ export default function BlockForm() {
 
             if (!response.ok) {
                 setError('Failed to create the task :' + response.statusText);
+                setOpenError(true);
             }
             const data: any = await response.json();
             return data;
-        }catch (error) {
+        } catch (error) {
             setError('Failed to create the task' + error);
+            setOpenError(true);
             return {};
         }
     }
@@ -110,20 +118,20 @@ export default function BlockForm() {
         }));
     }
 
-    async function handleSubmitTaskForm(event: FormEvent){
+    async function handleSubmitTaskForm(event: FormEvent) {
         event.preventDefault();
-        
+
         // Validate required fields
         if (!taskFormData.name.trim()) {
             setError('Task name is required');
             return;
         }
-        
+
         if (!taskFormData.description.trim()) {
             setError('Task description is required');
             return;
         }
-        
+
         // assert at least the two first skills are filled
         if (taskFormData.skills.length < 2) {
             setError('Please select at least two skills');
@@ -132,11 +140,11 @@ export default function BlockForm() {
 
         try {
             const addedTask = addTaskToBoard({
-                title: taskFormData.name,
+                name: taskFormData.name,
                 description: taskFormData.description,
                 skills: taskFormData.skills.filter(skill => skill !== "None"),
             });
-            
+
             if (addedTask) {
                 console.log('Task added to Tetris board:', addedTask);
                 // Reset form fields
@@ -152,9 +160,9 @@ export default function BlockForm() {
 
     function handleSkillCheckboxChange(e: ChangeEvent<HTMLInputElement>, skillName: string) {
         if (skillName === "None") return;
-        
+
         const checked = e.target.checked;
-        
+
         setTaskFormData(prevState => {
             if (checked && prevState.skills.length >= MAX_SKILLS_ALLOWED) {
                 // Prevent the checkbox from being checked by setting it back to unchecked
@@ -162,16 +170,16 @@ export default function BlockForm() {
                 setError(`Maximum of ${MAX_SKILLS_ALLOWED} skills allowed`);
                 return prevState;
             }
-            
+
             // Clear error when successfully updating skills
             setError("");
-            
+
             if (checked) {
                 // Add the skill if it's not already in the list
                 return {
                     ...prevState,
-                    skills: prevState.skills.includes(skillName) 
-                        ? prevState.skills 
+                    skills: prevState.skills.includes(skillName)
+                        ? prevState.skills
                         : [...prevState.skills, skillName]
                 };
             } else {
@@ -182,97 +190,58 @@ export default function BlockForm() {
             }
         });
     }
-    
+
     // MultiSelect Dropdown Component for Skills
     const MultiSelectDropdown = () => {
         const remainingSkills = MAX_SKILLS_ALLOWED - taskFormData.skills.length;
         const isAtMaxSkills = taskFormData.skills.length >= MAX_SKILLS_ALLOWED;
-        
+
         return (
-            <div className="multi-select-dropdown" ref={dropdownRef}>
-                <button 
+            <div className="multi-select-dropdown relative" ref={dropdownRef}>
+                <button
                     type="button"
-                    className="dropdown-btn"
+                    className="input input-bordered w-full flex justify-between items-center cursor-pointer bg-base-200"
                     onClick={() => setDropdownOpen(!dropdownOpen)}
-                    style={{
-                        width: '100%',
-                        padding: '10px 12px',
-                        backgroundColor: '#f1f5f9',
-                        borderRadius: '6px',
-                        border: '1px solid #cbd5e1',
-                        textAlign: 'left',
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                        cursor: 'pointer',
-                    }}
                 >
                     <span>
-                        {taskFormData.skills.length > 0 
-                            ? `${taskFormData.skills.length}/${MAX_SKILLS_ALLOWED} skills selected` 
+                        {taskFormData.skills.length > 0
+                            ? `${taskFormData.skills.length}/${MAX_SKILLS_ALLOWED} skills selected`
                             : `Select skills (max ${MAX_SKILLS_ALLOWED})`}
                     </span>
                     <span>{dropdownOpen ? '▲' : '▼'}</span>
                 </button>
-                
+
                 {dropdownOpen && (
-                    <div 
-                        className="dropdown-content" 
-                        style={{
-                            position: 'absolute',
-                            width: '100%',
-                            maxHeight: '300px',
-                            overflowY: 'auto',
-                            backgroundColor: 'white',
-                            border: '1px solid #cbd5e1',
-                            borderRadius: '6px',
-                            marginTop: '5px',
-                            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-                            zIndex: 10,
-                        }}
+                    <div
+                        className="dropdown-content absolute w-full max-h-[300px] overflow-y-auto bg-base-100 border border-base-300 rounded-md mt-1 shadow-md z-10"
                     >
                         {isAtMaxSkills && (
-                            <div style={{ 
-                                padding: '8px 10px', 
-                                color: 'white', 
-                                backgroundColor: '#ef4444',
-                                borderRadius: '6px 6px 0 0',
-                                fontSize: '14px'
-                            }}>
+                            <div className="p-2 text-white bg-error rounded-t-md text-sm">
                                 Maximum {MAX_SKILLS_ALLOWED} skills limit reached
                             </div>
                         )}
-                        <ul style={{ padding: '10px', margin: 0, listStyle: 'none' }}>
+                        <ul className="p-2 m-0 list-none">
                             {skills
                                 .filter(skill => skill.name !== "None")
                                 .map(skill => {
                                     const isSelected = taskFormData.skills.includes(skill.name);
                                     const isDisabled = isAtMaxSkills && !isSelected;
-                                    
+
                                     return (
-                                        <li key={skill.id} style={{ padding: '8px 0' }}>
-                                            <label style={{ 
-                                                display: 'flex', 
-                                                alignItems: 'center',
-                                                cursor: isDisabled ? 'not-allowed' : 'pointer',
-                                                opacity: isDisabled ? 0.5 : 1,
-                                            }}>
-                                                <input 
+                                        <li key={skill.id} className="py-2">
+                                            <label
+                                                className={`flex items-center ${isDisabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}`}>
+                                                <input
                                                     type="checkbox"
+                                                    className="checkbox checkbox-primary mr-2"
                                                     checked={isSelected}
                                                     onChange={(e) => handleSkillCheckboxChange(e, skill.name)}
                                                     disabled={isDisabled}
-                                                    style={{ marginRight: '10px' }}
                                                 />
-                                                <img 
-                                                    src={getSkillLogo(skill.name)} 
+                                                <img
+                                                    src={getSkillLogo(skill.name)}
                                                     alt={skill.name}
-                                                    style={{ 
-                                                        width: '20px', 
-                                                        height: '20px', 
-                                                        marginRight: '8px',
-                                                        objectFit: 'contain'
-                                                    }}
+                                                    className="w-5 h-5 mr-2 object-contain"
                                                 />
                                                 {skill.name}
                                             </label>
@@ -292,15 +261,15 @@ export default function BlockForm() {
         if (taskFormData.skills.length === 0) {
             return null;
         }
-        
+
         return (
             <div className="selected-skills mt-3">
                 <h3 className="text-sm font-bold mb-1">Selected Skills:</h3>
                 <div className="flex flex-wrap gap-2">
                     {taskFormData.skills.map((skill, index) => (
-                        <span 
-                            key={index} 
-                            className="badge badge-primary badge-lg"
+                        <span
+                            key={index}
+                            className="badge badge-primary badge-lg cursor-pointer flex items-center px-2 py-1"
                             onClick={() => {
                                 // Remove skill when clicked
                                 setTaskFormData(prev => ({
@@ -309,22 +278,11 @@ export default function BlockForm() {
                                 }));
                                 setError(""); // Clear any error when removing skills
                             }}
-                            style={{ 
-                                cursor: 'pointer',
-                                display: 'flex',
-                                alignItems: 'center',
-                                padding: '4px 8px'
-                            }}
                         >
-                            <img 
-                                src={getSkillLogo(skill)} 
+                            <img
+                                src={getSkillLogo(skill)}
                                 alt={skill}
-                                style={{ 
-                                    width: '16px', 
-                                    height: '16px', 
-                                    marginRight: '4px',
-                                    objectFit: 'contain'
-                                }}
+                                className="w-4 h-4 mr-1 object-contain"
                             />
                             {skill} ✕
                         </span>
@@ -341,16 +299,16 @@ export default function BlockForm() {
 
     return (
         <div className="blockForm">
-            {error && <CustomError message={error} />}
+            {openError && <CustomError message={error} handleClose={handleClose}/>}
             <h2>Create a task</h2>
-            <form>
-                <div className="join join-vertical">
+            <form className="w-full px-20">
+                <div className="join join-vertical w-full">
                     <fieldset className="fieldset my-1">
                         <legend className="fieldset-legend">Task name</legend>
-                        <input 
-                            type="text" 
-                            className="input" 
-                            placeholder="Ex: Migrate to React18" 
+                        <input
+                            type="text"
+                            className="input w-full"
+                            placeholder="Ex: Migrate to React18"
                             required
                             name="name"
                             value={taskFormData.name}
@@ -360,10 +318,10 @@ export default function BlockForm() {
 
                     <fieldset className="fieldset my-1">
                         <legend className="fieldset-legend">Task description</legend>
-                        <input 
-                            type="text" 
-                            className="input" 
-                            placeholder="Ex: Update the lib version" 
+                        <input
+                            type="text"
+                            className="input w-full"
+                            placeholder="Ex: Update the lib version"
                             required
                             name="description"
                             value={taskFormData.description}
@@ -373,9 +331,9 @@ export default function BlockForm() {
 
                     <fieldset className="fieldset my-1">
                         <legend className="fieldset-legend">Company linked</legend>
-                        <input 
-                            type="text" 
-                            className="input" 
+                        <input
+                            type="text"
+                            className="input w-full"
                             placeholder="Ex: Update the lib version"
                             required
                             name="company"
@@ -386,14 +344,15 @@ export default function BlockForm() {
                     </fieldset>
 
                     <fieldset className="fieldset my-1">
-                        <legend className="fieldset-legend">Skills (Multi-select)</legend>
-                        <div style={{ position: 'relative' }}>
-                            <MultiSelectDropdown />
+                        <legend className="fieldset-legend">Skills</legend>
+                        <div style={{position: 'relative'}}>
+                            <MultiSelectDropdown/>
                         </div>
                         {renderSelectedSkills()}
                     </fieldset>
 
-                    <button type="submit" className="btn btn-default my-4" onClick={handleSubmitTaskForm}>Create task</button>
+                    <button type="submit" className="btn btn-default my-4" onClick={handleSubmitTaskForm}>Create task
+                    </button>
                 </div>
             </form>
         </div>

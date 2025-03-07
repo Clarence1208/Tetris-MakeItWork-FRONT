@@ -2,6 +2,11 @@ import { Api } from "../Api";
 
 const BASE_PATH = "skills";
 
+type CreateSkills = {
+  name: string;
+  image: string;
+};
+
 export class SkillService {
   api: Api;
   constructor({ api = new Api() } = {}) {
