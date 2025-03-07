@@ -8,7 +8,7 @@ export default function Header() {
   return (
     <div className="navbar bg-base-100 shadow-sm">
       <div className="flex-1">
-        <a href="/" className="btn btn-ghost text-xl">
+        <a href="/home" className="btn btn-ghost text-xl">
           Tetris - make it works
         </a>
       </div>
@@ -57,7 +57,7 @@ export default function Header() {
             className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
           >
             <li>
-              <a className="justify-between">Profile</a>
+              <a className="justify-between" href="/profil">Profile</a>
             </li>
             <li>
               <a>Settings</a>

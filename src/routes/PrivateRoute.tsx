@@ -11,6 +11,7 @@ import Cookies from "js-cookie";
 import { ReactNode } from "react";
 import { Auth } from "../pages/auth/Auth.tsx";
 import App from "../App.tsx";
+import Profil from "../pages/profil/Profil.tsx";
 
 export const AuthRoute = ({ children }: { children: ReactNode }) => {
   const isLogged = Cookies.get("token");

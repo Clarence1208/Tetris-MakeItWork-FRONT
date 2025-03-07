@@ -9,7 +9,10 @@ export default function Profil() {
         []
     );
     const [boards, setBoards] = useState<{ name: string }[]>(
-        []
+        [
+            {name: "Hackaton1"},
+            {name: "Hackaton2"},
+        ]
     );
     const [user, setUsers] = useState<{ name: string, email: string }>(
     );
@@ -32,7 +35,7 @@ export default function Profil() {
         const boards = await boardsService.getMyBoards();
         setBoards(boards);
     };
-    getBoards();
+    //getBoards();
     }, [boardsService]);
 
     useEffect(() => {
@@ -43,7 +46,7 @@ export default function Profil() {
     getUser();
     }, [userServide]);
 
-
+    
 
     const [competencePage, setCompetencePage] = useState(0);
     const [boardPage, setBoardPage] = useState(0);
