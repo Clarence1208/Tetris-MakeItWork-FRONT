@@ -1,6 +1,6 @@
 import { Api } from "../Api";
 
-const BASE_PATH = "boards";
+const BASE_PATH = "boards/mine";
 
 export class BoardsService {
   api: Api;
@@ -8,7 +8,7 @@ export class BoardsService {
     this.api = api;
   }
 
-  async getBoards() {
+  async getMyBoards() {
     return this.api.request({
       path: BASE_PATH,
       method: "GET",

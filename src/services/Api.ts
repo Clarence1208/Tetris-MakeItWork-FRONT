@@ -16,6 +16,7 @@ export class Api {
   }) {
     try {
       const token = Cookies.get("clientToken");
+      //const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5Mzk3ZmY5My1iMzNmLTQ1MzItOTg1Zi01MjFiNzRhMThmZDciLCJuYW1lIjoiQXVyZWxpZW4iLCJlbWFpbCI6ImFAZ21haWwuY29tIiwiaWF0IjoxNzQxMzM3MDYxLCJleHAiOjQ4OTcwOTcwNjF9.dLvDVsOneZ6S_mSy_wbJmERYuh2LfnH7Xoz_eEJ4DaQ";
 
       const apiUrl = import.meta.env.VITE_API_URL;
 

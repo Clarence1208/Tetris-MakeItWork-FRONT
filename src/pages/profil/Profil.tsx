@@ -11,7 +11,7 @@ export default function Profil() {
     const [boards, setBoards] = useState<{ name: string }[]>(
         []
     );
-    const [user] = useState<{ name: string; email: string }>(
+    const [user, setUsers] = useState<{ name: string, email: string }>(
     );
     
     const skillService = useMemo(() => new SkillService(), []);
@@ -29,7 +29,7 @@ export default function Profil() {
 
     useEffect(() => {
     const getBoards = async () => {
-        const boards = await boardsService.getBoards();
+        const boards = await boardsService.getMyBoards();
         setBoards(boards);
     };
     getBoards();
@@ -37,8 +37,8 @@ export default function Profil() {
 
     useEffect(() => {
     const getUser = async () => {
-        const boards = await userServide.getUser();
-        setBoards(boards);
+        const user = await userServide.getCurrentUser();
+        setUsers(user);
     };
     getUser();
     }, [userServide]);
@@ -114,7 +114,7 @@ export default function Profil() {
                     {displayedBoards.map((bloc, index) => (
                         <div key={index}>
                             <p>{bloc.name}</p>
-                            {/* <p>Nombre de tâches : {bloc..toString()}</p> */}
+                            <p>Nombre de tâches : {bloc.toString()}</p>
                         </div>
                     ))}
 

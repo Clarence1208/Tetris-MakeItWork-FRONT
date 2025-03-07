@@ -8,9 +8,9 @@ export class UserService {
     this.api = api;
   }
 
-  async getUser() {
+  async getCurrentUser() {
     return this.api.request({
-      path: BASE_PATH,
+      path: BASE_PATH + "/current-user",
       method: "GET",
     });
   }
