@@ -12,8 +12,9 @@
 .tetris-grid {
   display: flex;
   flex-direction: column;
-  width: 100%;
+  width: calc(100% - 40px); /* Adjust width to account for labels */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  margin-left: 40px; /* Add margin to align with labels */
 }
 
 .tetris-grid-row {
@@ -90,27 +91,34 @@
   left: 0;
   top: 0;
   height: 100%;
-  width: 100%;
+  width: 40px; /* Fixed width for labels */
   pointer-events: none;
+  display: flex;
+  flex-direction: column;
 }
 
 .tetris-grid-section-label {
   position: absolute;
   left: 0;
-  padding: 8px 16px;
+  writing-mode: vertical-lr;
+  transform: rotate(180deg);
+  padding: 16px 4px;
   background-color: rgba(0, 0, 0, 0.7);
   color: white;
   font-weight: bold;
   border-radius: 0 4px 4px 0;
-  font-size: 1rem;
+  font-size: 0.9rem;
   transition: all 0.3s ease;
+  height: 25%; /* Each label takes 1/4 of the height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
 }
 
 .tetris-grid-section-label.active {
   background-color: rgba(0, 0, 0, 0.9);
-  left: 8px;
-  padding: 10px 18px;
-  font-size: 1.1rem;
+  font-size: 1rem;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
