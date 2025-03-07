@@ -15,7 +15,7 @@ export class Api {
     contentType?: string;
   }) {
     try {
-      const token = Cookies.get("clientToken");
+      const token = Cookies.get("token");
 
       const apiUrl = import.meta.env.VITE_API_URL;
 
