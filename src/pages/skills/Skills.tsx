@@ -81,6 +81,9 @@ export const Skills = () => {
             ))}
             <button
               type="submit"
+              style={{
+                color: "white",
+              }}
               className="btn btn-default my-4"
               onClick={handleSubmitSkillForm}
             >
