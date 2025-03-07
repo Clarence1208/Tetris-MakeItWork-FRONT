@@ -102,6 +102,23 @@
     z-index: 100;
 }
 
+/* When modal is open, indicate that block is not draggable */
+.tetris-block-container.modal-open {
+    cursor: default !important;
+    pointer-events: none;
+    opacity: 0.8;
+}
+
+.tetris-block-container.modal-open .tetris-shape {
+    pointer-events: auto;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5);
+    cursor: default !important;
+}
+
+.tetris-block-container.modal-open * {
+    cursor: default !important;
+}
+
 /* Tetris shape container */
 .tetris-shape {
     display: grid;

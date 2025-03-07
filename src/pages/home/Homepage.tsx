@@ -9,15 +9,15 @@ import {TetrisShape, KanbanStatus} from "../../types.ts";
 import {RiNotification4Fill} from "react-icons/ri";
 
 const initFlagNotifications: FlagNotification = {
-  id: "ifr",
-  senderId : {
-      id: "ek",
-      name: "Loriane"
-  },
-  recipientId : {
-      id: "ek",
-      name: "Aurélien"
-  },
+    id: "ifr",
+    senderId: {
+        id: "ek",
+        name: "Loriane"
+    },
+    recipientId: {
+        id: "ek",
+        name: "Aurélien"
+    },
     isActive: true,
     taskId: {
         id: '1',
@@ -31,14 +31,17 @@ const initFlagNotifications: FlagNotification = {
     },
 
 }
+
 function Homepage() {
     const [error, setError] = useState<string>("");
     const [notifications, setNotifications] = useState<FlagNotification[]>([initFlagNotifications, initFlagNotifications]);
     const [openError, setOpenError] = useState(false);
+
     function handleClose() {
         setOpenError(false);
     }
-    async function getNotifications():Promise<FlagNotification[]> {
+
+    async function getNotifications(): Promise<FlagNotification[]> {
         try {
             const API_URL = import.meta.env.VITE_API_URL;
             const response = await fetch(`${API_URL}/notifications`, {
@@ -52,9 +55,9 @@ function Homepage() {
             }
             const data: any = await response.json();
             return data;
-        }catch (error) {
+        } catch (error) {
             setError('Failed to get notifications' + error);
-           setOpenError(true);
+            setOpenError(true);
             return [];
         }
     }
@@ -69,25 +72,19 @@ function Homepage() {
 
     return (
         <div className="page-container">
-            {openError && <CustomError message={error} handleClose={handleClose} /> }
+            {openError && <CustomError message={error} handleClose={handleClose}/>}
             <main className="main-layout">
                 {/* Colonne gauche */}
                 <div className="left-col">
                     <section className="board-personnel">
-                            <div className="tetris-board bg-base-100">
-                                <ErrorBoundary>
-                                    <Board />
-                                </ErrorBoundary>
-                                <BlockForm />
-                            </div>
-
-                    <div className="clear-actions">
-                      <button className="btn btn-soft btn-error">Clear Bas</button>
-                      <button className="btn btn-soft btn-error ">Clear Milieu</button>
-                      <button className="btn btn-soft btn-error">Clear Haut</button>
-                    </div>
-          </section>
-        </div>
+                        <div className="tetris-board bg-base-100">
+                            <ErrorBoundary>
+                                <Board title="My Tetris Kanban Board" />
+                            </ErrorBoundary>
+                            <BlockForm/>
+                        </div>
+                    </section>
+                </div>
 
                 <aside className="right-col bg-base-100">
                     <div className="flex flex-row justify-between">
@@ -95,15 +92,15 @@ function Homepage() {
                         <RiNotification4Fill/>
                     </div>
 
-                    <NotificationsList notifications={notifications} />
+                    <NotificationsList notifications={notifications}/>
                 </aside>
             </main>
 
-          {/* Footer */}
-          <footer className="footer">
-              <p>Footer – Informations complémentaires</p>
-          </footer>
-      </div>
+            {/* Footer */}
+            <footer className="footer">
+                <p>Footer – Informations complémentaires</p>
+            </footer>
+        </div>
     );
 }
 

@@ -15,3 +15,7 @@ a {
   padding: 2em;
 }
 
+.main-layout {
+  background-color: hsl(212, 18%, 14%, 0.96);
+}
+

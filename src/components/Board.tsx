@@ -727,7 +727,7 @@ const checkCompletedRows = (grid: (string | null)[][]): number[] => {
     return completedRows;
 };
 
-const Board = (): React.ReactElement => {
+const Board = ({ title = "Tetris Kanban Board" }: { title?: string }): React.ReactElement => {
     const [board, setBoard] = useState<KanbanBoard>(initialBoard);
     const [activeTask, setActiveTask] = useState<Task | null>(null);
     const [showHiddenRows, setShowHiddenRows] = useState<boolean>(false);
@@ -1803,7 +1803,7 @@ const Board = (): React.ReactElement => {
             onDragEnd={handleDragEnd}
         >
             <div className="mx-auto p-4">
-                <h2 className="text-3xl font-bold mb-8 text-center">Tetris Kanban Board</h2>
+                <h2 className="text-3xl font-bold mb-8 text-center">{title}</h2>
                 <div
                     className="tetris-board-container"
                     ref={gridRef}
