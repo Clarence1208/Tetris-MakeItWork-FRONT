@@ -4,7 +4,7 @@ const BASE_PATH = "skills";
 
 type CreateSkills = {
   name: string;
-  imageSrc: string;
+  image: string;
 };
 
 export class SkillService {

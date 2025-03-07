@@ -74,7 +74,7 @@ const TetrisBlock: React.FC<TetrisBlockProps> = ({task}) => {
                                         data-point={`${colIndex},${rowIndex}`}
                                     >
                                         <img
-                                            src={skillName.imageSrc}
+                                            src={skillName.image}
                                             alt={`${skillName.name} logo`}/>
                                     </div>
                                 );
