@@ -12,11 +12,11 @@ type NotificationResponse = {
 }
 
 type HelpersProps = {
-    taskId: string;
+    task: Task;
 }
-export const PotentialHelpersList = ({taskId}: HelpersProps) => {
+export const PotentialHelpersList = ({task}: HelpersProps) => {
 
-    const [mightHelpPeople, setMightHelpPeople] = useState<User[]>([{id: "a1b2", name: "Hollow Knight"}, {id: "a1b2", name: "Boollow Knight"}]);
+    const [mightHelpPeople, setMightHelpPeople] = useState<User[]>([{id: "9397ff93-b33f-4532-985f-521b74a18fd7", name: "feruhi"}]);
     const [error, setError] = useState("");
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [openErrpr, setOpenErrpr] = useState<boolean>(false);
@@ -24,15 +24,18 @@ export const PotentialHelpersList = ({taskId}: HelpersProps) => {
     async function getMightHelpPeople() {
         setIsLoading(true);
         const API_URL = import.meta.env.VITE_API_URL;
-        const token = Cookies.get("clientToken");
-
+        const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5Mzk3ZmY5My1iMzNmLTQ1MzItOTg1Zi01MjFiNzRhMThmZDciLCJuYW1lIjoiQXVyZWxpZW4iLCJlbWFpbCI6ImFAZ21haWwuY29tIiwiaWF0IjoxNzQxMzM3MDYxLCJleHAiOjQ4OTcwOTcwNjF9.dLvDVsOneZ6S_mSy_wbJmERYuh2LfnH7Xoz_eEJ4DaQ";
 
         try{
-            const response =await fetch(`${API_URL}/users/recommended?taskId=`, {
+            const response =await fetch(`${API_URL}/users/skills-weight`, {
                 method: 'GET',
                 headers: {
                     Authorization: `Bearer ${token}`
-                }
+                },
+                body: JSON.stringify({
+                    skillId: task.skills[0].id,
+                    limit: 3,
+                })
             });
 
             if(!response.ok){
@@ -54,12 +57,14 @@ export const PotentialHelpersList = ({taskId}: HelpersProps) => {
         }
     }
 
-    async function askForHelp(recipientId: string, taskId: string): Promise<NotificationResponse | null>{
+    async function askForHelp(recipientId: string, task: Task): Promise<NotificationResponse | null>{
         const API_URL = import.meta.env.VITE_API_URL;
-        const token = Cookies.get("clientToken");
+        //const token = Cookies.get("clientToken");
+        const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5Mzk3ZmY5My1iMzNmLTQ1MzItOTg1Zi01MjFiNzRhMThmZDciLCJuYW1lIjoiQXVyZWxpZW4iLCJlbWFpbCI6ImFAZ21haWwuY29tIiwiaWF0IjoxNzQxMzM3MDYxLCJleHAiOjQ4OTcwOTcwNjF9.dLvDVsOneZ6S_mSy_wbJmERYuh2LfnH7Xoz_eEJ4DaQ";
+
         const body = {
-            "taksId": taskId,
-            "recipientId": recipientId,
+            "taksId": "28adf9ea-169a-4017-8548-77f6ad233495",
+            "recipientId": "9397ff93-b33f-4532-985f-521b74a18fd7",
         }
         try{
             const response =await fetch(`${API_URL}/notification`, {
@@ -94,7 +99,7 @@ export const PotentialHelpersList = ({taskId}: HelpersProps) => {
     }
 
     useEffect(() => {
-        getMightHelpPeople().then((data) => setMightHelpPeople(data));
+        //getMightHelpPeople().then((data) => setMightHelpPeople(data));
     }, [])
 
     if (isLoading) {
@@ -110,7 +115,7 @@ export const PotentialHelpersList = ({taskId}: HelpersProps) => {
     if ( !isLoading && mightHelpPeople.length === 0) {
         return (
             <div className="mt-4 flex flex-col justify-center items-center gap-5">
-                <CustomError message={error} handleClose={handleClose} />
+                {openErrpr &&  <CustomError message={error} handleClose={handleClose} />}
                 <img className="w-60" src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExazd0eDJpZThiaDRyaG45ZWZiNHh6MjN4a2FjNm45dGw5aDd3MTdtcyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/H6cmWzp6LGFvqjidB7/giphy.gif"/>
                 <span>You are alone</span>
             </div>
@@ -118,10 +123,10 @@ export const PotentialHelpersList = ({taskId}: HelpersProps) => {
     }
     return (
         <div className="mt-4">
-            <CustomError message={error} handleClose={handleClose} />
+            {openErrpr && <CustomError message={error} handleClose={handleClose} />}
             {/*<button className="btn btn-primary">Ask for someone's help</button>*/}
             {mightHelpPeople.map((user) => (
-                <div className="indicator m-4" onClick={()=>askForHelp(user.id, taskId)}>
+                <div className="indicator m-4" onClick={()=>askForHelp(user.id, task)}>
                     <span className="indicator-item badge badge-xs badge-secondary">
                         <div className="indicator-item indicator-bottom">
                         </div>
@@ -166,7 +171,7 @@ export const TaskModal = ({task}: ModalProps) => {
 
                     <h4 className="font-bold text-lg">People who might help: </h4>
                     <p className="text-xs">Clicking on a user avatar will send them a notification (yes, you can spam them).</p>
-                    <PotentialHelpersList taskId={task.id} />
+                    <PotentialHelpersList task={task} />
 
                     <div className="modal-action">
                         <form method="dialog">

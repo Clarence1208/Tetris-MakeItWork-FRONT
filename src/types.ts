@@ -1,6 +1,7 @@
 export type TetrisShape = "I" | "L" | "J" | "O" | "S" | "T" | "Z";
 
 export interface Skill {
+  id?: number;
   name: string;
   image: string;
 }
