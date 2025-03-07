@@ -2,7 +2,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Error404 from "../pages/error404/Error404.tsx";
 import Homepage from "../pages/home/Homepage.tsx";
 import { Skills } from "../pages/skills/Skills.tsx";
-import Dashboard from "../pages/dashboard/dashboard.tsx";
+import Dashboard from "../pages/dashboard/Dashboard.tsx";
 
 const router = createBrowserRouter([
   { path: "/home", element: <Homepage /> },
