@@ -21,14 +21,22 @@ const initialTaskFormData: TaskFormData = {
 }
 
 //fixme
-const initialSkills : Skill[] = [
+const skillsAvailables : Skill[] = [
+    {id: 0, name: "None"},
     {id: 1, name: "Nest"},
     {id: 2, name: "PHP"},
+    {id: 3, name: "React"},
+    {id: 4, name: "Angular"},
+    {id: 5, name: "Vue"},
+    {id: 6, name: "Java"},
+    {id: 7, name: "Spring"},
+    {id: 8, name: "Node"},
+    {id: 9, name: "C#"},
 ]
 export default function  BlockForm() {
 
     const [taskFormData, setTaskFormData] = useState<TaskFormData>(initialTaskFormData);
-    const [skills, setSkills] = useState<Skill[]>(initialSkills);
+    const [skills, setSkills] = useState<Skill[]>(skillsAvailables);
     const [error, setError] = useState("");
     async function postTask(formData: TaskFormData) {
         try {
@@ -64,6 +72,12 @@ export default function  BlockForm() {
     }
 
     async function handleSubmitTaskForm(event: FormEvent){
+        // assert at least the two first skills are filled
+        if (taskFormData.skills.length < 2) {
+            setError('Please select at least two skills');
+            return;
+        }
+
         event.preventDefault();
             try {
                 // Call the API to create the card
@@ -144,6 +158,28 @@ export default function  BlockForm() {
                     </fieldset>
                     <fieldset className="fieldset my-1">
                         <legend className="fieldset-legend">Skill 3</legend>
+                        <select defaultValue="None" className="select select-info" onChange={handleSelectSkills}>
+                            <option disabled={true}>Choose a skill linked</option>
+                            {skills.map(skill => (
+                                <option key={skill.id} value={skill.name}>
+                                    {skill.name}
+                                </option>
+                            ))}
+                        </select>
+                    </fieldset>
+                    <fieldset className="fieldset my-1">
+                        <legend className="fieldset-legend">Skill 4</legend>
+                        <select defaultValue="None" className="select select-info" onChange={handleSelectSkills}>
+                            <option disabled={true}>Choose a skill linked</option>
+                            {skills.map(skill => (
+                                <option key={skill.id} value={skill.name}>
+                                    {skill.name}
+                                </option>
+                            ))}
+                        </select>
+                    </fieldset>
+                    <fieldset className="fieldset my-1">
+                        <legend className="fieldset-legend">Skill 5</legend>
                         <select defaultValue="None" className="select select-info" onChange={handleSelectSkills}>
                             <option disabled={true}>Choose a skill linked</option>
                             {skills.map(skill => (
