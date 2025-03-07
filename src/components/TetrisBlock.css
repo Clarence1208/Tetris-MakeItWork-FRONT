@@ -175,7 +175,7 @@
 }
 
 .skill-block.L {
-    background: linear-gradient(135deg, #f2994a 0%, #f2c94c 100%);
+    background: linear-gradient(135deg, #f2994a 0%, #F2C94CFF 80%);
 }
 
 .skill-block.J {
@@ -191,7 +191,7 @@
 }
 
 .skill-block.T {
-    background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+    background: linear-gradient(135deg, #fa709a 0%, #8A055FFF 100%);
 }
 
 .skill-block.Z {

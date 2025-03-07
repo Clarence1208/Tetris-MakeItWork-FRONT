@@ -358,7 +358,7 @@ const initialTasks: Task[] = [
             },
             {
                 name: 'CI/CD',
-                image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Continuous_Integration_development_practice_diagram.svg/1200px-Continuous_Integration_development_practice_diagram.svg.png'
+                image: 'https://chezsoi.org/lucas/blog/images/2021/07/gitlab-ci.png'
             }
         ],
         shape: 'Z' as TetrisShape,
@@ -373,11 +373,11 @@ const initialTasks: Task[] = [
         skills: [
             {
                 name: 'Auth',
-                image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Authentication.svg/1200px-Authentication.svg.png'
+                image: 'https://miro.medium.com/v2/resize:fit:1014/1*e2x6biTeTNWeMc-C4aPogw.jpeg'
             },
             {
                 name: 'Encryption',
-                image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Encryption.svg/1200px-Encryption.svg.png'
+                image: 'https://w7.pngwing.com/pngs/632/401/png-transparent-search-encrypt-encryption-web-search-engine-google-chrome-web-browser-world-wide-web-blue-logo-internet.png'
             }
         ],
         shape: 'J' as TetrisShape,
@@ -390,18 +390,21 @@ const initialTasks: Task[] = [
         id: '7',
         name: 'Performance Optimization',
         skills: [
-            {name: 'Webpack', image: 'https://webpack.js.org/icon-square-big.svg'},
             {
-                name: 'Code Splitting',
-                image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Code_split.svg/1200px-Code_split.svg.png'
+                name: 'Java',
+                image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSOigUZ54UcABT5hi1EaNQ9jne9NF14N1DKw&s'
             },
             {
-                name: 'Lazy Loading',
-                image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Lazy_loading_design_pattern.svg/1200px-Lazy_loading_design_pattern.svg.png'
+                name: 'Spring',
+                image: 'https://spring.io/img/spring.svg'
             },
             {
-                name: 'Caching',
-                image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Cache_computing.svg/1200px-Cache_computing.svg.png'
+                name: 'SQL',
+                image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Sql_data_base_with_logo.png/800px-Sql_data_base_with_logo.png'
+            },
+            {
+                name: 'Jenkins',
+                image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Jenkins_logo.svg/1200px-Jenkins_logo.svg.png'
             }
         ],
         shape: 'S' as TetrisShape,
