@@ -19,6 +19,48 @@ export const GRID_WIDTH = 10;
 export const GRID_HEIGHT = 12;
 export const CELL_SIZE = 50;
 
+// Mapping of skill names to their logo URLs
+const skillLogos: Record<string, string> = {
+    "React": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1200px-React-icon.svg.png",
+    "Angular": "https://angular.io/assets/images/logos/angular/angular.svg",
+    "Vue": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Vue.js_Logo_2.svg/1200px-Vue.js_Logo_2.svg.png",
+    "Node": "https://w7.pngwing.com/pngs/232/470/png-transparent-circle-js-node-node-js-programming-round-icon-popular-services-brands-vol-icon-thumbnail.png",
+    "Node.js": "https://w7.pngwing.com/pngs/232/470/png-transparent-circle-js-node-node-js-programming-round-icon-popular-services-brands-vol-icon-thumbnail.png",
+    "PHP": "https://www.php.net/images/logos/new-php-logo.svg",
+    "Java": "https://dev.java/assets/images/java-logo-vert-blk.png",
+    "Spring": "https://spring.io/img/spring.svg",
+    "Nest": "https://nestjs.com/img/logo-small.svg",
+    "C#": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/C_Sharp_wordmark.svg/800px-C_Sharp_wordmark.svg.png",
+    "CSS": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/CSS3_logo_and_wordmark.svg/1200px-CSS3_logo_and_wordmark.svg.png",
+    "HTML": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/HTML5_logo_and_wordmark.svg/1200px-HTML5_logo_and_wordmark.svg.png",
+    "JavaScript": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/JavaScript-logo.png/800px-JavaScript-logo.png",
+    "TypeScript": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Typescript_logo_2020.svg/1200px-Typescript_logo_2020.svg.png",
+    "Python": "https://www.python.org/static/community_logos/python-logo.png",
+    "MongoDB": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/MongoDB_Logo.svg/1200px-MongoDB_Logo.svg.png",
+    "SQL": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Sql_data_base_with_logo.png/800px-Sql_data_base_with_logo.png",
+    "Express": "https://expressjs.com/images/express-facebook-share.png",
+    "REST": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTmJoxiAXVIxedd5WnxL3yepJpACK2lmCSl9w&s"
+};
+
+// Function to get a logo URL for a skill, with fallback to placeholder
+const getSkillLogoUrl = (skillName: string): string => {
+    // Try to match exactly
+    if (skillLogos[skillName]) {
+        return skillLogos[skillName];
+    }
+    
+    // Try case-insensitive match
+    const lowercaseSkillName = skillName.toLowerCase();
+    for (const [key, url] of Object.entries(skillLogos)) {
+        if (key.toLowerCase() === lowercaseSkillName) {
+            return url;
+        }
+    }
+    
+    // Fallback to placeholder with skill name
+    return `https://via.placeholder.com/50?text=${encodeURIComponent(skillName)}`;
+};
+
 // Helper function to calculate block points for a task
 const calculateBlockPoints = (shape: TetrisShape, skillCount: number): Point[] => {
     let layout: boolean[][] = [];
@@ -704,6 +746,15 @@ const Board = (): React.ReactElement => {
     // Initialize task positions on first render
     useEffect(() => {
         setBoard(prev => synchronizeGridWithTasks(prev));
+    }, []);
+
+    useEffect(() => {
+        // Register the addNewTask function to be accessible from outside
+        setBoardAddTaskFunction(addNewTask);
+        
+        return () => {
+            setBoardAddTaskFunction(null);
+        };
     }, []);
 
     // Handle click for rotation
@@ -1655,6 +1706,82 @@ const Board = (): React.ReactElement => {
         });
     };
 
+    // Function to add a new task to the board
+    const addNewTask = (taskData: { 
+        title: string;
+        description?: string; 
+        skills: string[];
+        shape?: TetrisShape; 
+    }) => {
+        // Determine shape based on number of skills if not explicitly provided
+        let shape = taskData.shape;
+        
+        if (!shape) {
+            const skillCount = taskData.skills.length;
+            
+            // Map skill count to appropriate shapes
+            const shapesBySkillCount: Record<number, TetrisShape[]> = {
+                1: ['I', 'L', 'J', 'O', 'S', 'T', 'Z'], // All shapes can have 1 skill
+                2: ['I', 'L', 'J', 'O', 'S', 'T', 'Z'], // All shapes can have 2 skills
+                3: ['I', 'L', 'J', 'O', 'S', 'T', 'Z'], // All shapes can have 3 skills
+                4: ['I', 'L', 'J', 'O', 'S', 'T', 'Z'], // All shapes can have 4 skills
+                5: ['L', 'J', 'S', 'T', 'Z'],           // These shapes can have 5 skills
+                6: ['L', 'J', 'S', 'T', 'Z'],           // These shapes can have 6 skills
+                7: ['L', 'J']                           // Only L and J can have 7 skills
+            };
+            
+            // Default to 'I' for high skill counts
+            const validShapes = shapesBySkillCount[Math.min(skillCount, 7)] || ['I'];
+            
+            // Pick a random shape from valid options
+            shape = validShapes[Math.floor(Math.random() * validShapes.length)] as TetrisShape;
+            
+            console.log(`Determined shape ${shape} for skill count ${skillCount}`);
+        }
+        
+        // Create skills array with appropriate logo URLs
+        const skills = taskData.skills.map(skillName => ({
+            name: skillName,
+            imageSrc: getSkillLogoUrl(skillName)
+        }));
+        
+        // Create a new task with a unique ID
+        const newTask: Task = {
+            id: `task-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
+            title: taskData.title,
+            skills,
+            shape,
+            status: 'Todo' as KanbanStatus,
+            blockPoints: calculateBlockPoints(shape, skills.length),
+        };
+        
+        setBoard(prevBoard => {
+            const updatedColumns = prevBoard.columns.map(column => {
+                if (column.id === 'Todo') {
+                    return {
+                        ...column,
+                        tasks: [...column.tasks, newTask]
+                    };
+                }
+                return column;
+            });
+            
+            return {
+                columns: updatedColumns,
+                grid: prevBoard.grid
+            };
+        });
+        
+        // Log the addition of the new task
+        console.log('Added new task to the board:', newTask);
+        
+        setTimeout(() => {
+            setBoard(prev => synchronizeGridWithTasks(prev));
+        }, 0);
+        
+        return newTask;
+    };
+
     return (
         <DndContext
             sensors={sensors}
@@ -1685,7 +1812,7 @@ const Board = (): React.ReactElement => {
                         {renderTasks()}
                     </div>
 
-                    <button
+                        <button
                         className="toggle-hidden-rows-button"
                         onClick={toggleHiddenRows}
                         style={{
@@ -1707,7 +1834,7 @@ const Board = (): React.ReactElement => {
                         }}
                     >
                         {showHiddenRows ? '▲ Hide Completed Rows' : '▼ Show Completed Rows'}
-                    </button>
+                        </button>
                 </div>
                 <DragOverlay>
                     {activeTask ? (
@@ -1721,4 +1848,31 @@ const Board = (): React.ReactElement => {
     );
 };
 
-export default Board;
+// Export addNewTask function and the Board component
+export { Board as default, initialTasks };
+
+// Create an addTaskToBoard function to be used by other components
+let boardAddTaskFunction: ((taskData: { 
+    title: string; 
+    description?: string; 
+    skills: string[]; 
+    shape?: TetrisShape; 
+}) => Task) | null = null;
+
+export const setBoardAddTaskFunction = (fn: typeof boardAddTaskFunction) => {
+    boardAddTaskFunction = fn;
+};
+
+export const addTaskToBoard = (taskData: { 
+    title: string; 
+    description?: string; 
+    skills: string[]; 
+    shape?: TetrisShape; 
+}) => {
+    if (boardAddTaskFunction) {
+        return boardAddTaskFunction(taskData);
+    } else {
+        console.error('Board component not mounted yet. Cannot add task.');
+        return null;
+    }
+};
