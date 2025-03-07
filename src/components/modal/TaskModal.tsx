@@ -48,6 +48,7 @@ export const PotentialHelpersList = ({taskId}: HelpersProps) => {
             setError("Error: " + error);
             setOpenErrpr(true)
             console.log(error);
+            return []
         }finally {
             setIsLoading(false);
         }
@@ -95,7 +96,7 @@ export const PotentialHelpersList = ({taskId}: HelpersProps) => {
     if (isLoading) {
         return (
             <div className="flex w-60 gap-4 mt-4">
-                <CustomError message={error} />
+                <CustomError message={error} handleClose={() => setOpenErrpr(false)} />
                 <div className="skeleton h-16 w-16 shrink-0 rounded-full"></div>
                 <div className="skeleton h-16 w-16 shrink-0 rounded-full"></div>
                 <div className="skeleton h-16 w-16 shrink-0 rounded-full"></div>
@@ -105,7 +106,7 @@ export const PotentialHelpersList = ({taskId}: HelpersProps) => {
     if ( !isLoading && mightHelpPeople.length === 0) {
         return (
             <div className="mt-4 flex flex-col justify-center items-center gap-5">
-                <CustomError message={error} />
+                <CustomError message={error} handleClose={() => setOpenErrpr(false)} />
                 <img className="w-60" src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExazd0eDJpZThiaDRyaG45ZWZiNHh6MjN4a2FjNm45dGw5aDd3MTdtcyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/H6cmWzp6LGFvqjidB7/giphy.gif"/>
                 <span>You are alone</span>
             </div>
@@ -113,7 +114,7 @@ export const PotentialHelpersList = ({taskId}: HelpersProps) => {
     }
     return (
         <div className="mt-4">
-            <CustomError message={error} />
+            <CustomError message={error} handleClose={() => setOpenErrpr(false)} />
             {/*<button className="btn btn-primary">Ask for someone's help</button>*/}
             {mightHelpPeople.map((user) => (
                 <div className="indicator m-4" onClick={()=>askForHelp(user.id, taskId)}>
