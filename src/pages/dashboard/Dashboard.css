@@ -1,0 +1,63 @@
+/* ----- Page globale ----- */
+.dashboard-page {
+    min-height: 100vh;
+    background-color: #f9fafb;
+  }
+  
+  /* ----- Section du haut (création & recherche) ----- */
+  .dashboard-top-section {
+    /* Tu peux personnaliser si besoin */
+  }
+  
+  /* ----- Cartes générales ----- */
+  .dashboard-card {
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  .dashboard-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  /* ----- Boutons personnalisés ----- */
+  .dashboard-btn-create,
+  .dashboard-btn-search,
+  .dashboard-btn-add,
+  .dashboard-btn-save {
+    border-radius: 0.5rem;
+    text-transform: none;
+  }
+  
+  .btn-wide {
+    width: 100%;
+    max-width: 200px;
+  }
+  
+  /* ----- Inputs personnalisés ----- */
+  .dashboard-input,
+  .dashboard-select {
+    border-radius: 0.5rem;
+  }
+  
+  /* ----- Zone config ----- */
+  .dashboard-config {
+    /* carte de configuration */
+  }
+  
+  .dashboard-visibility {
+    /* section de visibilité */
+  }
+  
+  .dashboard-invite {
+    /* section ajouter une personne */
+  }
+  
+  /* ----- Footer ----- */
+  .dashboard-footer {
+    padding-top: 1rem;
+    border-top: 1px solid #e5e7eb;
+    margin-top: 2rem;
+  }
+  
+  /* ----- Responsive adjustments ----- */
+  /* (optionnel, déjà pris en charge par les classes Tailwind) */
+  
