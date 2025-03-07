@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {useSortable} from '@dnd-kit/sortable';
 import {CSS} from '@dnd-kit/utilities';
 import {Task} from '../types';
@@ -10,9 +10,12 @@ interface TetrisBlockProps {
 }
 
 const TetrisBlock: React.FC<TetrisBlockProps> = ({task}) => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const blockRef = useRef<HTMLDivElement>(null);
+
     const {
         attributes,
-        listeners,
+        listeners: originalListeners,
         setNodeRef,
         transform,
         transition,
@@ -22,8 +25,10 @@ const TetrisBlock: React.FC<TetrisBlockProps> = ({task}) => {
         data: {
             task,
             type: 'tetris-block',
-        }
+        },
+        disabled: isModalOpen
     });
+
     // Log when dragging state changes
     useEffect(() => {
         if (isDragging) {
@@ -31,9 +36,36 @@ const TetrisBlock: React.FC<TetrisBlockProps> = ({task}) => {
         }
     }, [isDragging, task.id, task.name]);
 
+    useEffect(() => {
+        const modalElement = document.getElementById(`task-modal-${task.name}`) as HTMLDialogElement;
+        if (modalElement) {
+            const handleClose = () => {
+                setIsModalOpen(false);
+            };
+
+            modalElement.addEventListener('close', handleClose);
+            return () => {
+                modalElement.removeEventListener('close', handleClose);
+            };
+        }
+    }, [task.name]);
+
     const style = {
         transform: CSS.Transform.toString(transform),
         transition,
+    };
+
+    const handleDoubleClick = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        e.preventDefault();
+
+        if (typeof document !== "undefined") {
+            const modal = document.getElementById(`task-modal-${task.name}`) as HTMLDialogElement;
+            if (modal) {
+                setIsModalOpen(true);
+                modal.showModal();
+            }
+        }
     };
 
     // Generate blocks based on the shape and number of skills
@@ -52,13 +84,11 @@ const TetrisBlock: React.FC<TetrisBlockProps> = ({task}) => {
         // Convert the layout to actual blocks
         let blockCount = 0;
         return (
-            <div className={`tetris-shape ${shape}`} onClick={() => {
-                if (typeof document !== "undefined") {
-                    const modal =  document.getElementById(`task-modal-${task.name}`) as HTMLDialogElement
-                    modal.showModal();
-                }
-            }}>
-                <TaskModal task={task} />
+            <div
+                className={`tetris-shape ${shape}`}
+                onDoubleClick={handleDoubleClick}
+            >
+                <TaskModal task={task}/>
                 {layout.map((row, rowIndex) => (
                     <div key={rowIndex} className="tetris-row">
                         {row.map((isVisible, colIndex) => {
@@ -90,15 +120,24 @@ const TetrisBlock: React.FC<TetrisBlockProps> = ({task}) => {
 
     return (
         <div
-            ref={setNodeRef}
-            style={style}
+            ref={node => {
+                setNodeRef(node);
+                if (blockRef.current !== node) {
+                    blockRef.current = node;
+                }
+            }}
+            style={{
+                ...style,
+                cursor: isModalOpen ? 'default' : 'grab'
+            }}
             {...attributes}
-            {...listeners}
-            className={`tetris-block-container ${task.shape} ${isDragging ? 'is-dragging' : ''}`}
+            {...(isModalOpen ? {} : originalListeners)}
+            className={`tetris-block-container ${task.shape} ${isDragging ? 'is-dragging' : ''} ${isModalOpen ? 'modal-open' : ''}`}
             title={task.name}
             data-task-id={task.id}
             data-shape={task.shape}
             data-skill-count={task.skills.length}
+            data-modal-open={isModalOpen}
         >
             {renderSkillBlocks()}
         </div>
