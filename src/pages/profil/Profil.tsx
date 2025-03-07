@@ -4,6 +4,7 @@ import { SkillService } from "../../services/skillService/SkillService";
 import { BoardsService } from "../../services/boardService/BoardsService";
 
 
+
 // type Competence = {
 //     name: string;
 //     level: number;
@@ -41,42 +42,6 @@ export default function Profil() {
     };
     getBoards();
     }, [boardsService]);
-    // const competences: Competence[] = [
-    //     { name: "React", level: 3 },
-    //     { name: "TypeScript", level: 2 },
-    //     { name: "Node.js", level: 3 },
-    //     { name: "MongoDB", level: 2 },
-    //     { name: "GraphQL", level: 1 },
-    //     { name: "Docker", level: 2 },
-    //     { name: "Angular", level: 3 },
-    //     { name: "Vue.js", level: 2 },
-    //     { name: "Java", level: 3 },
-    //     { name: "Python", level: 2 },
-    //     { name: "C#", level: 1 },
-    //     { name: "Kotlin", level: 2 },
-    //     { name: "Swift", level: 2 },
-    //     { name: "PHP", level: 2 },
-    //     { name: "Ruby", level: 1 },
-    // ];    
-
-    // const blocs: Boards[] = [
-    //     { name: "Projet A", nbTaches: 4 },
-    //     { name: "Projet B", nbTaches: 7 },
-    //     { name: "Projet C", nbTaches: 5 },
-    //     { name: "Projet D", nbTaches: 6 },
-    //     { name: "Projet E", nbTaches: 4 },
-    //     { name: "Projet F", nbTaches: 3 },
-    //     { name: "Projet G", nbTaches: 8 },
-    //     { name: "Projet H", nbTaches: 2 },
-    //     { name: "Projet I", nbTaches: 6 },
-    //     { name: "Projet J", nbTaches: 4 },
-    //     { name: "Projet K", nbTaches: 7 },
-    //     { name: "Projet L", nbTaches: 5 },
-    //     { name: "Projet M", nbTaches: 6 },
-    //     { name: "Projet N", nbTaches: 4 },
-    //     { name: "Projet O", nbTaches: 3 },
-    //     { name: "Projet P", nbTaches: 8 },
-    // ];   
 
     const [competencePage, setCompetencePage] = useState(0);
     const [boardPage, setBoardPage] = useState(0);
