@@ -14,7 +14,9 @@ export interface Point {
 
 export interface Task {
   id: string;
-  title: string;
+  name: string;
+  description: string;
+  company: string;
   skills: Skill[];
   shape: TetrisShape;
   status: KanbanStatus;
@@ -33,4 +35,9 @@ export interface KanbanColumn {
 export interface KanbanBoard {
   columns: KanbanColumn[];
   grid: (string | null)[][];
-} 
+}
+
+export type User = {
+  id: string;
+  name: string;
+}

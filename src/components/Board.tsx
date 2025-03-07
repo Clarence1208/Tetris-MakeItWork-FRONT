@@ -48,7 +48,7 @@ const getSkillLogoUrl = (skillName: string): string => {
     if (skillLogos[skillName]) {
         return skillLogos[skillName];
     }
-    
+
     // Try case-insensitive match
     const lowercaseSkillName = skillName.toLowerCase();
     for (const [key, url] of Object.entries(skillLogos)) {
@@ -56,7 +56,7 @@ const getSkillLogoUrl = (skillName: string): string => {
             return url;
         }
     }
-    
+
     // Fallback to placeholder with skill name
     return `https://via.placeholder.com/50?text=${encodeURIComponent(skillName)}`;
 };
@@ -255,7 +255,7 @@ const calculateBlockPoints = (shape: TetrisShape, skillCount: number): Point[] =
 const initialTasks: Task[] = [
     {
         id: '1',
-        title: 'Create UI Components',
+        name: 'Create UI Components',
         skills: [
             {
                 name: 'React',
@@ -273,10 +273,12 @@ const initialTasks: Task[] = [
         shape: 'I' as TetrisShape,
         status: 'Todo' as KanbanStatus,
         blockPoints: [],
+        description: "Tests",
+        company: "Intern"
     },
     {
         id: '2',
-        title: 'Implement API',
+        name: 'Implement API',
         skills: [
             {
                 name: 'Node.js',
@@ -295,10 +297,12 @@ const initialTasks: Task[] = [
         shape: 'L' as TetrisShape,
         status: 'Todo' as KanbanStatus,
         blockPoints: [],
+        description: "Tests",
+        company: "Intern"
     },
     {
         id: '3',
-        title: 'Design Database',
+        name: 'Design Database',
         skills: [
             {
                 name: 'MongoDB',
@@ -312,10 +316,12 @@ const initialTasks: Task[] = [
         shape: 'T' as TetrisShape,
         status: 'InProgress' as KanbanStatus,
         blockPoints: [],
+        description: "Tests",
+        company: "Intern"
     },
     {
         id: '4',
-        title: 'Write Tests',
+        name: 'Write Tests',
         skills: [
             {name: 'Jest', imageSrc: 'https://jestjs.io/img/jest.png'},
             {
@@ -335,10 +341,12 @@ const initialTasks: Task[] = [
         shape: 'O' as TetrisShape,
         status: 'InProgress' as KanbanStatus,
         blockPoints: [],
+        description: "Tests",
+        company: "Intern"
     },
     {
         id: '5',
-        title: 'Deploy Application',
+        name: 'Deploy Application',
         skills: [
             {
                 name: 'DevOps',
@@ -356,10 +364,12 @@ const initialTasks: Task[] = [
         shape: 'Z' as TetrisShape,
         status: 'Done' as KanbanStatus,
         blockPoints: [],
+        description: "Tests",
+        company: "Intern"
     },
     {
         id: '6',
-        title: 'Security Review',
+        name: 'Security Review',
         skills: [
             {
                 name: 'Auth',
@@ -373,10 +383,12 @@ const initialTasks: Task[] = [
         shape: 'J' as TetrisShape,
         status: 'Test' as KanbanStatus,
         blockPoints: [],
+        description: "Test",
+        company: "Tests"
     },
     {
         id: '7',
-        title: 'Performance Optimization',
+        name: 'Performance Optimization',
         skills: [
             {name: 'Webpack', imageSrc: 'https://webpack.js.org/icon-square-big.svg'},
             {
@@ -395,7 +407,9 @@ const initialTasks: Task[] = [
         shape: 'S' as TetrisShape,
         status: 'Test' as KanbanStatus,
         blockPoints: [],
-    }
+        description: "Test",
+        company: "Tests"
+    },
 ].map(task => ({
     ...task,
     blockPoints: calculateBlockPoints(task.shape, task.skills.length)
@@ -404,28 +418,28 @@ const initialTasks: Task[] = [
 const initialColumns: KanbanColumn[] = [
     {
         id: 'Todo' as KanbanStatus,
-        title: 'To Do',
+        name: 'To Do',
         tasks: initialTasks.filter(task => task.status === 'Todo'),
         gridRowStart: 0,
         gridRowEnd: 3,
     },
     {
         id: 'InProgress' as KanbanStatus,
-        title: 'In Progress',
+        name: 'In Progress',
         tasks: initialTasks.filter(task => task.status === 'InProgress'),
         gridRowStart: 3,
         gridRowEnd: 6,
     },
     {
         id: 'Test' as KanbanStatus,
-        title: 'Testing',
+        name: 'Testing',
         tasks: initialTasks.filter(task => task.status === 'Test'),
         gridRowStart: 6,
         gridRowEnd: 9,
     },
     {
         id: 'Done' as KanbanStatus,
-        title: 'Done',
+        name: 'Done',
         tasks: initialTasks.filter(task => task.status === 'Done'),
         gridRowStart: 9,
         gridRowEnd: 12,
@@ -751,7 +765,7 @@ const Board = (): React.ReactElement => {
     useEffect(() => {
         // Register the addNewTask function to be accessible from outside
         setBoardAddTaskFunction(addNewTask);
-        
+
         return () => {
             setBoardAddTaskFunction(null);
         };
@@ -1073,7 +1087,7 @@ const Board = (): React.ReactElement => {
                     // Create a minimal task that matches the Task type
                     originalTask = {
                         id: cell.taskId,
-                        title: 'Completed Task',
+                        name: 'Completed Task',
                         status: 'Done',
                         shape: cell.shape,
                         skills: [],
@@ -1707,18 +1721,18 @@ const Board = (): React.ReactElement => {
     };
 
     // Function to add a new task to the board
-    const addNewTask = (taskData: { 
-        title: string;
-        description?: string; 
+    const addNewTask = (taskData: {
+        name: string;
+        description?: string;
         skills: string[];
-        shape?: TetrisShape; 
+        shape?: TetrisShape;
     }) => {
         // Determine shape based on number of skills if not explicitly provided
         let shape = taskData.shape;
-        
+
         if (!shape) {
             const skillCount = taskData.skills.length;
-            
+
             // Map skill count to appropriate shapes
             const shapesBySkillCount: Record<number, TetrisShape[]> = {
                 1: ['I', 'L', 'J', 'O', 'S', 'T', 'Z'], // All shapes can have 1 skill
@@ -1729,32 +1743,32 @@ const Board = (): React.ReactElement => {
                 6: ['L', 'J', 'S', 'T', 'Z'],           // These shapes can have 6 skills
                 7: ['L', 'J']                           // Only L and J can have 7 skills
             };
-            
+
             // Default to 'I' for high skill counts
             const validShapes = shapesBySkillCount[Math.min(skillCount, 7)] || ['I'];
-            
+
             // Pick a random shape from valid options
             shape = validShapes[Math.floor(Math.random() * validShapes.length)] as TetrisShape;
-            
+
             console.log(`Determined shape ${shape} for skill count ${skillCount}`);
         }
-        
+
         // Create skills array with appropriate logo URLs
         const skills = taskData.skills.map(skillName => ({
             name: skillName,
             imageSrc: getSkillLogoUrl(skillName)
         }));
-        
+
         // Create a new task with a unique ID
         const newTask: Task = {
             id: `task-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
-            title: taskData.title,
+            name: taskData.name,
             skills,
             shape,
             status: 'Todo' as KanbanStatus,
             blockPoints: calculateBlockPoints(shape, skills.length),
         };
-        
+
         setBoard(prevBoard => {
             const updatedColumns = prevBoard.columns.map(column => {
                 if (column.id === 'Todo') {
@@ -1765,20 +1779,20 @@ const Board = (): React.ReactElement => {
                 }
                 return column;
             });
-            
+
             return {
                 columns: updatedColumns,
                 grid: prevBoard.grid
             };
         });
-        
+
         // Log the addition of the new task
         console.log('Added new task to the board:', newTask);
-        
+
         setTimeout(() => {
             setBoard(prev => synchronizeGridWithTasks(prev));
         }, 0);
-        
+
         return newTask;
     };
 
@@ -1788,7 +1802,7 @@ const Board = (): React.ReactElement => {
             onDragStart={handleDragStart}
             onDragEnd={handleDragEnd}
         >
-            <div className="container mx-auto p-4">
+            <div className="mx-auto p-4">
                 <h2 className="text-3xl font-bold mb-8 text-center">Tetris Kanban Board</h2>
                 <div
                     className="tetris-board-container"
@@ -1852,22 +1866,22 @@ const Board = (): React.ReactElement => {
 export { Board as default, initialTasks };
 
 // Create an addTaskToBoard function to be used by other components
-let boardAddTaskFunction: ((taskData: { 
-    title: string; 
-    description?: string; 
-    skills: string[]; 
-    shape?: TetrisShape; 
+let boardAddTaskFunction: ((taskData: {
+    name: string;
+    description?: string;
+    skills: string[];
+    shape?: TetrisShape;
 }) => Task) | null = null;
 
 export const setBoardAddTaskFunction = (fn: typeof boardAddTaskFunction) => {
     boardAddTaskFunction = fn;
 };
 
-export const addTaskToBoard = (taskData: { 
-    title: string; 
-    description?: string; 
-    skills: string[]; 
-    shape?: TetrisShape; 
+export const addTaskToBoard = (taskData: {
+    name: string;
+    description?: string;
+    skills: string[];
+    shape?: TetrisShape;
 }) => {
     if (boardAddTaskFunction) {
         return boardAddTaskFunction(taskData);
