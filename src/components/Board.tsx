@@ -418,28 +418,28 @@ const initialTasks: Task[] = [
 const initialColumns: KanbanColumn[] = [
     {
         id: 'Todo' as KanbanStatus,
-        title: 'To Do',
+        name: 'To Do',
         tasks: initialTasks.filter(task => task.status === 'Todo'),
         gridRowStart: 0,
         gridRowEnd: 3,
     },
     {
         id: 'InProgress' as KanbanStatus,
-        title: 'In Progress',
+        name: 'In Progress',
         tasks: initialTasks.filter(task => task.status === 'InProgress'),
         gridRowStart: 3,
         gridRowEnd: 6,
     },
     {
         id: 'Test' as KanbanStatus,
-        title: 'Testing',
+        name: 'Testing',
         tasks: initialTasks.filter(task => task.status === 'Test'),
         gridRowStart: 6,
         gridRowEnd: 9,
     },
     {
         id: 'Done' as KanbanStatus,
-        title: 'Done',
+        name: 'Done',
         tasks: initialTasks.filter(task => task.status === 'Done'),
         gridRowStart: 9,
         gridRowEnd: 12,
@@ -1087,7 +1087,7 @@ const Board = (): React.ReactElement => {
                     // Create a minimal task that matches the Task type
                     originalTask = {
                         id: cell.taskId,
-                        title: 'Completed Task',
+                        name: 'Completed Task',
                         status: 'Done',
                         shape: cell.shape,
                         skills: [],
@@ -1722,7 +1722,7 @@ const Board = (): React.ReactElement => {
 
     // Function to add a new task to the board
     const addNewTask = (taskData: {
-        title: string;
+        name: string;
         description?: string;
         skills: string[];
         shape?: TetrisShape;
@@ -1762,7 +1762,7 @@ const Board = (): React.ReactElement => {
         // Create a new task with a unique ID
         const newTask: Task = {
             id: `task-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
-            title: taskData.title,
+            name: taskData.name,
             skills,
             shape,
             status: 'Todo' as KanbanStatus,
@@ -1867,7 +1867,7 @@ export { Board as default, initialTasks };
 
 // Create an addTaskToBoard function to be used by other components
 let boardAddTaskFunction: ((taskData: {
-    title: string;
+    name: string;
     description?: string;
     skills: string[];
     shape?: TetrisShape;
@@ -1878,7 +1878,7 @@ export const setBoardAddTaskFunction = (fn: typeof boardAddTaskFunction) => {
 };
 
 export const addTaskToBoard = (taskData: {
-    title: string;
+    name: string;
     description?: string;
     skills: string[];
     shape?: TetrisShape;

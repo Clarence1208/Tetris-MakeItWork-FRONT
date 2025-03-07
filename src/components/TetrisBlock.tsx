@@ -54,7 +54,7 @@ const TetrisBlock: React.FC<TetrisBlockProps> = ({task}) => {
         return (
             <div className={`tetris-shape ${shape}`} onClick={() => {
                 if (typeof document !== "undefined") {
-                    const modal =  document.getElementById('task-modal') as HTMLDialogElement
+                    const modal =  document.getElementById(`task-modal-${task.name}`) as HTMLDialogElement
                     modal.showModal();
                 }
             }}>
