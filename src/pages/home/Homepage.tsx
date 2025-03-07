@@ -6,6 +6,7 @@ import ErrorBoundary from "../../components/ErrorBoundary.tsx";
 import Board from "../../components/Board.tsx";
 import BlockForm from "../../components/blockForm/BlockForm.tsx";
 import {TetrisShape, KanbanStatus} from "../../types.ts";
+import {RiNotification4Fill} from "react-icons/ri";
 
 const initFlagNotifications: FlagNotification = {
   id: "ifr",
@@ -66,36 +67,35 @@ function Homepage() {
         );*/
     }, [])
 
-  return (
-      <div className="page-container">
-          {openError && <CustomError message={error} handleClose={handleClose} /> }
-          <main className="main-layout">
-              {/* Colonne gauche */}
-              <div className="left-col">
-                  <section className="board-personnel">
-                      <h2 className="section-title">Board personnel</h2>
+    return (
+        <div className="page-container">
+            {openError && <CustomError message={error} handleClose={handleClose} /> }
+            <main className="main-layout">
+                {/* Colonne gauche */}
+                <div className="left-col">
+                    <section className="board-personnel">
+                            <div className="tetris-board bg-base-100">
+                                <ErrorBoundary>
+                                    <Board />
+                                </ErrorBoundary>
+                                <BlockForm />
+                            </div>
 
-                      {/* Row : Tetris Board (gauche) + colonne (Bouton aide + Compétences) */}
-                      <div className="board-row">
-                          <div className="tetris-board">
-                              <ErrorBoundary>
-                                  <Board/>
-                              </ErrorBoundary>
-                          </div>
-                          <BlockForm />
-                      </div>
-
-            <div className="clear-actions">
-              <button className="btn btn-soft btn-error">Clear Bas</button>
-              <button className="btn btn-soft btn-error ">Clear Milieu</button>
-              <button className="btn btn-soft btn-error">Clear Haut</button>
-            </div>
+                    <div className="clear-actions">
+                      <button className="btn btn-soft btn-error">Clear Bas</button>
+                      <button className="btn btn-soft btn-error ">Clear Milieu</button>
+                      <button className="btn btn-soft btn-error">Clear Haut</button>
+                    </div>
           </section>
         </div>
 
-                <aside className="right-col sidebar">
-                    <h2>Notifications</h2>
-                  <NotificationsList notifications={notifications} />
+                <aside className="right-col bg-base-100">
+                    <div className="flex flex-row justify-between">
+                        <h2>Notifications</h2>
+                        <RiNotification4Fill/>
+                    </div>
+
+                    <NotificationsList notifications={notifications} />
                 </aside>
             </main>
 
