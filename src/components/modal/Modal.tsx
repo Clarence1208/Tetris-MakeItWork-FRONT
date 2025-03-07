@@ -17,7 +17,13 @@ export const Modal = ({
 }: Props) => {
   return (
     <>
-      <button className="btn" onClick={() => setOpen(true)}>
+      <button
+        style={{
+          color: "white",
+        }}
+        className="btn"
+        onClick={() => setOpen(true)}
+      >
         {buttonText}
       </button>
       <dialog className="modal" open={open}>
