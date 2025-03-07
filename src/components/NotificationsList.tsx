@@ -68,7 +68,7 @@ export function Notification({notification}: NotificationProps) {
     return (
         <div className="list-row" onClick={() => handleNotificationSeen}>
             {openError && <CustomError message={error} handleClose={handleClose}/>}
-            <div>{notification.taskId.skills[0]}</div>
+            <div>{notification.taskId.skills[0].name}</div>
             <div>{notification.senderId.name} asked for your help</div>
             <RiFlag2Line fill={notification.isActive ? "green" : "red"} />
         </div>

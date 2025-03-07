@@ -89,6 +89,10 @@ export const PotentialHelpersList = ({taskId}: HelpersProps) => {
         }
     }
 
+    function handleClose() {
+        setOpenErrpr(false);
+    }
+
     useEffect(() => {
         getMightHelpPeople().then((data) => setMightHelpPeople(data));
     }, [])
@@ -96,7 +100,7 @@ export const PotentialHelpersList = ({taskId}: HelpersProps) => {
     if (isLoading) {
         return (
             <div className="flex w-60 gap-4 mt-4">
-                <CustomError message={error} handleClose={() => setOpenErrpr(false)} />
+                { openErrpr && <CustomError message={error} handleClose={handleClose} />}
                 <div className="skeleton h-16 w-16 shrink-0 rounded-full"></div>
                 <div className="skeleton h-16 w-16 shrink-0 rounded-full"></div>
                 <div className="skeleton h-16 w-16 shrink-0 rounded-full"></div>
@@ -106,7 +110,7 @@ export const PotentialHelpersList = ({taskId}: HelpersProps) => {
     if ( !isLoading && mightHelpPeople.length === 0) {
         return (
             <div className="mt-4 flex flex-col justify-center items-center gap-5">
-                <CustomError message={error} handleClose={() => setOpenErrpr(false)} />
+                <CustomError message={error} handleClose={handleClose} />
                 <img className="w-60" src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExazd0eDJpZThiaDRyaG45ZWZiNHh6MjN4a2FjNm45dGw5aDd3MTdtcyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/H6cmWzp6LGFvqjidB7/giphy.gif"/>
                 <span>You are alone</span>
             </div>
@@ -114,7 +118,7 @@ export const PotentialHelpersList = ({taskId}: HelpersProps) => {
     }
     return (
         <div className="mt-4">
-            <CustomError message={error} handleClose={() => setOpenErrpr(false)} />
+            <CustomError message={error} handleClose={handleClose} />
             {/*<button className="btn btn-primary">Ask for someone's help</button>*/}
             {mightHelpPeople.map((user) => (
                 <div className="indicator m-4" onClick={()=>askForHelp(user.id, taskId)}>
@@ -139,9 +143,10 @@ type ModalProps = {
     task: Task;
 }
 export const TaskModal = ({task}: ModalProps) => {
+    console.log(task);
     return (
         <>
-            <dialog id="task-modal" className="modal" >
+            <dialog id={`task-modal-${task.name}`} className="modal" >
                 <div className="modal-box">
                     <p className="font-bold text-3xl">Title: {task.name}</p>
                     <h4 className="py-4">Description: {task.description}</h4>
@@ -149,9 +154,9 @@ export const TaskModal = ({task}: ModalProps) => {
                     <h4>Main skills: </h4>
                     <div className="flex flex-wrap items-center justify-start gap-5">
                     {task.skills?.map((skill) => (
-                        <div key={skill} className="mt-3">
+                        <div key={skill.name} className="mt-3">
                             <img className="size-10 rounded-box"
-                                 src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"/>
+                                 src={skill.imageSrc}/>
                             <div>skill</div>
                         </div>
                     ))}

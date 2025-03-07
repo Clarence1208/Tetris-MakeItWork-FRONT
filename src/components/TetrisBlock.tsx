@@ -54,7 +54,7 @@ const TetrisBlock: React.FC<TetrisBlockProps> = ({task}) => {
         return (
             <div className={`tetris-shape ${shape}`} onClick={() => {
                 if (typeof document !== "undefined") {
-                    const modal =  document.getElementById('task-modal') as HTMLDialogElement
+                    const modal =  document.getElementById(`task-modal-${task.name}`) as HTMLDialogElement
                     modal.showModal();
                 }
             }}>
@@ -69,7 +69,7 @@ const TetrisBlock: React.FC<TetrisBlockProps> = ({task}) => {
                                     <div
                                         key={colIndex}
                                         className={`skill-block ${shape}`}
-                                        title={`${task.title} - ${skillName.name}`}
+                                        title={`${task.name} - ${skillName.name}`}
                                         style={{'--index': blockCount} as React.CSSProperties}
                                         data-point={`${colIndex},${rowIndex}`}
                                     >
@@ -95,7 +95,7 @@ const TetrisBlock: React.FC<TetrisBlockProps> = ({task}) => {
             {...attributes}
             {...listeners}
             className={`tetris-block-container ${task.shape} ${isDragging ? 'is-dragging' : ''}`}
-            title={task.title}
+            title={task.name}
             data-task-id={task.id}
             data-shape={task.shape}
             data-skill-count={task.skills.length}

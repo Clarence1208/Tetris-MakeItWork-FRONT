@@ -138,7 +138,7 @@ export default function BlockForm() {
 
         try {
             const addedTask = addTaskToBoard({
-                title: taskFormData.name,
+                name: taskFormData.name,
                 description: taskFormData.description,
                 skills: taskFormData.skills.filter(skill => skill !== "None"),
             });
