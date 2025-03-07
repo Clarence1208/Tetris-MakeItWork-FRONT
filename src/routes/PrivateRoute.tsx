@@ -7,6 +7,7 @@ import {
 import Error404 from "../pages/error404/Error404.tsx";
 import Homepage from "../pages/home/Homepage.tsx";
 import { Skills } from "../pages/skills/Skills.tsx";
+import Competition from "../components/competition/Competition.tsx";
 import Cookies from "js-cookie";
 import { ReactNode } from "react";
 import { Auth } from "../pages/auth/Auth.tsx";
@@ -46,6 +47,7 @@ const router = createBrowserRouter([
         children: [
           { path: "/home", element: <Homepage /> },
           { path: "/skills", element: <Skills /> },
+          { path: "/mode/competition/", element: <Competition /> },
         ],
       },
     ],
