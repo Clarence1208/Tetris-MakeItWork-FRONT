@@ -2,19 +2,7 @@ import './Profil.css';
 import { useEffect, useMemo, useState } from "react";
 import { SkillService } from "../../services/skillService/SkillService";
 import { BoardsService } from "../../services/boardService/BoardsService";
-
-
-
-// type Competence = {
-//     name: string;
-//     level: number;
-//     image?: string;
-// };
-
-// type Boards = {
-//     name: string;
-//     nbTaches: number;
-// };
+import { UserService } from '../../services/userService/UserService';
 
 export default function Profil() {
     const [competences, setSkills] = useState<{ name: string; imageSrc: string }[]>(
@@ -23,9 +11,13 @@ export default function Profil() {
     const [boards, setBoards] = useState<{ name: string }[]>(
         []
     );
+    const [user] = useState<{ name: string; email: string }>(
+    );
     
     const skillService = useMemo(() => new SkillService(), []);
-    const boardsService = useMemo(() => new BoardsService(), [])
+    const boardsService = useMemo(() => new BoardsService(), []);
+    const userServide = useMemo(() => new UserService(), [])
+
 
     useEffect(() => {
     const getSkills = async () => {
@@ -42,6 +34,16 @@ export default function Profil() {
     };
     getBoards();
     }, [boardsService]);
+
+    useEffect(() => {
+    const getUser = async () => {
+        const boards = await userServide.getUser();
+        setBoards(boards);
+    };
+    getUser();
+    }, [userServide]);
+
+
 
     const [competencePage, setCompetencePage] = useState(0);
     const [boardPage, setBoardPage] = useState(0);
@@ -61,7 +63,7 @@ export default function Profil() {
         : boards;
 
     return (
-        <div className="container">
+        <div className="container-profil">
             <div className="left-container">
                 <div className="left-section">
                     <div className="avatar">
@@ -75,10 +77,8 @@ export default function Profil() {
 
                     <div className="text-container">
                         <p>
-                            Nom : Dupont <br />
-                            Prénom : Dupont <br />
-                            Email : test@gmail.com <br />
-                            Numéro : 01234567 <br />
+                            Nom : {user?.name} <br />
+                            Email : {user?.email} <br />
                         </p>
                     </div>
                 </div>
