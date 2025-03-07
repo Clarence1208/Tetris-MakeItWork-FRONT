@@ -1,21 +1,16 @@
 import { Api } from "../Api";
 
-const BASE_PATH = "skills";
+const BASE_PATH = "users";
 
-type CreateSkills = {
-  name: string;
-  image: string;
-};
-
-export class SkillService {
+export class UserService {
   api: Api;
   constructor({ api = new Api() } = {}) {
     this.api = api;
   }
 
-  async getSkills() {
+  async getCurrentUser() {
     return this.api.request({
-      path: BASE_PATH,
+      path: BASE_PATH + "/current-user",
       method: "GET",
     });
   }

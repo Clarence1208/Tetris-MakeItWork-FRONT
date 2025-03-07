@@ -1,0 +1,116 @@
+.container-profil {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 20px;
+    margin-left: 6vw;
+}
+
+.container-profil .left-container {
+    width: 40%;
+}
+
+.container-profil .left-section {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.container-profil .avatar img {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+}
+
+.container-profil .text-container {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #333;
+}
+
+.container-profil .competence-list {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.container-profil .competence-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.container-profil .list {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    justify-items: center;
+}
+
+.container-profil .list-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    background: #f0f0f0;
+    padding: 10px;
+    border-radius: 8px;
+    width: 100px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.container-profil .list-item img {
+    width: 40px;
+    height: 40px;
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
+
+.container-profil .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 15px;
+}
+
+.container-profil .pagination span {
+    font-weight: bold;
+}
+
+.container-profil .bloc_details {
+    width: 30%;
+}
+
+.container-profil .bloc_details .fieldset {
+    border: 2px solid #ddd;
+    padding: 15px;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+}
+
+.container-profil .bloc_details .fieldset-legend {
+    font-weight: bold;
+    font-size: 16px;
+    padding: 0 10px;
+}
+
+.container-profil .bloc_details div {
+    background: white;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.container-profil .bloc_details p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #333;
+}

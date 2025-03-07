@@ -16,7 +16,7 @@ export class Api {
   }) {
     try {
       const token = Cookies.get("token");
-
+      
       const apiUrl = import.meta.env.VITE_API_URL;
 
       const requestHeaders: Record<string, string> = {

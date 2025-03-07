@@ -8,7 +8,7 @@ export default function Header() {
     return (
         <div className="navbar bg-base-100 shadow-sm">
             <div className="flex-1">
-                <a href="/" className="btn btn-ghost text-xl">Tetris - make it works</a>
+                <a href="/home" className="btn btn-ghost text-xl">Tetris - make it works</a>
             </div>
             <div className="flex-none">
                 <div className="dropdown dropdown-end">
@@ -35,7 +35,7 @@ export default function Header() {
                         tabIndex={0}
                         className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
                         <li>
-                            <a className="justify-between">
+                            <a className="justify-between" href="/profil">
                                 Profile
                             </a>
                         </li>

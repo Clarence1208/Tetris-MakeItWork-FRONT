@@ -12,6 +12,7 @@ import Cookies from "js-cookie";
 import { ReactNode } from "react";
 import { Auth } from "../pages/auth/Auth.tsx";
 import App from "../App.tsx";
+import Profil from "../pages/profil/Profil.tsx";
 
 export const AuthRoute = ({ children }: { children: ReactNode }) => {
   const isLogged = Cookies.get("token");
@@ -47,7 +48,8 @@ const router = createBrowserRouter([
         children: [
           { path: "/home", element: <Homepage /> },
           { path: "/skills", element: <Skills /> },
-          { path: "/mode/competition/", element: <Competition /> },
+          {path: "/profil", element: <Profil/>},
+          { path: "/mode/competition/", element: <Competition /> }
         ],
       },
     ],
